@@ -1,9 +1,3 @@
-/* ==========================================================================
-   SAURA — Main stylesheet
-   All brand colours, fonts and spacing live in :root below.
-   Change them there and the whole site follows.
-   ========================================================================== */
-
 :root {
   /* Brand colours */
   --c-bg: #0d0d0d;          /* near-black base */

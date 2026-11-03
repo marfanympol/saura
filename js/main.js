@@ -1,5 +1,3 @@
-// SAURA — small interactions. No libraries needed.
-
 document.addEventListener("DOMContentLoaded", () => {
   const header = document.querySelector(".site-header");
   const toggle = document.querySelector(".nav-toggle");
