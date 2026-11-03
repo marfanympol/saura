@@ -1,0 +1,17 @@
+# Local editor / tool settings
+.claude/
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets and environment config
+.env
+.env.*
+
+# Dependencies (if added later)
+node_modules/
+vendor/
