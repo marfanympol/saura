@@ -106,16 +106,23 @@ p { margin: 0 0 1rem; }
   inset: 0 0 auto 0;
   z-index: 100;
   height: var(--header-h);
-  transition: background 0.3s, border-color 0.3s;
-  border-bottom: 1px solid transparent;
 }
-.site-header.scrolled {
+/* The scrolled background lives on a pseudo-element: backdrop-filter on the
+   header itself would trap the fixed mobile menu inside the header's box. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: rgba(13, 13, 13, 0.88);
   backdrop-filter: blur(10px);
-  border-bottom-color: var(--c-line);
+  border-bottom: 1px solid var(--c-line);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
+.site-header.scrolled::before { opacity: 1; }
 
 .nav {
+  position: relative; /* sits above the header's ::before background */
   height: 100%;
   display: flex;
   align-items: center;
