@@ -394,8 +394,8 @@ p { margin: 0 0 1rem; }
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(3rem, 7vw, 6rem);
-  align-items: start;
+  gap: clamp(2rem, 4.5vw, 3.25rem);
+  align-items: center;
 }
 
 .contact-lead { color: var(--c-muted); font-size: 1.1rem; margin: 1.5rem 0 2.5rem; max-width: 28rem; }
@@ -487,6 +487,7 @@ p { margin: 0 0 1rem; }
   .team-grid { grid-template-columns: repeat(2, 1fr); }
   .pillars { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
+  .contact-cta-email { font-size: 7.2vw; }
 }
 
 @media (max-width: 760px) {
@@ -515,7 +516,6 @@ p { margin: 0 0 1rem; }
   .hero-actions .btn { flex: 1 1 100%; text-align: center; }
 }
 
-/* Respect users who prefer less motion */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
