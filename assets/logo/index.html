@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saura — Logo concepts</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 3rem 1.25rem; background: #f2f1ee; color: #111; font-family: system-ui, sans-serif; }
+    main { max-width: 1100px; margin: 0 auto; }
+    h1 { font-size: 1.5rem; margin: 0 0 0.25rem; }
+    .intro { color: #666; margin: 0 0 2.5rem; }
+    .concept { background: #fff; border: 1px solid #e2e0da; border-radius: 10px; margin-bottom: 1.5rem; overflow: hidden; }
+    .concept header { padding: 1.25rem 1.5rem 0; }
+    .concept h2 { font-size: 1.05rem; margin: 0 0 0.25rem; }
+    .concept p { margin: 0; color: #666; font-size: 0.92rem; }
+    .swatches { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #e2e0da; margin-top: 1.25rem; }
+    .swatch { display: grid; place-items: center; min-height: 240px; padding: 2.5rem; }
+    .swatch img { max-width: 100%; max-height: 160px; }
+    .light { background: #fff; }
+    .dark { background: #0d0d0d; }
+    .dark img { filter: invert(1); }
+    .small .swatch img { max-height: 64px; }
+    .file { display: block; padding: 0.75rem 1.5rem; font: 0.8rem ui-monospace, monospace; color: #888; border-top: 1px solid #e2e0da; }
+    @media (max-width: 640px) { .swatches { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Saura — Logo concepts</h1>
+  <p class="intro">All marks are single-colour vectors built from the confirmed SAURA letterforms. Shown in black on light and inverted on dark.</p>
+
+  <section class="concept">
+    <header>
+      <h2>1. Wordmark</h2>
+      <p>The primary logo. Website header, chest prints, packaging, back-of-neck prints.</p>
+    </header>
+    <div class="swatches">
+      <div class="swatch light"><img src="saura-wordmark.svg" alt="Saura wordmark"></div>
+      <div class="swatch dark"><img src="saura-wordmark.svg" alt=""></div>
+    </div>
+    <span class="file">saura-wordmark.svg</span>
+  </section>
+
+  <section class="concept">
+    <header>
+      <h2>2. Lockup with tagline</h2>
+      <p>Wordmark plus "Built to Move" in the same letter style. Hang tags, bags, campaign material.</p>
+    </header>
+    <div class="swatches">
+      <div class="swatch light"><img src="saura-lockup.svg" alt="Saura, Built to Move"></div>
+      <div class="swatch dark"><img src="saura-lockup.svg" alt=""></div>
+    </div>
+    <span class="file">saura-lockup.svg</span>
+  </section>
+
+  <section class="concept">
+    <header>
+      <h2>3. Peak icon</h2>
+      <p>The two crossbar-less A's in SAURA nested as rising peaks: upward motion, power. The standalone brand mark for sleeves, chest, socks and caps.</p>
+    </header>
+    <div class="swatches">
+      <div class="swatch light"><img src="saura-peak.svg" alt="Saura peak icon"></div>
+      <div class="swatch dark"><img src="saura-peak.svg" alt=""></div>
+    </div>
+    <span class="file">saura-peak.svg</span>
+  </section>
+
+  <section class="concept">
+    <header>
+      <h2>4. SA monogram tag</h2>
+      <p>The first two letters in a label frame. Woven labels, waistband tags, zip pulls.</p>
+    </header>
+    <div class="swatches">
+      <div class="swatch light"><img src="saura-monogram.svg" alt="Saura SA monogram"></div>
+      <div class="swatch dark"><img src="saura-monogram.svg" alt=""></div>
+    </div>
+    <span class="file">saura-monogram.svg</span>
+  </section>
+
+  <section class="concept">
+    <header>
+      <h2>5. Round badge</h2>
+      <p>Peak icon framed by the name and tagline. Patches, stickers, rubber badges, social avatar.</p>
+    </header>
+    <div class="swatches">
+      <div class="swatch light"><img src="saura-badge.svg" alt="Saura badge" style="max-height: 200px"></div>
+      <div class="swatch dark"><img src="saura-badge.svg" alt="" style="max-height: 200px"></div>
+    </div>
+    <span class="file">saura-badge.svg</span>
+  </section>
+
+  <section class="concept">
+    <header>
+      <h2>6. App / social icon</h2>
+      <p>The S knocked out of a rounded square. Profile pictures, browser tab icon, app icon.</p>
+    </header>
+    <div class="swatches">
+      <div class="swatch light"><img src="saura-app-icon.svg" alt="Saura app icon"></div>
+      <div class="swatch dark"><img src="saura-app-icon.svg" alt=""></div>
+    </div>
+    <span class="file">saura-app-icon.svg</span>
+  </section>
+
+  <section class="concept small">
+    <header>
+      <h2>Small-size check</h2>
+      <p>How the marks hold up at label / embroidery scale.</p>
+    </header>
+    <div class="swatches">
+      <div class="swatch light" style="gap: 1.5rem; grid-auto-flow: column;">
+        <img src="saura-peak.svg" alt="" style="max-height: 28px">
+        <img src="saura-monogram.svg" alt="" style="max-height: 28px">
+        <img src="saura-badge.svg" alt="" style="max-height: 48px">
+        <img src="saura-wordmark.svg" alt="" style="max-height: 14px">
+      </div>
+      <div class="swatch dark" style="gap: 1.5rem; grid-auto-flow: column;">
+        <img src="saura-peak.svg" alt="" style="max-height: 28px">
+        <img src="saura-monogram.svg" alt="" style="max-height: 28px">
+        <img src="saura-badge.svg" alt="" style="max-height: 48px">
+        <img src="saura-wordmark.svg" alt="" style="max-height: 14px">
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
