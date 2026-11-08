@@ -43,6 +43,9 @@ body {
   overflow-x: hidden;
 }
 
+/* Clip the tilted marquee's overhang so phones don't lay the page out wider */
+main { overflow-x: hidden; overflow-x: clip; }
+
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3 { margin: 0; font-weight: 400; }
