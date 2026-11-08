@@ -25,9 +25,9 @@
 
       <nav class="nav-menu" id="nav-menu">
         <a href="#brand">The Brand</a>
+        <a href="products.html">Products</a>
         <a href="#team">Team</a>
         <a href="#contact">Contact</a>
-        <!-- <a href="/shop">Shop</a> -->
         <a href="#contact" class="btn btn-small">Get in touch</a>
       </nav>
     </div>
@@ -67,12 +67,12 @@
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
         <span>Reliable</span><span>✦</span>
-        <span>Powerful</span><span>✦</span>
-        <span>Wearable</span><span>✦</span>
+        <span>Relentless</span><span>✦</span>
+        <span>Versatile</span><span>✦</span>
         <span>Built to move</span><span>✦</span>
         <span>Reliable</span><span>✦</span>
-        <span>Powerful</span><span>✦</span>
-        <span>Wearable</span><span>✦</span>
+        <span>Relentless</span><span>✦</span>
+        <span>Versatile</span><span>✦</span>
         <span>Built to move</span><span>✦</span>
       </div>
     </div>
@@ -105,14 +105,52 @@
           </article>
           <article class="pillar reveal">
             <span class="pillar-num">02</span>
-            <h3>Powerful</h3>
+            <h3>Relentless</h3>
             <p>Bold design that brings energy to every rep, every run, every day.</p>
           </article>
           <article class="pillar reveal">
             <span class="pillar-num">03</span>
-            <h3>Wearable</h3>
+            <h3>Versatile</h3>
             <p>Cuts and colours that move seamlessly from training to your everyday wardrobe.</p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PRODUCTS ========== -->
+    <!-- Cards are filled in by js/products.js from the PRODUCTS list -->
+    <section class="section products" id="products">
+      <div class="container">
+        <div class="section-head products-head reveal">
+          <div>
+            <p class="eyebrow">The Collection</p>
+            <h2 class="section-title">Gear for<br>every session.</h2>
+          </div>
+          <a href="products.html" class="btn btn-ghost">Shop all</a>
+        </div>
+
+        <div class="carousel" data-gender="men">
+          <div class="carousel-head">
+            <h3 class="carousel-title">Men</h3>
+            <div class="carousel-controls">
+              <a href="products.html?gender=men" class="carousel-link">View all</a>
+              <button class="carousel-btn" data-dir="-1" aria-label="Previous men's products">←</button>
+              <button class="carousel-btn" data-dir="1" aria-label="Next men's products">→</button>
+            </div>
+          </div>
+          <div class="carousel-track" tabindex="0" aria-label="Men's products"></div>
+        </div>
+
+        <div class="carousel" data-gender="women">
+          <div class="carousel-head">
+            <h3 class="carousel-title">Women</h3>
+            <div class="carousel-controls">
+              <a href="products.html?gender=women" class="carousel-link">View all</a>
+              <button class="carousel-btn" data-dir="-1" aria-label="Previous women's products">←</button>
+              <button class="carousel-btn" data-dir="1" aria-label="Next women's products">→</button>
+            </div>
+          </div>
+          <div class="carousel-track" tabindex="0" aria-label="Women's products"></div>
         </div>
       </div>
     </section>
@@ -162,7 +200,8 @@
           <p class="eyebrow">Contact</p>
           <h2 class="section-title">Let's talk.</h2>
           <p class="contact-lead">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Questions, collaborations, press or just want to know when we launch?
+            Drop us a line.
           </p>
           <ul class="contact-list">
             <li>
@@ -199,6 +238,7 @@
     </div>
   </footer>
 
+  <script src="js/products.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

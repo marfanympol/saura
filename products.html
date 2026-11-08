@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Saura</title>
+  <meta name="description" content="Shop Saura sportswear for men and women: performance pieces built for training and everyday wear.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ========== HEADER / NAV ========== -->
+  <header class="site-header" id="top">
+    <div class="container nav">
+      <a href="index.html" class="logo"><img src="assets/logo/saura-wordmark-white.svg" alt="Saura — home" width="180" height="20"></a>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span>
+      </button>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="index.html#brand">The Brand</a>
+        <a href="products.html" aria-current="page">Products</a>
+        <a href="index.html#team">Team</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="index.html#contact" class="btn btn-small">Get in touch</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ========== PAGE HERO ========== -->
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Shop</p>
+        <h1 class="page-title">The <span class="accent">collection.</span></h1>
+        <p class="page-lead">Performance pieces for men and women. Built for the session, styled for everything after it.</p>
+      </div>
+    </section>
+
+    <!-- ========== CATALOGUE ========== -->
+    <section class="catalogue">
+      <div class="container">
+        <div class="catalogue-bar">
+          <div class="filter-group" role="group" aria-label="Filter by collection">
+            <button class="filter-btn" data-filter-gender="all" aria-pressed="true">All</button>
+            <button class="filter-btn" data-filter-gender="men" aria-pressed="false">Men</button>
+            <button class="filter-btn" data-filter-gender="women" aria-pressed="false">Women</button>
+          </div>
+
+          <div class="catalogue-tools">
+            <label class="visually-hidden" for="filter-type">Product type</label>
+            <select id="filter-type" class="filter-select">
+              <option value="all">All types</option>
+            </select>
+            <p class="catalogue-count" id="product-count" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <!-- Filled in by js/products.js -->
+        <div class="product-grid" id="product-grid"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a href="index.html" class="logo"><img src="assets/logo/saura-lockup-white.svg" alt="Saura — Built to Move" width="211" height="54"></a>
+      <p>&copy; <span id="year"></span> Saura. All rights reserved.</p>
+      <a href="#top" class="back-top">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
