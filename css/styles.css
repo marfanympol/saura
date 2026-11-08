@@ -126,12 +126,9 @@ p { margin: 0 0 1rem; }
   justify-content: space-between;
 }
 
-.logo {
-  font-family: var(--f-display);
-  font-size: 1.75rem;
-  letter-spacing: 0.06em;
-}
-.logo-dot { color: var(--c-accent); }
+.logo { display: block; line-height: 0; }
+.logo img { height: 20px; width: auto; }
+.site-footer .logo img { height: 54px; }
 
 .nav-menu {
   display: flex;
@@ -449,7 +446,7 @@ p { margin: 0 0 1rem; }
 }
 .contact-cta-email {
   font-family: var(--f-display);
-  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
   line-height: 1.05;
   text-transform: uppercase;
   word-break: break-word;
@@ -490,7 +487,7 @@ p { margin: 0 0 1rem; }
   .team-grid { grid-template-columns: repeat(2, 1fr); }
   .pillars { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
-  .contact-cta-email { font-size: 7.2vw; }
+  .contact-cta-email { font-size: 6vw; }
 }
 
 @media (max-width: 760px) {
