@@ -85,11 +85,13 @@ const SauraCart = (() => {
       <ul class="cart-items">
         ${items.map((item, i) => {
           const p = findProduct(item.id);
+          const photo = imageFor(p, item.colour);
+          const link = `product.html?id=${p.id}&colour=${item.colour}`;
           return `
           <li class="cart-item">
-            <a href="product.html?id=${p.id}" class="cart-thumb">${p.image ? `<img src="${p.image}" alt="">` : garment(p.type)}</a>
+            <a href="${link}" class="cart-thumb">${photo ? `<img src="${photo}" alt="">` : garment(p.type)}</a>
             <div>
-              <a href="product.html?id=${p.id}" class="cart-item-name">${p.name}</a>
+              <a href="${link}" class="cart-item-name">${p.name}</a>
               <p class="cart-item-meta">${t(`colour.${item.colour}`)} · ${item.qty} × ${formatPrice(p.price)}</p>
             </div>
             <button type="button" class="cart-remove" data-index="${i}" aria-label="${t("cart.remove", { name: p.name })}">×</button>

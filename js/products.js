@@ -5,10 +5,13 @@
 // image: the main photo. image2 (optional): shown when the card is hovered;
 // without it, the hover shows the garment outline marked with a "2".
 // No image at all: the garment outline is drawn from "type".
+// variants (optional): { colour: photo }. The colour picker then offers only
+// these colours and swaps the photo; "colour" is the one shown first.
 // Card text (gender, colour, type names, descriptions) is translated in js/i18n.js.
 
 // The slogans printed on each design (kept in English, like "Built to move")
 const DESIGNS = {
+  signature:   "Move Further Together",
   dinamico:    "Move Further",
   minimalista: "Sportswear",
   monograma:   "Beyond Limits",
@@ -20,10 +23,32 @@ const DESIGNS = {
   abstracto:   "Fuel Your Motion",
 };
 
-// Colours offered in the product page's colour picker
-const COLOURS = { black: "#111111", white: "#f1f1f1", grey: "#9b9b9b", navy: "#1f2c4f", green: "#36402f" };
+// Swatch look for every colour; products without variants offer the first five
+const COLOURS = {
+  black: "#111111",
+  white: "#f1f1f1",
+  grey: "#9b9b9b",
+  navy: "#1f2c4f",
+  green: "#36402f",
+  "black-premium": "linear-gradient(135deg, #111111 55%, #b98a6e 55%, #b98a6e 68%, #111111 68%)",
+};
+const BASIC_COLOURS = ["black", "white", "grey", "navy", "green"];
+
+// Signature line: one design in every colour, each colour with its own photo
+const signatureVariants = (type, colours) =>
+  Object.fromEntries(colours.map((c) => [c, `assets/products/signature-${type}-${c}.webp`]));
 
 const PRODUCTS = [
+  // Signature (colour picker swaps the photo)
+  { id: "signature-tee",     name: "Signature Tee",     design: "signature", type: "tee",     gender: "unisex", price: 35, tag: "new", colour: "black",
+    variants: signatureVariants("tee",     ["black", "white", "green", "navy", "grey"]) },
+  { id: "signature-hoodie",  name: "Signature Hoodie",  design: "signature", type: "hoodie",  gender: "unisex", price: 85, tag: "new", colour: "black",
+    variants: signatureVariants("hoodie",  ["black", "white", "green", "navy", "grey"]) },
+  { id: "signature-joggers", name: "Signature Joggers", design: "signature", type: "joggers", gender: "unisex", price: 70, tag: "new", colour: "black",
+    variants: signatureVariants("joggers", ["black", "grey", "green", "navy", "black-premium"]) },
+  { id: "signature-shorts",  name: "Signature Shorts",  design: "signature", type: "shorts",  gender: "unisex", price: 45, tag: "new", colour: "black",
+    variants: signatureVariants("shorts",  ["black", "grey", "green", "navy", "black-premium"]) },
+
   // T-shirts
   { id: "dinamico-tee",    name: "Dinámico Tee",    design: "dinamico",    type: "tee", gender: "unisex", price: 35, colour: "black", image: "assets/products/tee-01-dinamico.webp" },
   { id: "minimalista-tee", name: "Minimalista Tee", design: "minimalista", type: "tee", gender: "unisex", price: 35, colour: "white", image: "assets/products/tee-02-minimalista.webp" },
@@ -60,6 +85,10 @@ const PRODUCTS = [
 
 const findProduct = (id) => PRODUCTS.find((p) => p.id === id);
 
+// Colours a product can be picked in, and the photo for a given colour
+const coloursOf = (p) => (p.variants ? Object.keys(p.variants) : BASIC_COLOURS);
+const imageFor = (p, colour) => (p.variants && p.variants[colour]) || p.image || (p.variants && p.variants[p.colour]);
+
 // Does a product belong in the Men / Women collection?
 const inCollection = (p, gender) => p.gender === gender || p.gender === "unisex";
 
@@ -84,7 +113,8 @@ const garment = (type) => `<svg viewBox="0 0 100 100" aria-hidden="true">${GARME
 // Main image plus the hover image: the photos if given, otherwise the
 // garment outline (main) and the outline marked "2" (hover).
 function productMedia(p) {
-  const main = p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : garment(p.type);
+  const photo = imageFor(p, p.colour);
+  const main = photo ? `<img src="${photo}" alt="${p.name}" loading="lazy">` : garment(p.type);
   const alt = p.image2
     ? `<img src="${p.image2}" alt="" loading="lazy">`
     : `${garment(p.type)}<span class="media-alt-mark">2</span>`;
@@ -103,7 +133,9 @@ function productCard(p) {
       </div>
       <div class="product-info">
         <h3 class="product-name">${p.name}</h3>
-        <p class="product-meta">${t(`gender.${p.gender}`)} · ${t(`colour.${p.colour}`)}</p>
+        <p class="product-meta">${t(`gender.${p.gender}`)} · ${p.variants
+          ? t("product.colours", { n: coloursOf(p).length })
+          : t(`colour.${p.colour}`)}</p>
         <p class="product-price">${formatPrice(p.price)}</p>
       </div>
     </a>`;
@@ -191,8 +223,10 @@ if (catalogueGrid) initCatalogue(catalogueGrid);
 
 // ---------- Product page (product.html?id=…) ----------
 function initProductPage(root) {
-  const product = findProduct(new URLSearchParams(location.search).get("id"));
-  let colour = product ? product.colour : null;
+  const params = new URLSearchParams(location.search);
+  const product = findProduct(params.get("id"));
+  // Start on the colour in the URL (e.g. &colour=navy) if the product has it
+  let colour = product && coloursOf(product).includes(params.get("colour")) ? params.get("colour") : product?.colour;
   let note = "";   // message under the buttons: "Added to cart" / "Checkout coming soon"
 
   const notFound = () => `
@@ -201,10 +235,10 @@ function initProductPage(root) {
       <a href="products.html" class="btn">${t("pd.back")}</a>
     </div>`;
 
-  const swatches = () => Object.entries(COLOURS).map(([key, hex]) => `
+  const swatches = () => coloursOf(product).map((key) => `
           <button type="button" class="swatch" role="radio" data-colour="${key}"
             aria-checked="${key === colour}" aria-label="${t(`colour.${key}`)}" title="${t(`colour.${key}`)}"
-            style="--swatch: ${hex}"></button>`).join("");
+            style="--swatch: ${COLOURS[key]}"></button>`).join("");
 
   const render = () => {
     if (!product) {
@@ -224,7 +258,7 @@ function initProductPage(root) {
 
       <div class="pd-layout">
         <div class="pd-photo">
-          ${p.image ? `<img src="${p.image}" alt="${p.name}">` : garment(p.type)}
+          ${imageFor(p, colour) ? `<img src="${imageFor(p, colour)}" alt="${p.name} — ${t(`colour.${colour}`)}">` : garment(p.type)}
         </div>
 
         <div class="pd-details">
@@ -251,11 +285,21 @@ function initProductPage(root) {
         </div>
       </div>`;
 
-    // Colour picker: only the label and the selected swatch change for now
+    // Colour picker: updates the label, and the photo when the product has one per colour
     root.querySelectorAll(".swatch").forEach((btn) => btn.addEventListener("click", () => {
       colour = btn.dataset.colour;
       root.querySelectorAll(".swatch").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
       root.querySelector("#pd-colour-name").textContent = t(`colour.${colour}`);
+
+      if (p.variants) {
+        const img = root.querySelector(".pd-photo img");
+        img.src = imageFor(p, colour);
+        img.alt = `${p.name} — ${t(`colour.${colour}`)}`;
+        // Keep the colour in the URL so the link can be shared
+        const query = new URLSearchParams(location.search);
+        query.set("colour", colour);
+        history.replaceState(null, "", `?${query}`);
+      }
     }));
 
     const noteEl = root.querySelector("#pd-note");
