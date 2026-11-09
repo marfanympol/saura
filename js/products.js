@@ -45,6 +45,17 @@ const DESIGN_NAMES = {
   dinamico: "Dinámico", minimalista: "Minimalista", monograma: "Monograma", organico: "Orgánico",
   tipografico: "Tipográfico", geometrico: "Geométrico", montana: "Montaña", circulo: "Círculo", abstracto: "Abstracto",
 };
+// The same design names in English, used when the site is in English
+const DESIGN_NAMES_EN = {
+  dinamico: "Dynamic", minimalista: "Minimalist", monograma: "Monogram", organico: "Organic",
+  tipografico: "Typographic", geometrico: "Geometric", montana: "Mountain", circulo: "Circle", abstracto: "Abstract",
+};
+// Product name in the current language: "Montaña Tee" stays as written in Spanish,
+// and becomes "Mountain Tee" in English
+const displayName = (p) =>
+  SauraI18n.lang === "en" && DESIGN_NAMES_EN[p.design]
+    ? p.name.replace(DESIGN_NAMES[p.design], DESIGN_NAMES_EN[p.design])
+    : p.name;
 const designLine = (gender, type, label, price, colours) =>
   colours.map((colour, i) => {
     const design = Object.keys(DESIGN_NAMES)[i];
@@ -141,7 +152,7 @@ const garment = (type) => `<svg viewBox="0 0 100 100" aria-hidden="true">${GARME
 // garment outline (main) and the outline marked "2" (hover).
 function productMedia(p) {
   const photo = imageFor(p, p.colour);
-  const main = photo ? `<img src="${photo}" alt="${p.name}" loading="lazy">` : garment(p.type);
+  const main = photo ? `<img src="${photo}" alt="${displayName(p)}" loading="lazy">` : garment(p.type);
   const alt = p.image2
     ? `<img src="${p.image2}" alt="" loading="lazy">`
     : `${garment(p.type)}<span class="media-alt-mark">2</span>`;
@@ -159,7 +170,7 @@ function productCard(p) {
         ${p.tag ? `<span class="product-tag">${t(`tag.${p.tag}`)}</span>` : ""}
       </div>
       <div class="product-info">
-        <h3 class="product-name">${p.name}</h3>
+        <h3 class="product-name">${displayName(p)}</h3>
         <p class="product-meta">${t(`gender.${p.gender}`)} · ${p.variants
           ? t("product.colours", { n: coloursOf(p).length })
           : t(`colour.${p.colour}`)}</p>
@@ -277,7 +288,7 @@ function initProductPage(root) {
       return;
     }
     const p = product;
-    document.title = `${p.name} — Saura`;
+    document.title = `${displayName(p)} — Saura`;
     // Related products: for now, the other products of the same type in the same collection
     const related = PRODUCTS.filter((x) => x.type === p.type && x.gender === p.gender && x.id !== p.id);
 
@@ -285,17 +296,17 @@ function initProductPage(root) {
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="products.html">${t("pd.crumb")}</a><span aria-hidden="true">/</span>
         <a href="products.html?type=${p.type}">${t(`type.${p.type}`)}</a><span aria-hidden="true">/</span>
-        <span aria-current="page">${p.name}</span>
+        <span aria-current="page">${displayName(p)}</span>
       </nav>
 
       <div class="pd-layout">
         <div class="pd-photo">
-          ${imageFor(p, colour) ? `<img src="${imageFor(p, colour)}" alt="${p.name} — ${t(`colour.${colour}`)}">` : garment(p.type)}
+          ${imageFor(p, colour) ? `<img src="${imageFor(p, colour)}" alt="${displayName(p)} — ${t(`colour.${colour}`)}">` : garment(p.type)}
         </div>
 
         <div class="pd-details">
           <p class="eyebrow">${t(`typeOne.${p.type}`)} · ${t(`gender.${p.gender}`)}</p>
-          <h1 class="pd-title">${p.name}</h1>
+          <h1 class="pd-title">${displayName(p)}</h1>
           <p class="pd-tagline">${DESIGNS[p.design]}</p>
           <p class="pd-price">${formatPrice(p.price)}</p>
 
@@ -343,7 +354,7 @@ function initProductPage(root) {
       if (p.variants) {
         const img = root.querySelector(".pd-photo img");
         img.src = imageFor(p, colour);
-        img.alt = `${p.name} — ${t(`colour.${colour}`)}`;
+        img.alt = `${displayName(p)} — ${t(`colour.${colour}`)}`;
         // Keep the colour in the URL so the link can be shared
         const query = new URLSearchParams(location.search);
         query.set("colour", colour);

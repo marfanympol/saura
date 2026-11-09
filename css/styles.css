@@ -549,7 +549,7 @@ p { margin: 0 0 1rem; }
 
 /* Native horizontal scrolling with snap points: swipeable on touch, buttons on desktop */
 .carousel-track {
-  --per-view: 4;
+  --per-view: 5;
   --gap: 1.25rem;
   display: grid;
   grid-auto-flow: column;
@@ -734,8 +734,8 @@ p { margin: 0 0 1rem; }
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2.5rem 1.25rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem 1rem;
 }
 .catalogue-empty {
   grid-column: 1 / -1;
@@ -764,7 +764,7 @@ p { margin: 0 0 1rem; }
 
 .pd-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);   /* photo column capped at 420px */
   gap: clamp(2rem, 5vw, 4rem);
   align-items: start;
 }
@@ -998,8 +998,8 @@ p { margin: 0 0 1rem; }
   .contact-grid { grid-template-columns: 1fr; }
   .contact-cta { min-height: 16rem; }
   .contact-cta-email { font-size: 3.6vw; }
-  .carousel-track { --per-view: 2.4; }
-  .product-grid { grid-template-columns: repeat(3, 1fr); }
+  .carousel-track { --per-view: 3.3; }
+  .product-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 @media (max-width: 760px) {
@@ -1032,8 +1032,8 @@ p { margin: 0 0 1rem; }
   .hero-stripe:nth-child(2) { right: -4vw; top: calc(14% + 4vw); }
   .hero-word { display: none; }
 
-  .carousel-track { --per-view: 1.6; --gap: 1rem; }
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem 1rem; }
+  .carousel-track { --per-view: 2.4; --gap: 0.75rem; }
+  .product-grid { grid-template-columns: repeat(3, 1fr); gap: 1.75rem 0.75rem; }
   .page-hero::after { right: -6vw; width: 26vw; height: 26vw; opacity: 0.6; }
   .page-title { max-width: none; }
 
@@ -1043,6 +1043,7 @@ p { margin: 0 0 1rem; }
   .nav-toggle { order: 2; }
 
   .pd-layout { grid-template-columns: 1fr; }
+  .pd-photo { width: 100%; max-width: 360px; margin: 0 auto; }
   .pd-details { position: static; }
 }
 
@@ -1052,6 +1053,8 @@ p { margin: 0 0 1rem; }
 
   .carousel-link { margin-right: 0.25rem; }
   .carousel-link::before { content: none; }
+  .carousel-track { --per-view: 1.9; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
   .product-name { font-size: 0.85rem; }
   .filter-group,
   .catalogue-tools { flex: 1 1 100%; }

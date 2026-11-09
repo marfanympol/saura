@@ -91,10 +91,10 @@ const SauraCart = (() => {
           <li class="cart-item">
             <a href="${link}" class="cart-thumb">${photo ? `<img src="${photo}" alt="">` : garment(p.type)}</a>
             <div>
-              <a href="${link}" class="cart-item-name">${p.name}</a>
+              <a href="${link}" class="cart-item-name">${displayName(p)}</a>
               <p class="cart-item-meta">${t(`colour.${item.colour}`)} · ${item.qty} × ${formatPrice(p.price)}</p>
             </div>
-            <button type="button" class="cart-remove" data-index="${i}" aria-label="${t("cart.remove", { name: p.name })}">×</button>
+            <button type="button" class="cart-remove" data-index="${i}" aria-label="${t("cart.remove", { name: displayName(p) })}">×</button>
           </li>`;
         }).join("")}
       </ul>
