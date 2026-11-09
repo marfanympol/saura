@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- The title is set by js/products.js to the product's name -->
+  <title>Product — Saura</title>
+  <meta name="description" content="Saura sportswear: design, price, colours and product details." data-i18n-attr="content: meta.product.desc">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ========== TOP BAR (language) ========== -->
+  <div class="topbar" id="top">
+    <div class="container topbar-inner">
+      <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
+        <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+        <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== HEADER / NAV ========== -->
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo"><img src="assets/logo/saura-wordmark-white.svg" alt="Saura — home" width="180" height="20" data-i18n-attr="alt: logo.home"></a>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span>
+      </button>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="index.html#brand" data-i18n="nav.brand">The Brand</a>
+        <a href="products.html" aria-current="page" data-i18n="nav.products">Products</a>
+        <a href="index.html#team" data-i18n="nav.team">Team</a>
+        <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+        <a href="index.html#contact" class="btn btn-small" data-i18n="nav.cta">Get in touch</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========== PRODUCT ========== -->
+    <!-- Filled in by js/products.js from the product in the URL, e.g. product.html?id=dinamico-tee -->
+    <section class="product-page">
+      <div class="container" id="product-root"></div>
+    </section>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a href="index.html" class="logo"><img src="assets/logo/saura-lockup-white.svg" alt="Saura — Built to Move" width="211" height="54"></a>
+      <p>&copy; <span id="year"></span> <span data-i18n="footer.rights">Saura. All rights reserved.</span></p>
+      <div class="footer-actions">
+        <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
+          <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+          <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
+        <a href="#top" class="back-top" data-i18n="footer.top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -10,6 +10,7 @@ const ES = {
   // Page meta
   "meta.home.desc": "Saura es ropa de rendimiento pensada para entrenar y para el día a día. Prendas fiables con energía de sobra.",
   "meta.products.title": "Productos — Saura",
+  "meta.product.desc": "Ropa deportiva Saura: diseño, precio, colores y descripción del producto.",
   "meta.products.desc": "Compra ropa deportiva Saura para hombre y mujer: prendas de rendimiento hechas para entrenar y para el día a día.",
 
   // Shared: nav, footer, language switch
@@ -90,7 +91,9 @@ const UI = {
     "menu.close": "Close menu",
     "gender.men": "Men",
     "gender.women": "Women",
-    "product.colours": "{n} colours",
+    "gender.unisex": "Unisex",
+    "colour.black": "Black", "colour.white": "White", "colour.grey": "Grey",
+    "colour.navy": "Navy", "colour.green": "Green",
     "tag.new": "New",
     "count.one": "1 product",
     "count.other": "{n} products",
@@ -98,13 +101,39 @@ const UI = {
     "filter.allTypes": "All types",
     "type.tee": "Tees", "type.tank": "Tanks", "type.hoodie": "Hoodies", "type.jacket": "Jackets",
     "type.shorts": "Shorts", "type.joggers": "Joggers", "type.leggings": "Leggings", "type.bra": "Sports bras",
+    "typeOne.tee": "T-shirt", "typeOne.hoodie": "Hoodie", "typeOne.joggers": "Joggers",
+
+    // Product page (descriptions are placeholder copy, one per product type)
+    "pd.crumb": "Products",
+    "pd.colour": "Colour",
+    "pd.add": "Add to cart",
+    "pd.added": "Added to cart.",
+    "pd.buy": "Buy now",
+    "pd.buyNote": "Checkout isn't available yet. Coming soon.",
+    "pd.description": "Description",
+    "pd.notFound": "Product not found",
+    "pd.back": "Back to all products",
+    "desc.tee": "A lightweight training tee in a breathable technical fabric. Raglan sleeves give you freedom through every movement, flat seams keep it comfortable over long sessions, and the reflective details keep you visible on early runs. Built for the gym, styled for everything after.",
+    "desc.hoodie": "A midweight fleece hoodie for warm-ups, cool-downs and everything in between. Soft brushed inside, durable outside, with an adjustable hood, a roomy front pocket and ribbed cuffs that stay in place.",
+    "desc.joggers": "Tapered joggers in a stretch fabric that moves with you. An elastic drawcord waistband, zip pockets to keep your essentials secure and ankle cuffs that sit clean over your trainers. From training sessions to rest days.",
+
+    // Cart
+    "cart.label": "Cart",
+    "cart.open": "Open cart, {n} items",
+    "cart.title": "Your cart",
+    "cart.close": "Close cart",
+    "cart.remove": "Remove {name}",
+    "cart.subtotal": "Subtotal",
+    "cart.checkout": "Checkout · coming soon",
   },
   es: {
     "menu.open": "Abrir menú",
     "menu.close": "Cerrar menú",
     "gender.men": "Hombre",
     "gender.women": "Mujer",
-    "product.colours": "{n} colores",
+    "gender.unisex": "Unisex",
+    "colour.black": "Negro", "colour.white": "Blanco", "colour.grey": "Gris",
+    "colour.navy": "Azul marino", "colour.green": "Verde",
     "tag.new": "Nuevo",
     "count.one": "1 producto",
     "count.other": "{n} productos",
@@ -112,6 +141,28 @@ const UI = {
     "filter.allTypes": "Todos los tipos",
     "type.tee": "Camisetas", "type.tank": "Camisetas de tirantes", "type.hoodie": "Sudaderas", "type.jacket": "Chaquetas",
     "type.shorts": "Pantalones cortos", "type.joggers": "Joggers", "type.leggings": "Mallas", "type.bra": "Sujetadores deportivos",
+    "typeOne.tee": "Camiseta", "typeOne.hoodie": "Sudadera", "typeOne.joggers": "Joggers",
+
+    "pd.crumb": "Productos",
+    "pd.colour": "Color",
+    "pd.add": "Añadir al carrito",
+    "pd.added": "Añadido al carrito.",
+    "pd.buy": "Comprar ahora",
+    "pd.buyNote": "El pago aún no está disponible. Próximamente.",
+    "pd.description": "Descripción",
+    "pd.notFound": "Producto no encontrado",
+    "pd.back": "Volver a todos los productos",
+    "desc.tee": "Una camiseta de entrenamiento ligera en un tejido técnico transpirable. Las mangas raglán te dan libertad en cada movimiento, las costuras planas la hacen cómoda en sesiones largas y los detalles reflectantes te mantienen visible en las carreras al amanecer. Hecha para el gimnasio, pensada para todo lo que viene después.",
+    "desc.hoodie": "Una sudadera de felpa de peso medio para calentar, recuperar y todo lo que hay entre medias. Suave por dentro, resistente por fuera, con capucha ajustable, un amplio bolsillo frontal y puños acanalados que se quedan en su sitio.",
+    "desc.joggers": "Joggers entallados en un tejido elástico que se mueve contigo. Cintura elástica con cordón, bolsillos con cremallera para llevar lo esencial seguro y puños en el tobillo que quedan limpios sobre tus zapatillas. Del entrenamiento a los días de descanso.",
+
+    "cart.label": "Carrito",
+    "cart.open": "Abrir carrito, {n} artículos",
+    "cart.title": "Tu carrito",
+    "cart.close": "Cerrar carrito",
+    "cart.remove": "Quitar {name}",
+    "cart.subtotal": "Subtotal",
+    "cart.checkout": "Pagar · próximamente",
   },
 };
 
@@ -162,10 +213,10 @@ const SauraI18n = (() => {
     listeners.forEach((fn) => fn(lang));
   };
 
-  // Saved choice first; first-time visitors get Spanish
+  // Saved choice first; first-time visitors get English
   let saved = null;
   try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) { /* ignore */ }
-  lang = LANGS.includes(saved) ? saved : "es";
+  lang = LANGS.includes(saved) ? saved : "en";
   apply();
 
   document.querySelectorAll("[data-lang]").forEach((btn) => btn.addEventListener("click", () => set(btn.dataset.lang)));
