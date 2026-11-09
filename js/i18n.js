@@ -100,9 +100,10 @@ const UI = {
     "count.other": "{n} products",
     "catalogue.empty": "No products match these filters yet.",
     "filter.allTypes": "All types",
-    "type.tee": "Tees", "type.tank": "Tanks", "type.hoodie": "Hoodies", "type.jacket": "Jackets",
+    "type.tee": "Tees", "type.tank": "Tank tops", "type.hoodie": "Hoodies", "type.jacket": "Jackets",
     "type.shorts": "Shorts", "type.joggers": "Joggers", "type.leggings": "Leggings", "type.bra": "Sports bras",
     "typeOne.tee": "T-shirt", "typeOne.hoodie": "Hoodie", "typeOne.joggers": "Joggers", "typeOne.shorts": "Shorts",
+    "typeOne.leggings": "Leggings", "typeOne.tank": "Tank top",
 
     // Product page (descriptions are placeholder copy, one per product type)
     "pd.crumb": "Products",
@@ -122,6 +123,8 @@ const UI = {
     "desc.hoodie": "A midweight fleece hoodie for warm-ups, cool-downs and everything in between. Soft brushed inside, durable outside, with an adjustable hood, a roomy front pocket and ribbed cuffs that stay in place.",
     "desc.joggers": "Tapered joggers in a stretch fabric that moves with you. An elastic drawcord waistband, zip pockets to keep your essentials secure and ankle cuffs that sit clean over your trainers. From training sessions to rest days.",
     "desc.shorts": "Training shorts in a light, quick-moving fabric with a mid-thigh cut that stays out of your way. An elastic drawcord waistband, zip pockets for keys and phone, and reflective details for early and late sessions.",
+    "desc.leggings": "High-waisted leggings in a supportive stretch fabric that holds its shape through every squat, stride and stretch. A wide waistband that stays in place, contoured panels and reflective details for low-light sessions.",
+    "desc.tank": "A racerback tank top in a light, breathable fabric that keeps you cool when the session heats up. The open back gives your shoulders full freedom of movement, from the gym floor to the running track.",
 
     // Cart
     "cart.label": "Cart",
@@ -149,6 +152,7 @@ const UI = {
     "type.tee": "Camisetas", "type.tank": "Camisetas de tirantes", "type.hoodie": "Sudaderas", "type.jacket": "Chaquetas",
     "type.shorts": "Pantalones cortos", "type.joggers": "Joggers", "type.leggings": "Mallas", "type.bra": "Sujetadores deportivos",
     "typeOne.tee": "Camiseta", "typeOne.hoodie": "Sudadera", "typeOne.joggers": "Joggers", "typeOne.shorts": "Pantalón corto",
+    "typeOne.leggings": "Mallas", "typeOne.tank": "Camiseta de tirantes",
 
     "pd.crumb": "Productos",
     "pd.colour": "Color",
@@ -167,6 +171,8 @@ const UI = {
     "desc.hoodie": "Una sudadera de felpa de peso medio para calentar, recuperar y todo lo que hay entre medias. Suave por dentro, resistente por fuera, con capucha ajustable, un amplio bolsillo frontal y puños acanalados que se quedan en su sitio.",
     "desc.joggers": "Joggers entallados en un tejido elástico que se mueve contigo. Cintura elástica con cordón, bolsillos con cremallera para llevar lo esencial seguro y puños en el tobillo que quedan limpios sobre tus zapatillas. Del entrenamiento a los días de descanso.",
     "desc.shorts": "Pantalón corto de entrenamiento en un tejido ligero, con un corte a medio muslo que no estorba. Cintura elástica con cordón, bolsillos con cremallera para llaves y móvil, y detalles reflectantes para las sesiones al amanecer o de noche.",
+    "desc.leggings": "Mallas de talle alto en un tejido elástico con sujeción que mantiene su forma en cada sentadilla, zancada y estiramiento. Una cintura ancha que no se mueve, paneles contorneados y detalles reflectantes para las sesiones con poca luz.",
+    "desc.tank": "Camiseta de tirantes con espalda nadadora en un tejido ligero y transpirable que aporta frescor cuando la sesión aprieta. La espalda abierta da total libertad a tus hombros, del gimnasio a la pista.",
 
     "cart.label": "Carrito",
     "cart.open": "Abrir carrito, {n} artículos",

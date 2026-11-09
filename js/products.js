@@ -38,49 +38,71 @@ const BASIC_COLOURS = ["black", "white", "grey", "navy", "green"];
 const signatureVariants = (type, colours) =>
   Object.fromEntries(colours.map((c) => [c, `assets/products/signature-${type}-${c}.webp`]));
 
+// Women's collection: the nine designs, in sheet order, for one garment type.
+// colours lists each design's colour in that order (the tees have no 9th design).
+const DESIGN_NAMES = {
+  dinamico: "Dinámico", minimalista: "Minimalista", monograma: "Monograma", organico: "Orgánico",
+  tipografico: "Tipográfico", geometrico: "Geométrico", montana: "Montaña", circulo: "Círculo", abstracto: "Abstracto",
+};
+const womenLine = (type, label, price, colours) =>
+  colours.map((colour, i) => {
+    const design = Object.keys(DESIGN_NAMES)[i];
+    return {
+      id: `${design}-${type}-women`, name: `${DESIGN_NAMES[design]} ${label}`, design, type,
+      gender: "women", price, colour,
+      image: `assets/products/women-${type}-${String(i + 1).padStart(2, "0")}-${design}.webp`,
+    };
+  });
+
 const PRODUCTS = [
   // Signature (colour picker swaps the photo)
-  { id: "signature-tee",     name: "Signature Tee",     design: "signature", type: "tee",     gender: "unisex", price: 35, tag: "new", colour: "black",
+  { id: "signature-tee",     name: "Signature Tee",     design: "signature", type: "tee",     gender: "men", price: 35, tag: "new", colour: "black",
     variants: signatureVariants("tee",     ["black", "white", "green", "navy", "grey"]) },
-  { id: "signature-hoodie",  name: "Signature Hoodie",  design: "signature", type: "hoodie",  gender: "unisex", price: 85, tag: "new", colour: "black",
+  { id: "signature-hoodie",  name: "Signature Hoodie",  design: "signature", type: "hoodie",  gender: "men", price: 85, tag: "new", colour: "black",
     variants: signatureVariants("hoodie",  ["black", "white", "green", "navy", "grey"]) },
-  { id: "signature-joggers", name: "Signature Joggers", design: "signature", type: "joggers", gender: "unisex", price: 70, tag: "new", colour: "black",
+  { id: "signature-joggers", name: "Signature Joggers", design: "signature", type: "joggers", gender: "men", price: 70, tag: "new", colour: "black",
     variants: signatureVariants("joggers", ["black", "grey", "green", "navy", "black-premium"]) },
-  { id: "signature-shorts",  name: "Signature Shorts",  design: "signature", type: "shorts",  gender: "unisex", price: 45, tag: "new", colour: "black",
+  { id: "signature-shorts",  name: "Signature Shorts",  design: "signature", type: "shorts",  gender: "men", price: 45, tag: "new", colour: "black",
     variants: signatureVariants("shorts",  ["black", "grey", "green", "navy", "black-premium"]) },
 
   // T-shirts
-  { id: "dinamico-tee",    name: "Dinámico Tee",    design: "dinamico",    type: "tee", gender: "unisex", price: 35, colour: "black", image: "assets/products/tee-01-dinamico.webp" },
-  { id: "minimalista-tee", name: "Minimalista Tee", design: "minimalista", type: "tee", gender: "unisex", price: 35, colour: "white", image: "assets/products/tee-02-minimalista.webp" },
-  { id: "monograma-tee",   name: "Monograma Tee",   design: "monograma",   type: "tee", gender: "unisex", price: 35, colour: "green", image: "assets/products/tee-03-monograma.webp" },
-  { id: "organico-tee",    name: "Orgánico Tee",    design: "organico",    type: "tee", gender: "unisex", price: 35, colour: "navy",  image: "assets/products/tee-04-organico.webp" },
-  { id: "tipografico-tee", name: "Tipográfico Tee", design: "tipografico", type: "tee", gender: "unisex", price: 35, colour: "black", image: "assets/products/tee-05-tipografico.webp" },
-  { id: "geometrico-tee",  name: "Geométrico Tee",  design: "geometrico",  type: "tee", gender: "unisex", price: 35, colour: "grey",  image: "assets/products/tee-06-geometrico.webp" },
-  { id: "montana-tee",     name: "Montaña Tee",     design: "montana",     type: "tee", gender: "unisex", price: 35, colour: "black", image: "assets/products/tee-07-montana.webp" },
-  { id: "circulo-tee",     name: "Círculo Tee",     design: "circulo",     type: "tee", gender: "unisex", price: 35, colour: "white", image: "assets/products/tee-08-circulo.webp" },
-  { id: "abstracto-tee",   name: "Abstracto Tee",   design: "abstracto",   type: "tee", gender: "unisex", price: 35, colour: "black", image: "assets/products/tee-09-abstracto.webp" },
+  { id: "dinamico-tee",    name: "Dinámico Tee",    design: "dinamico",    type: "tee", gender: "men", price: 35, colour: "black", image: "assets/products/tee-01-dinamico.webp" },
+  { id: "minimalista-tee", name: "Minimalista Tee", design: "minimalista", type: "tee", gender: "men", price: 35, colour: "white", image: "assets/products/tee-02-minimalista.webp" },
+  { id: "monograma-tee",   name: "Monograma Tee",   design: "monograma",   type: "tee", gender: "men", price: 35, colour: "green", image: "assets/products/tee-03-monograma.webp" },
+  { id: "organico-tee",    name: "Orgánico Tee",    design: "organico",    type: "tee", gender: "men", price: 35, colour: "navy",  image: "assets/products/tee-04-organico.webp" },
+  { id: "tipografico-tee", name: "Tipográfico Tee", design: "tipografico", type: "tee", gender: "men", price: 35, colour: "black", image: "assets/products/tee-05-tipografico.webp" },
+  { id: "geometrico-tee",  name: "Geométrico Tee",  design: "geometrico",  type: "tee", gender: "men", price: 35, colour: "grey",  image: "assets/products/tee-06-geometrico.webp" },
+  { id: "montana-tee",     name: "Montaña Tee",     design: "montana",     type: "tee", gender: "men", price: 35, colour: "black", image: "assets/products/tee-07-montana.webp" },
+  { id: "circulo-tee",     name: "Círculo Tee",     design: "circulo",     type: "tee", gender: "men", price: 35, colour: "white", image: "assets/products/tee-08-circulo.webp" },
+  { id: "abstracto-tee",   name: "Abstracto Tee",   design: "abstracto",   type: "tee", gender: "men", price: 35, colour: "black", image: "assets/products/tee-09-abstracto.webp" },
 
   // Hoodies
-  { id: "dinamico-hoodie",    name: "Dinámico Hoodie",    design: "dinamico",    type: "hoodie", gender: "unisex", price: 85, colour: "black", image: "assets/products/hoodie-01-dinamico.webp" },
-  { id: "minimalista-hoodie", name: "Minimalista Hoodie", design: "minimalista", type: "hoodie", gender: "unisex", price: 85, colour: "white", image: "assets/products/hoodie-02-minimalista.webp" },
-  { id: "monograma-hoodie",   name: "Monograma Hoodie",   design: "monograma",   type: "hoodie", gender: "unisex", price: 85, colour: "green", image: "assets/products/hoodie-03-monograma.webp" },
-  { id: "organico-hoodie",    name: "Orgánico Hoodie",    design: "organico",    type: "hoodie", gender: "unisex", price: 85, colour: "navy",  image: "assets/products/hoodie-04-organico.webp" },
-  { id: "tipografico-hoodie", name: "Tipográfico Hoodie", design: "tipografico", type: "hoodie", gender: "unisex", price: 85, colour: "black", image: "assets/products/hoodie-05-tipografico.webp" },
-  { id: "geometrico-hoodie",  name: "Geométrico Hoodie",  design: "geometrico",  type: "hoodie", gender: "unisex", price: 85, colour: "grey",  image: "assets/products/hoodie-06-geometrico.webp" },
-  { id: "montana-hoodie",     name: "Montaña Hoodie",     design: "montana",     type: "hoodie", gender: "unisex", price: 85, colour: "black", image: "assets/products/hoodie-07-montana.webp" },
-  { id: "circulo-hoodie",     name: "Círculo Hoodie",     design: "circulo",     type: "hoodie", gender: "unisex", price: 85, colour: "white", image: "assets/products/hoodie-08-circulo.webp" },
-  { id: "abstracto-hoodie",   name: "Abstracto Hoodie",   design: "abstracto",   type: "hoodie", gender: "unisex", price: 85, colour: "black", image: "assets/products/hoodie-09-abstracto.webp" },
+  { id: "dinamico-hoodie",    name: "Dinámico Hoodie",    design: "dinamico",    type: "hoodie", gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-01-dinamico.webp" },
+  { id: "minimalista-hoodie", name: "Minimalista Hoodie", design: "minimalista", type: "hoodie", gender: "men", price: 85, colour: "white", image: "assets/products/hoodie-02-minimalista.webp" },
+  { id: "monograma-hoodie",   name: "Monograma Hoodie",   design: "monograma",   type: "hoodie", gender: "men", price: 85, colour: "green", image: "assets/products/hoodie-03-monograma.webp" },
+  { id: "organico-hoodie",    name: "Orgánico Hoodie",    design: "organico",    type: "hoodie", gender: "men", price: 85, colour: "navy",  image: "assets/products/hoodie-04-organico.webp" },
+  { id: "tipografico-hoodie", name: "Tipográfico Hoodie", design: "tipografico", type: "hoodie", gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-05-tipografico.webp" },
+  { id: "geometrico-hoodie",  name: "Geométrico Hoodie",  design: "geometrico",  type: "hoodie", gender: "men", price: 85, colour: "grey",  image: "assets/products/hoodie-06-geometrico.webp" },
+  { id: "montana-hoodie",     name: "Montaña Hoodie",     design: "montana",     type: "hoodie", gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-07-montana.webp" },
+  { id: "circulo-hoodie",     name: "Círculo Hoodie",     design: "circulo",     type: "hoodie", gender: "men", price: 85, colour: "white", image: "assets/products/hoodie-08-circulo.webp" },
+  { id: "abstracto-hoodie",   name: "Abstracto Hoodie",   design: "abstracto",   type: "hoodie", gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-09-abstracto.webp" },
 
   // Joggers
-  { id: "dinamico-joggers",    name: "Dinámico Joggers",    design: "dinamico",    type: "joggers", gender: "unisex", price: 70, colour: "black", image: "assets/products/joggers-01-dinamico.webp" },
-  { id: "minimalista-joggers", name: "Minimalista Joggers", design: "minimalista", type: "joggers", gender: "unisex", price: 70, colour: "grey",  image: "assets/products/joggers-02-minimalista.webp" },
-  { id: "monograma-joggers",   name: "Monograma Joggers",   design: "monograma",   type: "joggers", gender: "unisex", price: 70, colour: "green", image: "assets/products/joggers-03-monograma.webp" },
-  { id: "organico-joggers",    name: "Orgánico Joggers",    design: "organico",    type: "joggers", gender: "unisex", price: 70, colour: "navy",  image: "assets/products/joggers-04-organico.webp" },
-  { id: "tipografico-joggers", name: "Tipográfico Joggers", design: "tipografico", type: "joggers", gender: "unisex", price: 70, colour: "black", image: "assets/products/joggers-05-tipografico.webp" },
-  { id: "geometrico-joggers",  name: "Geométrico Joggers",  design: "geometrico",  type: "joggers", gender: "unisex", price: 70, colour: "grey",  image: "assets/products/joggers-06-geometrico.webp" },
-  { id: "montana-joggers",     name: "Montaña Joggers",     design: "montana",     type: "joggers", gender: "unisex", price: 70, colour: "black", image: "assets/products/joggers-07-montana.webp" },
-  { id: "circulo-joggers",     name: "Círculo Joggers",     design: "circulo",     type: "joggers", gender: "unisex", price: 70, colour: "navy",  image: "assets/products/joggers-08-circulo.webp" },
-  { id: "abstracto-joggers",   name: "Abstracto Joggers",   design: "abstracto",   type: "joggers", gender: "unisex", price: 70, colour: "black", image: "assets/products/joggers-09-abstracto.webp" },
+  { id: "dinamico-joggers",    name: "Dinámico Joggers",    design: "dinamico",    type: "joggers", gender: "men", price: 70, colour: "black", image: "assets/products/joggers-01-dinamico.webp" },
+  { id: "minimalista-joggers", name: "Minimalista Joggers", design: "minimalista", type: "joggers", gender: "men", price: 70, colour: "grey",  image: "assets/products/joggers-02-minimalista.webp" },
+  { id: "monograma-joggers",   name: "Monograma Joggers",   design: "monograma",   type: "joggers", gender: "men", price: 70, colour: "green", image: "assets/products/joggers-03-monograma.webp" },
+  { id: "organico-joggers",    name: "Orgánico Joggers",    design: "organico",    type: "joggers", gender: "men", price: 70, colour: "navy",  image: "assets/products/joggers-04-organico.webp" },
+  { id: "tipografico-joggers", name: "Tipográfico Joggers", design: "tipografico", type: "joggers", gender: "men", price: 70, colour: "black", image: "assets/products/joggers-05-tipografico.webp" },
+  { id: "geometrico-joggers",  name: "Geométrico Joggers",  design: "geometrico",  type: "joggers", gender: "men", price: 70, colour: "grey",  image: "assets/products/joggers-06-geometrico.webp" },
+  { id: "montana-joggers",     name: "Montaña Joggers",     design: "montana",     type: "joggers", gender: "men", price: 70, colour: "black", image: "assets/products/joggers-07-montana.webp" },
+  { id: "circulo-joggers",     name: "Círculo Joggers",     design: "circulo",     type: "joggers", gender: "men", price: 70, colour: "navy",  image: "assets/products/joggers-08-circulo.webp" },
+  { id: "abstracto-joggers",   name: "Abstracto Joggers",   design: "abstracto",   type: "joggers", gender: "men", price: 70, colour: "black", image: "assets/products/joggers-09-abstracto.webp" },
+
+  // Women's collection
+  ...womenLine("tee",      "Tee",      35, ["black", "white", "green", "navy", "black", "grey", "black", "white"]),
+  ...womenLine("shorts",   "Shorts",   45, ["black", "white", "green", "navy", "black", "grey", "black", "white", "black"]),
+  ...womenLine("leggings", "Leggings", 65, ["black", "black", "green", "navy", "black", "grey", "black", "black", "black"]),
+  ...womenLine("tank",     "Tank",     30, ["black", "white", "green", "navy", "black", "grey", "black", "white", "black"]),
 ];
 
 const findProduct = (id) => PRODUCTS.find((p) => p.id === id);
@@ -251,8 +273,8 @@ function initProductPage(root) {
     }
     const p = product;
     document.title = `${p.name} — Saura`;
-    // Related products: for now, the other products of the same type
-    const related = PRODUCTS.filter((x) => x.type === p.type && x.id !== p.id);
+    // Related products: for now, the other products of the same type in the same collection
+    const related = PRODUCTS.filter((x) => x.type === p.type && x.gender === p.gender && x.id !== p.id);
 
     root.innerHTML = `
       <nav class="breadcrumb" aria-label="Breadcrumb">
