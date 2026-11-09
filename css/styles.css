@@ -300,9 +300,6 @@ p { margin: 0 0 1rem; }
   letter-spacing: -0.02em;
   margin-bottom: 2rem;
 }
-/* "MOVERSE." is longer than "MOVE.": let the Spanish title shrink further on small phones */
-.hero-title:lang(es) { font-size: clamp(2.25rem, 9.5vw, 8.5rem); }
-
 .hero-lead {
   max-width: 32rem;
   font-size: clamp(1.05rem, 1.5vw, 1.15rem);
@@ -659,7 +656,7 @@ p { margin: 0 0 1rem; }
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
@@ -782,7 +779,6 @@ p { margin: 0 0 1rem; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 960px) {
-  .team-grid { grid-template-columns: repeat(2, 1fr); }
   .pillars { grid-template-columns: 1fr; }
   .pillar { border-right: 0; border-bottom: 2px solid var(--c-text); }
   .pillar:last-child { border-bottom: 0; }

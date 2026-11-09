@@ -3,10 +3,11 @@
 // content swapped from ES below; data-i18n-attr="attr:key; attr:key" does the
 // same for attributes (aria-label, alt, content…). UI holds the strings that
 // scripts build at runtime (product cards, filters, menu labels).
+// A key missing from ES keeps its English text — that's how the "Built to move"
+// slogan stays in English on the Spanish site.
 
 const ES = {
   // Page meta
-  "meta.home.title": "Saura — Hecho para moverse",
   "meta.home.desc": "Saura es ropa de rendimiento pensada para entrenar y para el día a día. Prendas fiables con energía de sobra.",
   "meta.products.title": "Productos — Saura",
   "meta.products.desc": "Compra ropa deportiva Saura para hombre y mujer: prendas de rendimiento hechas para entrenar y para el día a día.",
@@ -24,7 +25,6 @@ const ES = {
 
   // Hero
   "hero.eyebrow": "Rendimiento y día a día",
-  "hero.title": 'Hecho<br>para <span class="accent">moverse.</span>',
   "hero.lead": "Ropa diseñada para entrenar y pensada para la calle. Fiable cuando cuenta, impecable incluso cuando no hace falta.",
   "hero.discover": "Descubre Saura",
   "hero.contact": "Contáctanos",
@@ -34,7 +34,6 @@ const ES = {
   "marquee.reliable": "Fiable",
   "marquee.relentless": "Incansable",
   "marquee.versatile": "Versátil",
-  "marquee.built": "Hecho para moverse",
 
   // Brand
   "brand.eyebrow": "La marca",
@@ -65,11 +64,6 @@ const ES = {
   // Team
   "team.eyebrow": "El equipo",
   "team.title": "Las personas<br>detrás de Saura.",
-  "team.member": "Miembro del equipo",
-  "team.role.ceo": "Fundador/a y CEO",
-  "team.role.design": "Dirección de diseño",
-  "team.role.ops": "Producto y operaciones",
-  "team.role.marketing": "Marketing y comunidad",
 
   // Contact
   "contact.eyebrow": "Contacto",
