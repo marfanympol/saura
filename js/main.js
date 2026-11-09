@@ -9,14 +9,20 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", onScroll, { passive: true });
 
   // Mobile menu
+  const updateToggleLabel = () => {
+    const open = menu.classList.contains("open");
+    toggle.setAttribute("aria-label", SauraI18n.t(open ? "menu.close" : "menu.open"));
+  };
   const setMenu = (open) => {
     menu.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", String(open));
-    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    updateToggleLabel();
     document.body.style.overflow = open ? "hidden" : "";
   };
   toggle.addEventListener("click", () => setMenu(!menu.classList.contains("open")));
   menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+  SauraI18n.onChange(updateToggleLabel);
+  updateToggleLabel();
 
   // Fade sections in as they scroll into view
   const revealEls = document.querySelectorAll(".reveal");

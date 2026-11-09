@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saura — Built to Move</title>
-  <meta name="description" content="Saura is performance clothing designed for training and everyday wear. Reliable gear with energy to spare.">
+  <title data-i18n="meta.home.title">Saura — Built to Move</title>
+  <meta name="description" content="Saura is performance clothing designed for training and everyday wear. Reliable gear with energy to spare." data-i18n-attr="content: meta.home.desc">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +13,16 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+
+  <!-- ========== TOP BAR (language) ========== -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
+        <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+        <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ========== HEADER / NAV ========== -->
   <header class="site-header" id="#top">
@@ -24,11 +34,11 @@
       </button>
 
       <nav class="nav-menu" id="nav-menu">
-        <a href="#brand">The Brand</a>
-        <a href="products.html">Products</a>
-        <a href="#team">Team</a>
-        <a href="#contact">Contact</a>
-        <a href="#contact" class="btn btn-small">Get in touch</a>
+        <a href="#brand" data-i18n="nav.brand">The Brand</a>
+        <a href="products.html" data-i18n="nav.products">Products</a>
+        <a href="#team" data-i18n="nav.team">Team</a>
+        <a href="#contact" data-i18n="nav.contact">Contact</a>
+        <a href="#contact" class="btn btn-small" data-i18n="nav.cta">Get in touch</a>
       </nav>
     </div>
   </header>
@@ -44,21 +54,19 @@
       </div>
 
       <div class="container hero-content">
-        <p class="eyebrow">Performance &amp; Everyday Wear</p>
-        <h1 class="hero-title">
-          Built<br>to <span class="accent">move.</span>
-        </h1>
-        <p class="hero-lead">
+        <p class="eyebrow" data-i18n="hero.eyebrow">Performance &amp; Everyday Wear</p>
+        <h1 class="hero-title" data-i18n="hero.title">Built<br>to <span class="accent">move.</span></h1>
+        <p class="hero-lead" data-i18n="hero.lead">
           Clothing engineered for the session and styled for the street.
           Reliable when it counts, sharp when it doesn't need to be.
         </p>
         <div class="hero-actions">
-          <a href="#brand" class="btn">Discover Saura</a>
-          <a href="#contact" class="btn btn-ghost">Contact us</a>
+          <a href="#brand" class="btn" data-i18n="hero.discover">Discover Saura</a>
+          <a href="#contact" class="btn btn-ghost" data-i18n="hero.contact">Contact us</a>
         </div>
       </div>
 
-      <a href="#brand" class="scroll-cue" aria-label="Scroll to brand section">
+      <a href="#brand" class="scroll-cue" aria-label="Scroll to brand section" data-i18n-attr="aria-label: hero.scroll">
         <span></span>
       </a>
     </section>
@@ -66,14 +74,14 @@
     <!-- ========== MARQUEE STRIP ========== -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
-        <span>Reliable</span><span>✦</span>
-        <span>Relentless</span><span>✦</span>
-        <span>Versatile</span><span>✦</span>
-        <span>Built to move</span><span>✦</span>
-        <span>Reliable</span><span>✦</span>
-        <span>Relentless</span><span>✦</span>
-        <span>Versatile</span><span>✦</span>
-        <span>Built to move</span><span>✦</span>
+        <span data-i18n="marquee.reliable">Reliable</span><span>✦</span>
+        <span data-i18n="marquee.relentless">Relentless</span><span>✦</span>
+        <span data-i18n="marquee.versatile">Versatile</span><span>✦</span>
+        <span data-i18n="marquee.built">Built to move</span><span>✦</span>
+        <span data-i18n="marquee.reliable">Reliable</span><span>✦</span>
+        <span data-i18n="marquee.relentless">Relentless</span><span>✦</span>
+        <span data-i18n="marquee.versatile">Versatile</span><span>✦</span>
+        <span data-i18n="marquee.built">Built to move</span><span>✦</span>
       </div>
     </div>
 
@@ -81,18 +89,18 @@
     <section class="section brand" id="brand">
       <div class="container">
         <div class="section-head reveal">
-          <p class="eyebrow">The Brand</p>
-          <h2 class="section-title">Gear that keeps up.<br>Style that stays.</h2>
+          <p class="eyebrow" data-i18n="brand.eyebrow">The Brand</p>
+          <h2 class="section-title" data-i18n="brand.title">Gear that keeps up.<br>Style that stays.</h2>
         </div>
 
         <div class="brand-intro reveal">
-          <p>
+          <p data-i18n="brand.p1">
             Saura was born from a simple idea: the clothes you train in should be
             good enough to live in. We design sportswear that performs under pressure,
             holds up wash after wash, and looks right whether you're on the track or
             heading out for the evening.
           </p>
-          <p>
+          <p data-i18n="brand.p2">
             No gimmicks, no compromises — just quality pieces with energy built in.
           </p>
         </div>
@@ -100,18 +108,18 @@
         <div class="pillars">
           <article class="pillar reveal">
             <span class="pillar-num">01</span>
-            <h3>Reliable</h3>
-            <p>Durable fabrics and considered construction. Made to be worn hard and worn often.</p>
+            <h3 data-i18n="pillar.reliable.title">Reliable</h3>
+            <p data-i18n="pillar.reliable.text">Durable fabrics and considered construction. Made to be worn hard and worn often.</p>
           </article>
           <article class="pillar reveal">
             <span class="pillar-num">02</span>
-            <h3>Relentless</h3>
-            <p>Bold design that brings energy to every rep, every run, every day.</p>
+            <h3 data-i18n="pillar.relentless.title">Relentless</h3>
+            <p data-i18n="pillar.relentless.text">Bold design that brings energy to every rep, every run, every day.</p>
           </article>
           <article class="pillar reveal">
             <span class="pillar-num">03</span>
-            <h3>Versatile</h3>
-            <p>Cuts and colours that move seamlessly from training to your everyday wardrobe.</p>
+            <h3 data-i18n="pillar.versatile.title">Versatile</h3>
+            <p data-i18n="pillar.versatile.text">Cuts and colours that move seamlessly from training to your everyday wardrobe.</p>
           </article>
         </div>
       </div>
@@ -123,34 +131,34 @@
       <div class="container">
         <div class="section-head products-head reveal">
           <div>
-            <p class="eyebrow">The Collection</p>
-            <h2 class="section-title">Gear for<br>every session.</h2>
+            <p class="eyebrow" data-i18n="products.eyebrow">The Collection</p>
+            <h2 class="section-title" data-i18n="products.title">Gear for<br>every session.</h2>
           </div>
-          <a href="products.html" class="btn btn-ghost">Shop all</a>
+          <a href="products.html" class="btn btn-ghost" data-i18n="products.shopAll">Shop all</a>
         </div>
 
         <div class="carousel" data-gender="men">
           <div class="carousel-head">
-            <h3 class="carousel-title">Men</h3>
+            <h3 class="carousel-title" data-i18n="carousel.men">Men</h3>
             <div class="carousel-controls">
-              <a href="products.html?gender=men" class="carousel-link">View all</a>
-              <button class="carousel-btn" data-dir="-1" aria-label="Previous men's products">←</button>
-              <button class="carousel-btn" data-dir="1" aria-label="Next men's products">→</button>
+              <a href="products.html?gender=men" class="carousel-link" data-i18n="carousel.viewAll">View all</a>
+              <button class="carousel-btn" data-dir="-1" aria-label="Previous men's products" data-i18n-attr="aria-label: carousel.men.prev">←</button>
+              <button class="carousel-btn" data-dir="1" aria-label="Next men's products" data-i18n-attr="aria-label: carousel.men.next">→</button>
             </div>
           </div>
-          <div class="carousel-track" tabindex="0" aria-label="Men's products"></div>
+          <div class="carousel-track" tabindex="0" aria-label="Men's products" data-i18n-attr="aria-label: carousel.men.track"></div>
         </div>
 
         <div class="carousel" data-gender="women">
           <div class="carousel-head">
-            <h3 class="carousel-title">Women</h3>
+            <h3 class="carousel-title" data-i18n="carousel.women">Women</h3>
             <div class="carousel-controls">
-              <a href="products.html?gender=women" class="carousel-link">View all</a>
-              <button class="carousel-btn" data-dir="-1" aria-label="Previous women's products">←</button>
-              <button class="carousel-btn" data-dir="1" aria-label="Next women's products">→</button>
+              <a href="products.html?gender=women" class="carousel-link" data-i18n="carousel.viewAll">View all</a>
+              <button class="carousel-btn" data-dir="-1" aria-label="Previous women's products" data-i18n-attr="aria-label: carousel.women.prev">←</button>
+              <button class="carousel-btn" data-dir="1" aria-label="Next women's products" data-i18n-attr="aria-label: carousel.women.next">→</button>
             </div>
           </div>
-          <div class="carousel-track" tabindex="0" aria-label="Women's products"></div>
+          <div class="carousel-track" tabindex="0" aria-label="Women's products" data-i18n-attr="aria-label: carousel.women.track"></div>
         </div>
       </div>
     </section>
@@ -159,34 +167,34 @@
     <section class="section team" id="team">
       <div class="container">
         <div class="section-head reveal">
-          <p class="eyebrow">The Team</p>
-          <h2 class="section-title">The people<br>behind Saura.</h2>
+          <p class="eyebrow" data-i18n="team.eyebrow">The Team</p>
+          <h2 class="section-title" data-i18n="team.title">The people<br>behind Saura.</h2>
         </div>
 
         <!-- swap text for an <img>. -->
         <div class="team-grid">
           <article class="member reveal">
             <div class="member-avatar">AB</div>
-            <h3>Team Member</h3>
-            <p class="member-role">Founder &amp; CEO</p>
+            <h3 data-i18n="team.member">Team Member</h3>
+            <p class="member-role" data-i18n="team.role.ceo">Founder &amp; CEO</p>
             <p class="member-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
           </article>
           <article class="member reveal">
             <div class="member-avatar">CD</div>
-            <h3>Team Member</h3>
-            <p class="member-role">Head of Design</p>
+            <h3 data-i18n="team.member">Team Member</h3>
+            <p class="member-role" data-i18n="team.role.design">Head of Design</p>
             <p class="member-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
           </article>
           <article class="member reveal">
             <div class="member-avatar">EF</div>
-            <h3>Team Member</h3>
-            <p class="member-role">Product &amp; Operations</p>
+            <h3 data-i18n="team.member">Team Member</h3>
+            <p class="member-role" data-i18n="team.role.ops">Product &amp; Operations</p>
             <p class="member-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
           </article>
           <article class="member reveal">
             <div class="member-avatar">GH</div>
-            <h3>Team Member</h3>
-            <p class="member-role">Marketing &amp; Community</p>
+            <h3 data-i18n="team.member">Team Member</h3>
+            <p class="member-role" data-i18n="team.role.marketing">Marketing &amp; Community</p>
             <p class="member-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
           </article>
         </div>
@@ -197,19 +205,19 @@
     <section class="section contact" id="contact">
       <div class="container contact-grid">
         <div class="contact-info reveal">
-          <p class="eyebrow">Contact</p>
-          <h2 class="section-title">Let's talk.</h2>
-          <p class="contact-lead">
+          <p class="eyebrow" data-i18n="contact.eyebrow">Contact</p>
+          <h2 class="section-title" data-i18n="contact.title">Let's talk.</h2>
+          <p class="contact-lead" data-i18n="contact.lead">
             Questions, collaborations, press or just want to know when we launch?
             Drop us a line.
           </p>
           <ul class="contact-list">
             <li>
-              <span class="contact-label">Email</span>
+              <span class="contact-label" data-i18n="contact.email">Email</span>
               <a href="mailto:sauramotion@gmail.com">sauramotion@gmail.com</a>
             </li>
             <li>
-              <span class="contact-label">Social</span>
+              <span class="contact-label" data-i18n="contact.social">Social</span>
               <span class="socials">
                 <a href="/">Instagram</a>
                 <a href="/">TikTok</a>
@@ -220,7 +228,7 @@
         </div>
 
         <a href="mailto:sauramotion@gmail.com" class="contact-cta reveal">
-          <span class="contact-cta-label">Write to us</span>
+          <span class="contact-cta-label" data-i18n="contact.write">Write to us</span>
           <span class="contact-cta-email">sauramotion@gmail.com</span>
           <span class="contact-cta-arrow" aria-hidden="true">→</span>
         </a>
@@ -233,11 +241,18 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <a href="#top" class="logo"><img src="assets/logo/saura-lockup-white.svg" alt="Saura — Built to Move" width="211" height="54"></a>
-      <p>&copy; <span id="year"></span> Saura. All rights reserved.</p>
-      <a href="#top" class="back-top">Back to top ↑</a>
+      <p>&copy; <span id="year"></span> <span data-i18n="footer.rights">Saura. All rights reserved.</span></p>
+      <div class="footer-actions">
+        <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
+          <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+          <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
+        <a href="#top" class="back-top" data-i18n="footer.top">Back to top ↑</a>
+      </div>
     </div>
   </footer>
 
+  <script src="js/i18n.js"></script>
   <script src="js/products.js"></script>
   <script src="js/main.js"></script>
 </body>

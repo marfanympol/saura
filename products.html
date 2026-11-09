@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Products — Saura</title>
-  <meta name="description" content="Shop Saura sportswear for men and women: performance pieces built for training and everyday wear.">
+  <title data-i18n="meta.products.title">Products — Saura</title>
+  <meta name="description" content="Shop Saura sportswear for men and women: performance pieces built for training and everyday wear." data-i18n-attr="content: meta.products.desc">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,21 +14,31 @@
 </head>
 <body>
 
+  <!-- ========== TOP BAR (language) ========== -->
+  <div class="topbar" id="top">
+    <div class="container topbar-inner">
+      <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
+        <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+        <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ========== HEADER / NAV ========== -->
-  <header class="site-header" id="top">
+  <header class="site-header">
     <div class="container nav">
-      <a href="index.html" class="logo"><img src="assets/logo/saura-wordmark-white.svg" alt="Saura — home" width="180" height="20"></a>
+      <a href="index.html" class="logo"><img src="assets/logo/saura-wordmark-white.svg" alt="Saura — home" width="180" height="20" data-i18n-attr="alt: logo.home"></a>
 
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
         <span></span><span></span>
       </button>
 
       <nav class="nav-menu" id="nav-menu">
-        <a href="index.html#brand">The Brand</a>
-        <a href="products.html" aria-current="page">Products</a>
-        <a href="index.html#team">Team</a>
-        <a href="index.html#contact">Contact</a>
-        <a href="index.html#contact" class="btn btn-small">Get in touch</a>
+        <a href="index.html#brand" data-i18n="nav.brand">The Brand</a>
+        <a href="products.html" aria-current="page" data-i18n="nav.products">Products</a>
+        <a href="index.html#team" data-i18n="nav.team">Team</a>
+        <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+        <a href="index.html#contact" class="btn btn-small" data-i18n="nav.cta">Get in touch</a>
       </nav>
     </div>
   </header>
@@ -38,9 +48,9 @@
     <!-- ========== PAGE HERO ========== -->
     <section class="page-hero">
       <div class="container">
-        <p class="eyebrow">Shop</p>
-        <h1 class="page-title">The <span class="accent">collection.</span></h1>
-        <p class="page-lead">Performance pieces for men and women. Built for the session, styled for everything after it.</p>
+        <p class="eyebrow" data-i18n="shop.eyebrow">Shop</p>
+        <h1 class="page-title" data-i18n="shop.title">The <span class="accent">collection.</span></h1>
+        <p class="page-lead" data-i18n="shop.lead">Performance pieces for men and women. Built for the session, styled for everything after it.</p>
       </div>
     </section>
 
@@ -48,17 +58,16 @@
     <section class="catalogue">
       <div class="container">
         <div class="catalogue-bar">
-          <div class="filter-group" role="group" aria-label="Filter by collection">
-            <button class="filter-btn" data-filter-gender="all" aria-pressed="true">All</button>
-            <button class="filter-btn" data-filter-gender="men" aria-pressed="false">Men</button>
-            <button class="filter-btn" data-filter-gender="women" aria-pressed="false">Women</button>
+          <div class="filter-group" role="group" aria-label="Filter by collection" data-i18n-attr="aria-label: filter.label">
+            <button class="filter-btn" data-filter-gender="all" aria-pressed="true" data-i18n="filter.all">All</button>
+            <button class="filter-btn" data-filter-gender="men" aria-pressed="false" data-i18n="filter.men">Men</button>
+            <button class="filter-btn" data-filter-gender="women" aria-pressed="false" data-i18n="filter.women">Women</button>
           </div>
 
           <div class="catalogue-tools">
-            <label class="visually-hidden" for="filter-type">Product type</label>
-            <select id="filter-type" class="filter-select">
-              <option value="all">All types</option>
-            </select>
+            <label class="visually-hidden" for="filter-type" data-i18n="filter.typeLabel">Product type</label>
+            <!-- Options are added by js/products.js -->
+            <select id="filter-type" class="filter-select"></select>
             <p class="catalogue-count" id="product-count" aria-live="polite"></p>
           </div>
         </div>
@@ -74,11 +83,18 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <a href="index.html" class="logo"><img src="assets/logo/saura-lockup-white.svg" alt="Saura — Built to Move" width="211" height="54"></a>
-      <p>&copy; <span id="year"></span> Saura. All rights reserved.</p>
-      <a href="#top" class="back-top">Back to top ↑</a>
+      <p>&copy; <span id="year"></span> <span data-i18n="footer.rights">Saura. All rights reserved.</span></p>
+      <div class="footer-actions">
+        <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
+          <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+          <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
+        <a href="#top" class="back-top" data-i18n="footer.top">Back to top ↑</a>
+      </div>
     </div>
   </footer>
 
+  <script src="js/i18n.js"></script>
   <script src="js/products.js"></script>
   <script src="js/main.js"></script>
 </body>

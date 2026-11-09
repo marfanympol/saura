@@ -22,6 +22,7 @@
   --container: 1240px;
   --gutter: clamp(1rem, 4vw, 2rem);
   --section-pad: 4.5rem;
+  --topbar-h: 32px;
   --header-h: 72px;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -34,7 +35,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: var(--header-h);
+  scroll-padding-top: calc(var(--topbar-h) + var(--header-h));
 }
 
 body {
@@ -130,10 +131,44 @@ p { margin: 0 0 1rem; }
 
 .btn-small { padding: 0.55rem 1rem; font-size: 0.75rem; }
 
+/* ---------- Top bar (language) ---------- */
+.topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 101;          /* stays above the open mobile menu, so the language can be changed there */
+  height: var(--topbar-h);
+  background: var(--c-bg);
+  border-bottom: 1px solid var(--c-line);
+}
+.topbar-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.lang-switch { display: flex; }
+.lang-btn {
+  padding: 0.15rem 0.55rem;
+  background: transparent;
+  color: var(--c-muted);
+  border: 1px solid var(--c-line);
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.lang-btn + .lang-btn { border-left: 0; }
+.lang-btn:hover { color: var(--c-text); }
+.lang-btn[aria-pressed="true"] { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-on-accent); }
+.lang-btn:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+
 /* ---------- Header / nav ---------- */
 .site-header {
   position: fixed;
-  inset: 0 0 auto 0;
+  inset: var(--topbar-h) 0 auto 0;
   z-index: 100;
   height: var(--header-h);
 }
@@ -205,7 +240,7 @@ p { margin: 0 0 1rem; }
   display: flex;
   align-items: center;
   overflow: hidden;
-  padding: calc(var(--header-h) + 2rem) 0 5rem;
+  padding: calc(var(--topbar-h) + var(--header-h) + 2rem) 0 5rem;
 }
 
 .hero-bg { position: absolute; inset: 0; pointer-events: none; }
@@ -265,6 +300,8 @@ p { margin: 0 0 1rem; }
   letter-spacing: -0.02em;
   margin-bottom: 2rem;
 }
+/* "MOVERSE." is longer than "MOVE.": let the Spanish title shrink further on small phones */
+.hero-title:lang(es) { font-size: clamp(2.25rem, 9.5vw, 8.5rem); }
 
 .hero-lead {
   max-width: 32rem;
@@ -387,9 +424,10 @@ p { margin: 0 0 1rem; }
 
 .carousel-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem 1rem;
   margin-bottom: 1.5rem;
 }
 .carousel-title { font-size: clamp(1.4rem, 2.6vw, 2rem); }
@@ -494,7 +532,7 @@ p { margin: 0 0 1rem; }
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: calc(var(--header-h) + clamp(3rem, 8vw, 5rem)) 0 clamp(2.5rem, 5vw, 4rem);
+  padding: calc(var(--topbar-h) + var(--header-h) + clamp(3rem, 8vw, 5rem)) 0 clamp(2.5rem, 5vw, 4rem);
   border-bottom: 2px solid var(--c-line);
 }
 .page-hero::before { z-index: -1; }
@@ -503,7 +541,7 @@ p { margin: 0 0 1rem; }
   position: absolute;
   z-index: -1;
   right: 6%;
-  top: calc(var(--header-h) + 2rem);
+  top: calc(var(--topbar-h) + var(--header-h) + 2rem);
   width: 12vw;
   height: 12vw;
   background: var(--c-accent);
@@ -515,6 +553,7 @@ p { margin: 0 0 1rem; }
   line-height: 0.92;
   letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
+  max-width: 75%;   /* keeps the title clear of the orange square */
 }
 .page-lead {
   max-width: 32rem;
@@ -554,6 +593,8 @@ p { margin: 0 0 1rem; }
 
 .catalogue-tools { display: flex; align-items: center; gap: 1.25rem; }
 .filter-select {
+  min-width: 0;
+  max-width: 100%;
   padding: 0.6rem 2.25rem 0.6rem 1rem;
   background: var(--c-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23ff4d1a' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 0.9rem center / 10px;
   color: var(--c-text);
@@ -702,6 +743,7 @@ p { margin: 0 0 1rem; }
   gap: 1rem;
 }
 .footer-inner p { margin: 0; color: var(--c-muted); font-family: var(--f-mono); font-size: 0.75rem; }
+.footer-actions { display: flex; align-items: center; gap: 1.5rem; }
 .back-top { font-family: var(--f-mono); font-size: 0.8rem; color: var(--c-muted); transition: color 0.2s; }
 .back-top:hover { color: var(--c-accent); }
 
@@ -747,7 +789,7 @@ p { margin: 0 0 1rem; }
     font-family: var(--f-display);
     font-weight: 900;
     font-stretch: 125%;
-    font-size: 2.25rem;
+    font-size: clamp(1.5rem, 8vw, 2.25rem);
   }
 
   .hero-stripe:nth-child(1),
@@ -759,6 +801,7 @@ p { margin: 0 0 1rem; }
   .carousel-track { --per-view: 1.6; --gap: 1rem; }
   .product-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem 1rem; }
   .page-hero::after { right: -6vw; width: 26vw; height: 26vw; opacity: 0.6; }
+  .page-title { max-width: none; }
 }
 
 @media (max-width: 520px) {
@@ -771,7 +814,8 @@ p { margin: 0 0 1rem; }
   .filter-group,
   .catalogue-tools { flex: 1 1 100%; }
   .filter-btn { flex: 1; }
-  .catalogue-tools { justify-content: space-between; }
+  .catalogue-tools { justify-content: space-between; gap: 0.75rem; min-width: 0; }
+  .filter-select { flex: 1 1 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,34 +1,35 @@
 // SAURA — product catalogue, carousels and the products page.
 // Placeholder data until real products exist. To add a product, copy an entry.
 // "image" is optional: without it, a garment outline is drawn from "type".
+// Card text (gender, colours, tags, type names) is translated in js/i18n.js.
 
 const PRODUCTS = [
   // Men
-  { name: "Pace Tee",        gender: "men",   type: "tee",      price: 35,  colours: 4, tag: "New" },
+  { name: "Pace Tee",        gender: "men",   type: "tee",      price: 35,  colours: 4, tag: "new" },
   { name: "Drive Hoodie",    gender: "men",   type: "hoodie",   price: 85,  colours: 3 },
   { name: "Stride Shorts",   gender: "men",   type: "shorts",   price: 45,  colours: 3 },
   { name: "Core Joggers",    gender: "men",   type: "joggers",  price: 70,  colours: 2 },
-  { name: "Summit Jacket",   gender: "men",   type: "jacket",   price: 120, colours: 2, tag: "New" },
+  { name: "Summit Jacket",   gender: "men",   type: "jacket",   price: 120, colours: 2, tag: "new" },
   { name: "Tempo Tank",      gender: "men",   type: "tank",     price: 30,  colours: 4 },
   { name: "Base Long Sleeve", gender: "men",  type: "tee",      price: 45,  colours: 3 },
   { name: "Apex Training Tee", gender: "men", type: "tee",      price: 40,  colours: 5 },
   { name: "Ridge Hoodie",    gender: "men",   type: "hoodie",   price: 90,  colours: 2 },
   { name: "Sprint Shorts",   gender: "men",   type: "shorts",   price: 40,  colours: 4 },
   { name: "Track Joggers",   gender: "men",   type: "joggers",  price: 75,  colours: 3 },
-  { name: "Storm Shell",     gender: "men",   type: "jacket",   price: 140, colours: 2, tag: "New" },
+  { name: "Storm Shell",     gender: "men",   type: "jacket",   price: 140, colours: 2, tag: "new" },
   { name: "Vector Half-Zip", gender: "men",   type: "jacket",   price: 75,  colours: 3 },
   { name: "Pulse Tank",      gender: "men",   type: "tank",     price: 32,  colours: 3 },
 
   // Women
-  { name: "Flow Leggings",   gender: "women", type: "leggings", price: 65,  colours: 4, tag: "New" },
+  { name: "Flow Leggings",   gender: "women", type: "leggings", price: 65,  colours: 4, tag: "new" },
   { name: "Lift Sports Bra", gender: "women", type: "bra",      price: 40,  colours: 5 },
   { name: "Pace Tee",        gender: "women", type: "tee",      price: 35,  colours: 4 },
   { name: "Drive Hoodie",    gender: "women", type: "hoodie",   price: 85,  colours: 3 },
   { name: "Stride Shorts",   gender: "women", type: "shorts",   price: 45,  colours: 3 },
-  { name: "Summit Jacket",   gender: "women", type: "jacket",   price: 120, colours: 2, tag: "New" },
+  { name: "Summit Jacket",   gender: "women", type: "jacket",   price: 120, colours: 2, tag: "new" },
   { name: "Tempo Tank",      gender: "women", type: "tank",     price: 30,  colours: 4 },
   { name: "Sculpt Leggings", gender: "women", type: "leggings", price: 70,  colours: 3 },
-  { name: "Motion Sports Bra", gender: "women", type: "bra",    price: 45,  colours: 4, tag: "New" },
+  { name: "Motion Sports Bra", gender: "women", type: "bra",    price: 45,  colours: 4, tag: "new" },
   { name: "Apex Training Tee", gender: "women", type: "tee",    price: 40,  colours: 5 },
   { name: "Ridge Hoodie",    gender: "women", type: "hoodie",   price: 90,  colours: 2 },
   { name: "Sprint Shorts",   gender: "women", type: "shorts",   price: 40,  colours: 4 },
@@ -36,12 +37,9 @@ const PRODUCTS = [
   { name: "Pulse Crop Tank", gender: "women", type: "tank",     price: 32,  colours: 3 },
 ];
 
-const PRICE = new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" });
-
-const TYPE_LABELS = {
-  tee: "Tees", tank: "Tanks", hoodie: "Hoodies", jacket: "Jackets",
-  shorts: "Shorts", joggers: "Joggers", leggings: "Leggings", bra: "Sports bras",
-};
+const { t } = SauraI18n;
+const formatPrice = (amount) =>
+  new Intl.NumberFormat(SauraI18n.locale, { style: "currency", currency: "EUR" }).format(amount);
 
 // Simple line drawings, viewBox 0 0 100 100
 const GARMENTS = {
@@ -59,18 +57,17 @@ function productCard(p) {
   const media = p.image
     ? `<img src="${p.image}" alt="${p.name}" loading="lazy">`
     : `<svg viewBox="0 0 100 100" aria-hidden="true">${GARMENTS[p.type]}</svg>`;
-  const genderLabel = p.gender === "men" ? "Men" : "Women";
 
   return `
     <article class="product-card">
       <div class="product-media">
         ${media}
-        ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ""}
+        ${p.tag ? `<span class="product-tag">${t(`tag.${p.tag}`)}</span>` : ""}
       </div>
       <div class="product-info">
         <h3 class="product-name">${p.name}</h3>
-        <p class="product-meta">${genderLabel} · ${p.colours} colours</p>
-        <p class="product-price">${PRICE.format(p.price)}</p>
+        <p class="product-meta">${t(`gender.${p.gender}`)} · ${t("product.colours", { n: p.colours })}</p>
+        <p class="product-price">${formatPrice(p.price)}</p>
       </div>
     </article>`;
 }
@@ -81,20 +78,25 @@ function initCarousel(carousel) {
   const prev = carousel.querySelector('[data-dir="-1"]');
   const next = carousel.querySelector('[data-dir="1"]');
 
-  track.innerHTML = PRODUCTS.filter((p) => p.gender === carousel.dataset.gender).map(productCard).join("");
+  const updateButtons = () => {
+    prev.disabled = track.scrollLeft <= 1;
+    next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+  };
+
+  const render = () => {
+    track.innerHTML = PRODUCTS.filter((p) => p.gender === carousel.dataset.gender).map(productCard).join("");
+    updateButtons();
+  };
 
   // Scroll one "page" of cards at a time
   const scrollByPage = (dir) => track.scrollBy({ left: dir * track.clientWidth, behavior: "smooth" });
   prev.addEventListener("click", () => scrollByPage(-1));
   next.addEventListener("click", () => scrollByPage(1));
 
-  const updateButtons = () => {
-    prev.disabled = track.scrollLeft <= 1;
-    next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
-  };
   track.addEventListener("scroll", updateButtons, { passive: true });
   window.addEventListener("resize", updateButtons);
-  updateButtons();
+  SauraI18n.onChange(render);
+  render();
 }
 
 document.querySelectorAll(".carousel").forEach(initCarousel);
@@ -105,16 +107,20 @@ function initCatalogue(grid) {
   const typeSelect = document.getElementById("filter-type");
   const count = document.getElementById("product-count");
   const params = new URLSearchParams(location.search);
+  const types = [...new Set(PRODUCTS.map((p) => p.type))];
 
   const state = {
     gender: ["men", "women"].includes(params.get("gender")) ? params.get("gender") : "all",
-    type: params.get("type") in TYPE_LABELS ? params.get("type") : "all",
+    type: types.includes(params.get("type")) ? params.get("type") : "all",
   };
 
-  // Fill the type dropdown with the types that exist in the catalogue
-  [...new Set(PRODUCTS.map((p) => p.type))].forEach((type) => {
-    typeSelect.add(new Option(TYPE_LABELS[type], type));
-  });
+  // Type dropdown: only the types that exist in the catalogue, in the current language
+  const renderTypeOptions = () => {
+    typeSelect.replaceChildren(
+      new Option(t("filter.allTypes"), "all"),
+      ...types.map((type) => new Option(t(`type.${type}`), type)),
+    );
+  };
 
   const render = () => {
     const items = PRODUCTS.filter((p) =>
@@ -123,8 +129,8 @@ function initCatalogue(grid) {
 
     grid.innerHTML = items.length
       ? items.map(productCard).join("")
-      : '<p class="catalogue-empty">No products match these filters yet.</p>';
-    count.textContent = `${items.length} ${items.length === 1 ? "product" : "products"}`;
+      : `<p class="catalogue-empty">${t("catalogue.empty")}</p>`;
+    count.textContent = items.length === 1 ? t("count.one") : t("count.other", { n: items.length });
 
     genderButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filterGender === state.gender)));
     typeSelect.value = state.type;
@@ -138,6 +144,8 @@ function initCatalogue(grid) {
 
   genderButtons.forEach((b) => b.addEventListener("click", () => { state.gender = b.dataset.filterGender; render(); }));
   typeSelect.addEventListener("change", () => { state.type = typeSelect.value; render(); });
+  SauraI18n.onChange(() => { renderTypeOptions(); render(); });
+  renderTypeOptions();
   render();
 }
 
