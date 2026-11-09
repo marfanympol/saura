@@ -208,8 +208,26 @@ function initCarousel(carousel, getItems) {
   render();
 }
 
+// Front-page picks: put a chosen product in a given carousel slot (1 = first card).
+// The product that was in that slot swaps places with it, so nothing disappears.
+// Only affects the front page; the catalogue keeps the PRODUCTS order.
+const FRONT_PAGE_PICKS = {
+  men: { 1: "monograma-tee", 5: "organico-tee" },
+  women: {},
+};
+
+function frontPageItems(gender) {
+  const items = PRODUCTS.filter((p) => inCollection(p, gender));
+  Object.entries(FRONT_PAGE_PICKS[gender] || {}).forEach(([slot, id]) => {
+    const to = slot - 1;
+    const from = items.findIndex((p) => p.id === id);
+    if (from !== -1 && to < items.length) [items[to], items[from]] = [items[from], items[to]];
+  });
+  return items;
+}
+
 document.querySelectorAll(".carousel[data-gender]").forEach((carousel) =>
-  initCarousel(carousel, () => PRODUCTS.filter((p) => inCollection(p, carousel.dataset.gender))));
+  initCarousel(carousel, () => frontPageItems(carousel.dataset.gender)));
 
 // ---------- Catalogue (products page) ----------
 function initCatalogue(grid) {
