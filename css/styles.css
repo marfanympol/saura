@@ -480,8 +480,6 @@ p { margin: 0 0 1rem; }
 .product-media {
   position: relative;
   aspect-ratio: 4 / 5;
-  display: grid;
-  place-items: center;
   margin-bottom: 1rem;
   background:
     repeating-linear-gradient(45deg, rgba(255, 77, 26, 0.1) 0 2px, transparent 2px 12px),
@@ -490,6 +488,32 @@ p { margin: 0 0 1rem; }
   overflow: hidden;
   transition: border-color 0.2s;
 }
+
+/* Main image and hover image are stacked; hovering the card crossfades between them */
+.media-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition: opacity 0.35s var(--ease);
+}
+.media-alt { opacity: 0; }
+@media (hover: hover) {
+  .product-card:hover .media-alt { opacity: 1; }
+  .product-card:hover .product-media:has(.media-alt) .media-main { opacity: 0; }
+}
+.media-alt-mark {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.5rem;
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-stretch: 125%;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--c-accent);
+}
+
 .product-media svg {
   width: 58%;
   fill: none;
@@ -507,6 +531,7 @@ p { margin: 0 0 1rem; }
 
 .product-tag {
   position: absolute;
+  z-index: 1;
   top: 0.75rem;
   left: 0.75rem;
   padding: 0.25rem 0.5rem;

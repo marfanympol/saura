@@ -1,6 +1,8 @@
 // SAURA — product catalogue, carousels and the products page.
 // Placeholder data until real products exist. To add a product, copy an entry.
-// "image" is optional: without it, a garment outline is drawn from "type".
+// "image" and "image2" are optional photo paths: "image2" is shown when the card
+// is hovered. Without photos, a garment outline is drawn from "type", and its
+// hover version is the same outline marked with a "2".
 // Card text (gender, colours, tags, type names) is translated in js/i18n.js.
 
 const PRODUCTS = [
@@ -53,15 +55,26 @@ const GARMENTS = {
   bra: '<path d="M24 74V56Q24 44 36 38V14H42Q50 66 58 14H64V38Q76 44 76 56V74Z"/><path d="M24 63H76"/>',
 };
 
-function productCard(p) {
-  const media = p.image
-    ? `<img src="${p.image}" alt="${p.name}" loading="lazy">`
-    : `<svg viewBox="0 0 100 100" aria-hidden="true">${GARMENTS[p.type]}</svg>`;
+const garment = (type) => `<svg viewBox="0 0 100 100" aria-hidden="true">${GARMENTS[type]}</svg>`;
 
+// Main image plus the hover image. Real photos: image / image2.
+// Placeholders: the garment outline, and a duplicate of it marked "2".
+function productMedia(p) {
+  const main = p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : garment(p.type);
+  const alt = p.image
+    ? (p.image2 ? `<img src="${p.image2}" alt="" loading="lazy">` : "")
+    : `${garment(p.type)}<span class="media-alt-mark">2</span>`;
+
+  return `
+        <div class="media-layer media-main">${main}</div>
+        ${alt ? `<div class="media-layer media-alt" aria-hidden="true">${alt}</div>` : ""}`;
+}
+
+function productCard(p) {
   return `
     <article class="product-card">
       <div class="product-media">
-        ${media}
+        ${productMedia(p)}
         ${p.tag ? `<span class="product-tag">${t(`tag.${p.tag}`)}</span>` : ""}
       </div>
       <div class="product-info">
