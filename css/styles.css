@@ -22,7 +22,7 @@
   --container: 1240px;
   --gutter: clamp(1rem, 4vw, 2rem);
   --section-pad: 4.5rem;
-  --topbar-h: 32px;
+  --topbar-h: 0px;          /* the language buttons sit over the hero, so they take no space */
   --header-h: 72px;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -134,20 +134,23 @@ p { margin: 0 0 1rem; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* ---------- Top bar (language) ---------- */
+/* Language buttons laid over the top-right of the hero, just below the navbar.
+   They scroll away with the page; the footer has a second pair. */
 .topbar {
-  position: fixed;
-  inset: 0 0 auto 0;
-  z-index: 101;          /* stays above the open mobile menu, so the language can be changed there */
-  height: var(--topbar-h);
-  background: var(--c-bg);
-  border-bottom: 1px solid var(--c-line);
+  position: absolute;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  z-index: 99;           /* below the header and its mobile menu */
+  pointer-events: none;  /* only the buttons themselves are clickable */
 }
 .topbar-inner {
-  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  padding-top: 0.5rem;
 }
+.topbar .lang-switch { pointer-events: auto; }
+.topbar .lang-btn { background: var(--c-bg); }
 
 .lang-switch { display: flex; }
 .lang-btn {
@@ -657,7 +660,7 @@ p { margin: 0 0 1rem; }
   position: absolute;
   z-index: -1;
   right: 6%;
-  top: calc(var(--topbar-h) + var(--header-h) + 2rem);
+  top: calc(var(--topbar-h) + var(--header-h) + 3.5rem);   /* clears the language buttons */
   width: 12vw;
   height: 12vw;
   background: var(--c-accent);
@@ -944,6 +947,7 @@ p { margin: 0 0 1rem; }
   color: var(--c-accent);
   overflow: hidden;
   transition: background 0.25s, color 0.25s;
+  container-type: inline-size;   /* lets the email size itself to the card, not the window */
 }
 .contact-cta:hover { background: var(--c-accent); color: var(--c-on-accent); }
 .contact-cta-label {
@@ -952,10 +956,16 @@ p { margin: 0 0 1rem; }
   text-transform: uppercase;
   margin-bottom: 0.5rem;
 }
+/* The email fills the card's width on one line (cqi = 1% of the card's inner width;
+   the address is ~19.5em wide in this font). On narrow cards it splits at the "@"
+   (the <wbr> in the HTML) into two larger lines instead of shrinking too far. */
 .contact-cta-email {
-  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  font-size: clamp(1rem, 5cqi, 2.75rem);
   line-height: 1.05;
-  word-break: break-word;
+  white-space: nowrap;
+}
+@container (max-width: 420px) {
+  .contact-cta-email { font-size: 9.2cqi; white-space: normal; overflow-wrap: normal; }
 }
 .contact-cta-arrow {
   position: absolute;
@@ -997,7 +1007,6 @@ p { margin: 0 0 1rem; }
   .pillar:last-child { border-bottom: 0; }
   .contact-grid { grid-template-columns: 1fr; }
   .contact-cta { min-height: 16rem; }
-  .contact-cta-email { font-size: 3.6vw; }
   .carousel-track { --per-view: 3.3; }
   .product-grid { grid-template-columns: repeat(4, 1fr); }
 }
