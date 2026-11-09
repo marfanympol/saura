@@ -855,6 +855,12 @@ p { margin: 0 0 1rem; }
 }
 .pd-description p { color: var(--c-muted); margin: 0; }
 
+.pd-related {
+  margin-top: var(--section-pad);
+  padding-top: 3rem;
+  border-top: 2px solid var(--c-line);
+}
+
 .pd-missing { padding: 3rem 0; }
 .pd-missing .page-title { max-width: none; }
 

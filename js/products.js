@@ -141,8 +141,9 @@ function productCard(p) {
     </a>`;
 }
 
-// ---------- Carousels (front page) ----------
-function initCarousel(carousel) {
+// ---------- Carousels (front page, and "Related products" on the product page) ----------
+// getItems returns the products to show; it's called again when the language changes.
+function initCarousel(carousel, getItems) {
   const track = carousel.querySelector(".carousel-track");
   const prev = carousel.querySelector('[data-dir="-1"]');
   const next = carousel.querySelector('[data-dir="1"]');
@@ -153,7 +154,8 @@ function initCarousel(carousel) {
   };
 
   const render = () => {
-    track.innerHTML = PRODUCTS.filter((p) => inCollection(p, carousel.dataset.gender)).map(productCard).join("");
+    if (!carousel.isConnected) return;   // the product page redraws itself; skip old copies
+    track.innerHTML = getItems().map(productCard).join("");
     updateButtons();
   };
 
@@ -168,7 +170,8 @@ function initCarousel(carousel) {
   render();
 }
 
-document.querySelectorAll(".carousel").forEach(initCarousel);
+document.querySelectorAll(".carousel[data-gender]").forEach((carousel) =>
+  initCarousel(carousel, () => PRODUCTS.filter((p) => inCollection(p, carousel.dataset.gender))));
 
 // ---------- Catalogue (products page) ----------
 function initCatalogue(grid) {
@@ -248,6 +251,8 @@ function initProductPage(root) {
     }
     const p = product;
     document.title = `${p.name} — Saura`;
+    // Related products: for now, the other products of the same type
+    const related = PRODUCTS.filter((x) => x.type === p.type && x.id !== p.id);
 
     root.innerHTML = `
       <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -283,7 +288,24 @@ function initProductPage(root) {
             <p>${t(`desc.${p.type}`)}</p>
           </div>
         </div>
-      </div>`;
+      </div>
+
+      ${related.length ? `
+      <section class="pd-related">
+        <div class="carousel">
+          <div class="carousel-head">
+            <h2 class="carousel-title">${t("pd.related")}</h2>
+            <div class="carousel-controls">
+              <a href="products.html?type=${p.type}" class="carousel-link">${t("pd.viewAll")}</a>
+              <button class="carousel-btn" data-dir="-1" aria-label="${t("pd.relatedPrev")}">←</button>
+              <button class="carousel-btn" data-dir="1" aria-label="${t("pd.relatedNext")}">→</button>
+            </div>
+          </div>
+          <div class="carousel-track" tabindex="0" aria-label="${t("pd.related")}"></div>
+        </div>
+      </section>` : ""}`;
+
+    if (related.length) initCarousel(root.querySelector(".pd-related .carousel"), () => related);
 
     // Colour picker: updates the label, and the photo when the product has one per colour
     root.querySelectorAll(".swatch").forEach((btn) => btn.addEventListener("click", () => {
