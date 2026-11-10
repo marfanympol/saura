@@ -23,7 +23,10 @@
   --gutter: clamp(1rem, 4vw, 2rem);
   --section-pad: 4.5rem;
   --topbar-h: 0px;          /* the language buttons sit over the hero, so they take no space */
-  --header-h: 72px;
+  --header-h: 80px;
+  /* Hero grid squares are the navbar's height, so the top row of squares is the navbar */
+  --grid-w: var(--header-h);
+  --grid-h: var(--header-h);
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -149,6 +152,10 @@ p { margin: 0 0 1rem; }
   justify-content: flex-end;
   padding-top: 0.5rem;
 }
+/* Front page: the buttons live inside the hero, in the top-right corner of the video area
+   (--hero-video-top is where the video starts) */
+.hero .topbar { top: var(--hero-video-top); }
+.hero .topbar-inner { padding-top: 0.75rem; }
 .topbar .lang-switch { pointer-events: auto; }
 .topbar .lang-btn { background: var(--c-bg); }
 
@@ -333,6 +340,10 @@ p { margin: 0 0 1rem; }
   /* Padding as variables so the background video can line up with it exactly */
   --hero-pad-top: calc(var(--topbar-h) + var(--header-h) + 2rem);
   --hero-pad-bottom: 5rem;
+  /* Where the background video starts/ends. Phones: inside the padding. Bigger screens
+     (below): from the bottom of the navbar to just above the marquee. */
+  --hero-video-top: var(--hero-pad-top);
+  --hero-video-bottom: var(--hero-pad-bottom);
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
@@ -342,11 +353,19 @@ p { margin: 0 0 1rem; }
   padding: var(--hero-pad-top) 0 var(--hero-pad-bottom);
 }
 
-/* Background montage: fills the area inside the hero's padding (padding excluded) */
+@media (min-width: 761px) {
+  .hero {
+    /* Just under the hero grid's first horizontal line (--grid-h, see .hero-bg::before) */
+    --hero-video-top: calc(var(--topbar-h) + var(--grid-h) + 1px);
+    --hero-video-bottom: 1rem;                                     /* small gap above the marquee */
+  }
+}
+
+/* Background montage (sizes set by the variables above) */
 .hero-video {
   position: absolute;
-  top: var(--hero-pad-top);
-  bottom: var(--hero-pad-bottom);
+  top: var(--hero-video-top);
+  bottom: var(--hero-video-bottom);
   left: 0;
   right: 0;
   overflow: hidden;
@@ -383,7 +402,7 @@ p { margin: 0 0 1rem; }
   background-image:
     linear-gradient(var(--c-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--c-line) 1px, transparent 1px);
-  background-size: 64px 64px;
+  background-size: var(--grid-w) var(--grid-h);   /* sizes set in :root */
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 90%);
   -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 90%);
 }
@@ -414,7 +433,10 @@ p { margin: 0 0 1rem; }
   font-family: var(--f-display);
   font-weight: 900;
   font-stretch: 125%;
-  font-size: clamp(5rem, 14vw, 13rem);
+  /* Also capped by the screen height: the word is ~4.7× its font size long, and on wide,
+     short screens (landscape tablets) it otherwise reaches up behind the EN/ES buttons.
+     The cap keeps its top below the buttons (video top + 3rem). */
+  font-size: min(clamp(5rem, 14vw, 13rem), calc((100svh - var(--hero-video-top) - 3rem) / 4.8));
   line-height: 0.8;
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 77, 26, 0.3);
@@ -1043,6 +1065,9 @@ p { margin: 0 0 1rem; }
   .contact-cta { min-height: 16rem; }
   .carousel-track { --per-view: 3.3; }
   .product-grid { grid-template-columns: repeat(4, 1fr); }
+  /* Tablets: tighter menu so the links stay on one line and clear of the logo */
+  .nav-menu { gap: 1.25rem; }
+  .nav-menu a { white-space: nowrap; }
 }
 
 @media (max-width: 760px) {
@@ -1070,9 +1095,11 @@ p { margin: 0 0 1rem; }
   }
 
   .hero-stripe:nth-child(1),
-  .hero-stripe:nth-child(2) { width: 34vw; height: 34vw; top: 14%; }
+  /* Start the square below the language buttons (top-right of the video area), so the
+     orange EN/ES button doesn't disappear into the orange square */
+  .hero-stripe:nth-child(2) { width: 34vw; height: 34vw; top: calc(var(--hero-pad-top) + 3rem); }
   .hero-stripe:nth-child(1) { right: -8vw; }
-  .hero-stripe:nth-child(2) { right: -4vw; top: calc(14% + 4vw); }
+  .hero-stripe:nth-child(2) { right: -4vw; top: calc(var(--hero-pad-top) + 3rem + 4vw); }
   .hero-word { display: none; }
 
   .carousel-track { --per-view: 2.4; --gap: 0.75rem; }

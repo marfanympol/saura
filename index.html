@@ -14,16 +14,6 @@
 </head>
 <body>
 
-  <!-- ========== TOP BAR (language) ========== -->
-  <div class="topbar">
-    <div class="container topbar-inner">
-      <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
-        <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
-        <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
-      </div>
-    </div>
-  </div>
-
   <!-- ========== HEADER / NAV ========== -->
   <header class="site-header" id="#top">
     <div class="container nav">
@@ -54,6 +44,16 @@
       <div class="hero-video" aria-hidden="true">
         <video data-src="assets/video/hero-montage.mp4" data-poster="assets/video/hero-poster.jpg"
                muted loop playsinline preload="none"></video>
+      </div>
+
+      <!-- Language buttons: inside the hero, in the top-right corner of the video area -->
+      <div class="topbar">
+        <div class="container topbar-inner">
+          <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
+            <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+            <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+          </div>
+        </div>
       </div>
 
       <div class="hero-bg" aria-hidden="true">
