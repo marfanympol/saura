@@ -107,6 +107,7 @@ const UI = {
 
     // Product page (descriptions are placeholder copy, one per product type)
     "pd.crumb": "Products",
+    "pd.breadcrumb": "Breadcrumb",
     "pd.colour": "Colour",
     "pd.add": "Add to cart",
     "pd.added": "Added to cart.",
@@ -129,6 +130,7 @@ const UI = {
     // Cart
     "cart.label": "Cart",
     "cart.open": "Open cart, {n} items",
+    "cart.openOne": "Open cart, 1 item",
     "cart.title": "Your cart",
     "cart.close": "Close cart",
     "cart.remove": "Remove {name}",
@@ -156,6 +158,7 @@ const UI = {
     "typeOne.leggings": "Mallas", "typeOne.tank": "Camiseta de tirantes",
 
     "pd.crumb": "Productos",
+    "pd.breadcrumb": "Ruta de navegación",
     "pd.colour": "Color",
     "pd.add": "Añadir al carrito",
     "pd.added": "Añadido al carrito.",
@@ -177,11 +180,13 @@ const UI = {
 
     "cart.label": "Carrito",
     "cart.open": "Abrir carrito, {n} artículos",
+    "cart.openOne": "Abrir carrito, 1 artículo",
     "cart.title": "Tu carrito",
     "cart.close": "Cerrar carrito",
     "cart.remove": "Quitar {name}",
     "cart.subtotal": "Subtotal",
     "cart.checkout": "Pagar · próximamente",
+    "card.add": "Añadir {name} al carrito",
   },
 };
 

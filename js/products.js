@@ -330,7 +330,7 @@ function initProductPage(root) {
     const related = PRODUCTS.filter((x) => x.type === p.type && x.gender === p.gender && x.id !== p.id);
 
     root.innerHTML = `
-      <nav class="breadcrumb" aria-label="Breadcrumb">
+      <nav class="breadcrumb" aria-label="${t("pd.breadcrumb")}">
         <a href="products.html">${t("pd.crumb")}</a><span aria-hidden="true">/</span>
         <a href="products.html?type=${p.type}">${t(`type.${p.type}`)}</a><span aria-hidden="true">/</span>
         <span aria-current="page">${displayName(p)}</span>

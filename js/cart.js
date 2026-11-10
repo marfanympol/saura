@@ -82,7 +82,7 @@ const SauraCart = (() => {
     button.hidden = total === 0;
     button.querySelector(".cart-btn-label").textContent = t("cart.label");
     button.querySelector(".cart-count").textContent = total;
-    button.setAttribute("aria-label", t("cart.open", { n: total }));
+    button.setAttribute("aria-label", t(total === 1 ? "cart.openOne" : "cart.open", { n: total }));
     if (total === 0) setOpen(false);
 
     const subtotal = items.reduce((sum, item) => sum + findProduct(item.id).price * item.qty, 0);
