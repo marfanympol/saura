@@ -43,6 +43,25 @@ document.addEventListener("DOMContentLoaded", () => {
     revealEls.forEach((el) => el.classList.add("visible"));
   }
 
+  // Hero video: only loaded on screens wider than 760px (tablets and up). Phones show the
+  // still image set in the CSS and never download the video. Visitors who ask their device
+  // for reduced motion get the poster frame instead of moving footage.
+  const heroVideo = document.querySelector(".hero-video video");
+  if (heroVideo) {
+    const bigScreen = window.matchMedia("(min-width: 761px)");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const loadHeroVideo = () => {
+      if (!bigScreen.matches) { heroVideo.pause(); return; }   // phone width: CSS hides it
+      if (!heroVideo.poster) heroVideo.poster = heroVideo.dataset.poster;
+      if (reduceMotion) return;                                // poster only, no playback
+      if (!heroVideo.src) { heroVideo.preload = "auto"; heroVideo.src = heroVideo.dataset.src; }
+      heroVideo.play().catch(() => {});   // if the browser blocks autoplay, the poster stays
+    };
+    loadHeroVideo();
+    // e.g. a tablet rotated from portrait to landscape crosses the breakpoint
+    bigScreen.addEventListener("change", loadHeroVideo);
+  }
+
   // Footer year
   document.getElementById("year").textContent = new Date().getFullYear();
 });

@@ -47,6 +47,15 @@
 
     <!-- ========== HERO ========== -->
     <section class="hero">
+      <!-- Background montage (Pexels clips, free licence). Fills the hero's content area,
+           padding excluded. The files are in data-* on purpose: js/main.js loads the video
+           only on screens wider than 760px; phones get a still image from the CSS instead,
+           so they never download the 3 MB video. -->
+      <div class="hero-video" aria-hidden="true">
+        <video data-src="assets/video/hero-montage.mp4" data-poster="assets/video/hero-poster.jpg"
+               muted loop playsinline preload="none"></video>
+      </div>
+
       <div class="hero-bg" aria-hidden="true">
         <span class="hero-stripe"></span>
         <span class="hero-stripe"></span>
