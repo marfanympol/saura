@@ -162,8 +162,12 @@ function productMedia(p) {
         <div class="media-layer media-alt" aria-hidden="true">${alt}</div>`;
 }
 
+// The quick "add to cart" button sits outside the card's link on purpose: a button inside
+// a link is invalid HTML, and the click would also open the product page. The wrapper
+// lets the CSS place it over the photo's bottom-right corner.
 function productCard(p) {
   return `
+    <div class="product-card-wrap">
     <a class="product-card" href="product.html?id=${p.id}">
       <div class="product-media">
         ${productMedia(p)}
@@ -176,8 +180,23 @@ function productCard(p) {
           : t(`colour.${p.colour}`)}</p>
         <p class="product-price">${formatPrice(p.price)}</p>
       </div>
-    </a>`;
+    </a>
+    <button type="button" class="card-add" data-id="${p.id}" aria-label="${t("card.add", { name: displayName(p) })}">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><path d="M12 11v6M9 14h6"/></svg>
+    </button>
+    </div>`;
 }
+
+// One listener for every card's quick-add button (cards are redrawn often, e.g. when
+// filtering or switching language, so listening on the document saves re-attaching).
+// Adds the product in its default colour, and plays the same animation as the product page.
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".card-add");
+  if (!btn) return;
+  const p = findProduct(btn.dataset.id);
+  SauraCart.add(p.id, p.colour);
+  SauraCart.playAnimation(btn, "is-added");
+});
 
 // ---------- Carousels (front page, and "Related products" on the product page) ----------
 // getItems returns the products to show; it's called again when the language changes.
@@ -383,8 +402,9 @@ function initProductPage(root) {
     const noteEl = root.querySelector("#pd-note");
     const showNote = (key) => { note = t(key); noteEl.textContent = note; };
 
-    root.querySelector("#pd-add").addEventListener("click", () => {
+    root.querySelector("#pd-add").addEventListener("click", (e) => {
       SauraCart.add(p.id, colour);
+      SauraCart.playAnimation(e.currentTarget, "is-added");   // orange ring around the button
       showNote("pd.added");
     });
     // Placeholder until checkout exists

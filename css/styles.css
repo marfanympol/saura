@@ -275,6 +275,32 @@ p { margin: 0 0 1rem; }
   text-align: center;
 }
 
+/* "Added to cart" animation. js/cart.js adds .is-bumped to the cart button each time an item
+   is added (and removes it when it ends): the button pops and flashes orange, and the count
+   jumps up and lands. The "Add to cart" button itself gets .is-added: an orange ring pulses
+   out from it. Visitors with reduced motion get none of this (see the end of the file). */
+.cart-btn.is-bumped { animation: cart-bump 0.6s var(--ease); }
+.cart-btn.is-bumped .cart-count { animation: cart-count-pop 0.6s var(--ease); }
+.btn.is-added,
+.card-add.is-added { animation: btn-added-ring 0.6s ease-out; }
+
+@keyframes cart-bump {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.12); border-color: var(--c-accent); color: var(--c-accent); }
+  60%  { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+@keyframes cart-count-pop {
+  0%   { transform: translateY(0) scale(1); }
+  35%  { transform: translateY(-3px) scale(1.15); }   /* a small hop, not a big jump */
+  70%  { transform: translateY(0.5px) scale(0.98); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes btn-added-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 77, 26, 0.7); }   /* --c-accent */
+  100% { box-shadow: 0 0 0 14px rgba(255, 77, 26, 0); }
+}
+
 /* ---------- Cart panel ---------- */
 .cart-panel {
   position: fixed;
@@ -625,6 +651,41 @@ p { margin: 0 0 1rem; }
 
 /* ---------- Product card ---------- */
 .product-card { display: flex; flex-direction: column; }
+
+/* Wrapper = card link + quick-add button. container-type lets the button use the card's
+   width (cqw) to find the photo's bottom edge: the photo is 4:5, so it's 125cqw tall. */
+.product-card-wrap { position: relative; container-type: inline-size; }
+.card-add {
+  --size: 2.75rem;
+  position: absolute;
+  z-index: 2;
+  right: 0.75rem;
+  top: calc(125cqw - var(--size) - 0.75rem);
+  width: var(--size);
+  height: var(--size);
+  display: grid;
+  place-items: center;
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  border: 0;
+  cursor: pointer;
+  /* hidden until the card is hovered (or the button gets keyboard focus) */
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.25s var(--ease), background 0.2s;
+}
+.card-add svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
+.product-card-wrap:hover .card-add,
+.card-add:focus-visible { opacity: 1; transform: none; pointer-events: auto; }
+/* Touch screens (phones, tablets) can't hover, so the button is always shown there */
+@media (hover: none) {
+  .card-add { opacity: 1; transform: none; pointer-events: auto; }
+}
+@media (hover: hover) {
+  .card-add:hover { background: var(--c-text); }
+}
+.card-add:focus-visible { outline: 2px solid var(--c-text); outline-offset: 2px; }
 .product-card:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 4px; }
 
 .product-media {
@@ -649,13 +710,13 @@ p { margin: 0 0 1rem; }
 }
 .media-alt { opacity: 0; }
 @media (hover: hover) {
-  .product-card:hover .media-alt { opacity: 1; }
-  .product-card:hover .product-media:has(.media-alt) .media-main { opacity: 0; }
+  .product-card-wrap:hover .media-alt { opacity: 1; }
+  .product-card-wrap:hover .product-media:has(.media-alt) .media-main { opacity: 0; }
 }
 .media-alt-mark {
   position: absolute;
   right: 0.75rem;
-  bottom: 0.5rem;
+  top: 0.5rem;   /* top-right: the bottom-right corner is the quick-add button's */
   font-family: var(--f-display);
   font-weight: 900;
   font-stretch: 125%;
@@ -675,9 +736,10 @@ p { margin: 0 0 1rem; }
 .product-media img { width: 100%; height: 100%; object-fit: cover; }
 .product-media svg,
 .product-media img { transition: transform 0.4s var(--ease); }
-.product-card:hover .product-media { border-color: var(--c-accent); }
-.product-card:hover .product-media svg,
-.product-card:hover .product-media img { transform: scale(1.05); }
+/* Hover is on the wrapper so it stays on while the pointer is over the quick-add button */
+.product-card-wrap:hover .product-media { border-color: var(--c-accent); }
+.product-card-wrap:hover .product-media svg,
+.product-card-wrap:hover .product-media img { transform: scale(1.05); }
 
 .product-tag {
   position: absolute;

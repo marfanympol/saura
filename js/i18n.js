@@ -134,6 +134,7 @@ const UI = {
     "cart.remove": "Remove {name}",
     "cart.subtotal": "Subtotal",
     "cart.checkout": "Checkout · coming soon",
+    "card.add": "Add {name} to cart",
   },
   es: {
     "menu.open": "Abrir menú",

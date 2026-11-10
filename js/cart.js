@@ -30,6 +30,16 @@ const SauraCart = (() => {
     if (existing) existing.qty += 1;
     else items.push({ id, colour, qty: 1 });
     write(items);
+    playAnimation(button, "is-bumped");   // the CSS for it is next to .cart-btn
+  };
+
+  // Restart a CSS animation by toggling its class: removing it, forcing the browser to
+  // notice (reading offsetWidth), then adding it back, so it replays on every click.
+  const playAnimation = (el, className) => {
+    el.classList.remove(className);
+    void el.offsetWidth;
+    el.classList.add(className);
+    el.addEventListener("animationend", () => el.classList.remove(className), { once: true });
   };
 
   const remove = (index) => {
@@ -126,5 +136,5 @@ const SauraCart = (() => {
   SauraI18n.onChange(render);
   render();
 
-  return { add, count };
+  return { add, count, playAnimation };
 })();
