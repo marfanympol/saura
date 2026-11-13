@@ -83,13 +83,13 @@
     <!-- ========== MARQUEE STRIP ========== -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
-        <span data-i18n="marquee.reliable">Reliable</span><span>✦</span>
         <span data-i18n="marquee.relentless">Relentless</span><span>✦</span>
         <span data-i18n="marquee.versatile">Versatile</span><span>✦</span>
+        <span data-i18n="marquee.reliable">Reliable</span><span>✦</span>
         <span data-i18n="marquee.built">Built to move</span><span>✦</span>
-        <span data-i18n="marquee.reliable">Reliable</span><span>✦</span>
         <span data-i18n="marquee.relentless">Relentless</span><span>✦</span>
         <span data-i18n="marquee.versatile">Versatile</span><span>✦</span>
+        <span data-i18n="marquee.reliable">Reliable</span><span>✦</span>
         <span data-i18n="marquee.built">Built to move</span><span>✦</span>
       </div>
     </div>
@@ -115,20 +115,34 @@
         </div>
 
         <div class="pillars">
-          <article class="pillar reveal">
+          <article class="pillar pillar--swim reveal">
+            <!-- Hover video (Pexels, free licence). Loaded by js/main.js on first hover; touch
+                 screens show a still from the same clip instead (set in the CSS). -->
+            <div class="pillar-media" aria-hidden="true">
+              <video data-src="assets/video/brand-swim.mp4" data-poster="assets/video/brand-swim.webp"
+                     muted loop playsinline preload="none"></video>
+            </div>
             <span class="pillar-num">01</span>
-            <h3 data-i18n="pillar.reliable.title">Reliable</h3>
-            <p data-i18n="pillar.reliable.text">Durable fabrics and considered construction. Made to be worn hard and worn often.</p>
-          </article>
-          <article class="pillar reveal">
-            <span class="pillar-num">02</span>
             <h3 data-i18n="pillar.relentless.title">Relentless</h3>
             <p data-i18n="pillar.relentless.text">Bold design that brings energy to every rep, every run, every day.</p>
           </article>
-          <article class="pillar reveal">
-            <span class="pillar-num">03</span>
+          <article class="pillar pillar--ropes reveal">
+            <div class="pillar-media" aria-hidden="true">
+              <video data-src="assets/video/brand-ropes.mp4" data-poster="assets/video/brand-ropes.webp"
+                     muted loop playsinline preload="none"></video>
+            </div>
+            <span class="pillar-num">02</span>
             <h3 data-i18n="pillar.versatile.title">Versatile</h3>
             <p data-i18n="pillar.versatile.text">Cuts and colours that move seamlessly from training to your everyday wardrobe.</p>
+          </article>
+          <article class="pillar pillar--climb reveal">
+            <div class="pillar-media" aria-hidden="true">
+              <video data-src="assets/video/brand-climb.mp4" data-poster="assets/video/brand-climb.webp"
+                     muted loop playsinline preload="none"></video>
+            </div>
+            <span class="pillar-num">03</span>
+            <h3 data-i18n="pillar.reliable.title">Reliable</h3>
+            <p data-i18n="pillar.reliable.text">Durable fabrics and considered construction. Made to be worn hard and worn often.</p>
           </article>
         </div>
       </div>

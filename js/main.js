@@ -62,6 +62,27 @@ document.addEventListener("DOMContentLoaded", () => {
     bigScreen.addEventListener("change", loadHeroVideo);
   }
 
+  // Brand cards: on devices with a mouse, hovering a card loads its clip (first time only)
+  // and plays it slowed down (BRAND_VIDEO_SPEED); leaving pauses it. Touch screens never load the videos:
+  // the CSS shows a still image instead. With reduced motion, hover shows the still frame.
+  const BRAND_VIDEO_SPEED = 0.75;   // 1 = normal speed, 0.5 = half speed
+  const canHover = window.matchMedia("(hover: hover)").matches;
+  const reduceMotionPref = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll(".pillar").forEach((card) => {
+    const video = card.querySelector(".pillar-media video");
+    if (!video || !canHover) return;
+    card.addEventListener("mouseenter", () => {
+      if (!video.poster) video.poster = video.dataset.poster;
+      if (reduceMotionPref) return;
+      if (!video.src) video.src = video.dataset.src;
+      // defaultPlaybackRate survives the video loading; playbackRate alone gets reset
+      video.defaultPlaybackRate = BRAND_VIDEO_SPEED;
+      video.playbackRate = BRAND_VIDEO_SPEED;
+      video.play().catch(() => {});
+    });
+    card.addEventListener("mouseleave", () => video.pause());
+  });
+
   // Footer year
   document.getElementById("year").textContent = new Date().getFullYear();
 });

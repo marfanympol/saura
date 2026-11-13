@@ -156,6 +156,19 @@ p { margin: 0 0 1rem; }
    (--hero-video-top is where the video starts) */
 .hero .topbar { top: var(--hero-video-top); }
 .hero .topbar-inner { padding-top: 0.75rem; }
+/* Big screens: centre the buttons inside one square of the hero grid, the last full
+   square on the right of the row just under the navbar. The .topbar box is that row
+   (one grid square tall, full width); round(down, 100%, square) is the right edge of the
+   last full column, so half a square back from it is that square's centre. */
+@media (min-width: 761px) {
+  .hero .topbar { top: var(--grid-h); height: var(--grid-h); }
+  .hero .topbar .lang-switch {
+    position: absolute;
+    top: 50%;
+    left: calc(round(down, 100%, var(--grid-w)) - var(--grid-w) / 2);
+    transform: translate(-50%, -50%);
+  }
+}
 .topbar .lang-switch { pointer-events: auto; }
 .topbar .lang-btn { background: var(--c-bg); }
 
@@ -564,14 +577,47 @@ p { margin: 0 0 1rem; }
   border: 2px solid var(--c-text);
 }
 .pillar {
+  position: relative;
+  isolation: isolate;   /* keeps the video layer (z-index -1) inside the card, behind the text */
+  overflow: hidden;
   padding: 2.5rem 2rem;
   border-right: 2px solid var(--c-text);
-  transition: background 0.25s, color 0.25s;
+  transition: box-shadow 0.25s;
 }
 .pillar:last-child { border-right: 0; }
-.pillar:hover { background: var(--c-accent); color: var(--c-on-accent); }
-.pillar:hover p,
-.pillar:hover .pillar-num { color: var(--c-on-accent); }
+.pillar:hover { box-shadow: inset 0 0 0 2px var(--c-accent); }   /* orange frame on hover */
+
+/* Card background video: hidden until the card is hovered, then fades in under a dark
+   layer so the text stays readable. js/main.js loads and plays it (slowed down). */
+.pillar-media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  background: center / cover no-repeat;
+}
+.pillar-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pillar-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 13, 13, 0.7);   /* --c-bg at 70% */
+}
+.pillar:hover .pillar-media { opacity: 1; }
+.pillar:hover p { color: var(--c-text); }   /* a touch brighter over the footage */
+
+/* Touch screens (phones, tablets) can't hover: show a still from each clip instead, all
+   the time. Background images inside a media query only download when it matches. */
+@media (hover: none) {
+  .pillar-media { opacity: 1; }
+  .pillar-media video { display: none; }
+  .pillars .pillar p { color: var(--c-text); }   /* brighter, for the light pool photo
+                                                    (".pillars" so it wins over .pillar p below) */
+  .pillar--ropes .pillar-media { background-image: url("../assets/video/brand-ropes.webp"); }
+  .pillar--swim .pillar-media { background-image: url("../assets/video/brand-swim.webp"); }
+  .pillar--climb .pillar-media { background-image: url("../assets/video/brand-climb.webp"); }
+}
 
 .pillar-num {
   display: block;
