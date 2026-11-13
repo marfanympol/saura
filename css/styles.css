@@ -173,6 +173,7 @@ p { margin: 0 0 1rem; }
 .topbar .lang-btn { background: var(--c-bg); }
 
 .lang-switch { display: flex; }
+.nav-lang { display: none; }   /* only shown in the compact navbar, see the 760px block */
 .lang-btn {
   padding: 0.15rem 0.55rem;
   background: transparent;
@@ -379,9 +380,10 @@ p { margin: 0 0 1rem; }
   /* Padding as variables so the background video can line up with it exactly */
   --hero-pad-top: calc(var(--topbar-h) + var(--header-h) + 2rem);
   --hero-pad-bottom: 5rem;
-  /* Where the background video starts/ends. Phones: inside the padding. Bigger screens
-     (below): from the bottom of the navbar to just above the marquee. */
-  --hero-video-top: var(--hero-pad-top);
+  /* Where the background video (phones: still image) starts and ends. It always starts just
+     under the hero grid's first horizontal line (--grid-h, see .hero-bg::before). Phones end
+     at the bottom padding; bigger screens (below) end just above the marquee. */
+  --hero-video-top: calc(var(--topbar-h) + var(--grid-h) + 1px);
   --hero-video-bottom: var(--hero-pad-bottom);
   position: relative;
   min-height: 100vh;
@@ -394,8 +396,6 @@ p { margin: 0 0 1rem; }
 
 @media (min-width: 761px) {
   .hero {
-    /* Just under the hero grid's first horizontal line (--grid-h, see .hero-bg::before) */
-    --hero-video-top: calc(var(--topbar-h) + var(--grid-h) + 1px);
     --hero-video-bottom: 1rem;                                     /* small gap above the marquee */
   }
 }
@@ -1215,10 +1215,22 @@ p { margin: 0 0 1rem; }
   .page-hero::after { right: -6vw; width: 26vw; height: 26vw; opacity: 0.6; }
   .page-title { max-width: none; }
 
-  /* Cart button sits before the menu button on small screens */
-  .cart-btn { order: 1; margin-left: auto; margin-right: 0.75rem; }
+  /* Compact navbar, left to right: logo … cart · EN/ES · menu button.
+     The logo's auto margin pushes the rest to the right edge. */
+  /* The buttons keep their size; on very narrow phones with the cart showing, the logo
+     shrinks instead (keeping its proportions) */
+  .nav .logo { margin-right: auto; min-width: 0; padding-right: 0.5rem; }
+  .nav .logo img { width: 100%; max-width: 180px; height: auto; }
+  .cart-btn, .nav-lang, .nav-toggle { flex-shrink: 0; }
+  .cart-btn { order: 1; margin-right: 0.5rem; padding: 0 0.6rem; }
   .cart-btn-label { display: none; }
-  .nav-toggle { order: 2; }
+  .nav-lang { display: flex; order: 2; margin-right: 0.5rem; }
+  /* Same size as the cart button without its 2px border: 36px tall, and the pair as wide as
+     the cart button's inside (65px = 2 × 32.5px) */
+  .nav-lang .lang-btn { width: 32.5px; height: 36px; padding: 0; }
+  .nav-toggle { order: 3; }
+  /* The top bar / hero pair would be a duplicate here */
+  .topbar .lang-switch { display: none; }
 
   .pd-layout { grid-template-columns: 1fr; }
   .pd-photo { width: 100%; max-width: 360px; margin: 0 auto; }
