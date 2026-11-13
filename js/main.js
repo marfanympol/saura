@@ -50,12 +50,19 @@ document.addEventListener("DOMContentLoaded", () => {
   if (heroVideo) {
     const bigScreen = window.matchMedia("(min-width: 761px)");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // The 3 MB video only starts downloading once the rest of the page has loaded, so it
+    // doesn't compete with the fonts and the still frame; the still frame shows meanwhile.
+    const startHeroVideo = () => {
+      if (!bigScreen.matches) return;                          // e.g. resized to phone width meanwhile
+      if (!heroVideo.src) { heroVideo.preload = "auto"; heroVideo.src = heroVideo.dataset.src; }
+      heroVideo.play().catch(() => {});   // if the browser blocks autoplay, the poster stays
+    };
     const loadHeroVideo = () => {
       if (!bigScreen.matches) { heroVideo.pause(); return; }   // phone width: CSS hides it
       if (!heroVideo.poster) heroVideo.poster = heroVideo.dataset.poster;
       if (reduceMotion) return;                                // poster only, no playback
-      if (!heroVideo.src) { heroVideo.preload = "auto"; heroVideo.src = heroVideo.dataset.src; }
-      heroVideo.play().catch(() => {});   // if the browser blocks autoplay, the poster stays
+      if (document.readyState === "complete") startHeroVideo();
+      else window.addEventListener("load", startHeroVideo, { once: true });
     };
     loadHeroVideo();
     // e.g. a tablet rotated from portrait to landscape crosses the breakpoint
@@ -63,15 +70,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Brand cards: on devices with a mouse, hovering a card loads its clip (first time only)
-  // and plays it slowed down (BRAND_VIDEO_SPEED); leaving pauses it. Touch screens never load the videos:
-  // the CSS shows a still image instead. With reduced motion, hover shows the still frame.
+  // and plays it slowed down (BRAND_VIDEO_SPEED); leaving pauses it. Touch screens and
+  // phone-width windows (760px or less) never load the videos: the CSS shows a still image
+  // instead. With reduced motion, hover shows the still frame.
   const BRAND_VIDEO_SPEED = 0.75;   // 1 = normal speed, 0.5 = half speed
   const canHover = window.matchMedia("(hover: hover)").matches;
+  const wideEnough = window.matchMedia("(min-width: 761px)");   // checked on each hover: windows resize
   const reduceMotionPref = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.querySelectorAll(".pillar").forEach((card) => {
     const video = card.querySelector(".pillar-media video");
     if (!video || !canHover) return;
     card.addEventListener("mouseenter", () => {
+      if (!wideEnough.matches) return;   // phone width: the still image stays
       if (!video.poster) video.poster = video.dataset.poster;
       if (reduceMotionPref) return;
       if (!video.src) video.src = video.dataset.src;

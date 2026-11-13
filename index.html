@@ -11,6 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/styles.css">
+  <!-- Start downloading the hero's still frame straight away, before the scripts run: it's
+       the first big thing visitors see on tablets and desktops. Phones skip it (media). -->
+  <link rel="preload" as="image" href="assets/video/hero-poster.jpg" media="(min-width: 761px)" fetchpriority="high">
 </head>
 <body>
 

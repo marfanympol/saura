@@ -607,9 +607,9 @@ p { margin: 0 0 1rem; }
 .pillar:hover .pillar-media { opacity: 1; }
 .pillar:hover p { color: var(--c-text); }   /* a touch brighter over the footage */
 
-/* Touch screens (phones, tablets) can't hover: show a still from each clip instead, all
-   the time. Background images inside a media query only download when it matches. */
-@media (hover: none) {
+/* Touch screens (phones, tablets) and phone-width windows: show a still from each clip
+   instead, all the time. Background images inside a media query only download when it matches. */
+@media (hover: none), (max-width: 760px) {
   .pillar-media { opacity: 1; }
   .pillar-media video { display: none; }
   .pillars .pillar p { color: var(--c-text); }   /* brighter, for the light pool photo
