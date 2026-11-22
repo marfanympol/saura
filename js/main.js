@@ -93,6 +93,23 @@ document.addEventListener("DOMContentLoaded", () => {
     card.addEventListener("mouseleave", () => video.pause());
   });
 
+  // Pause every video while it's scrolled out of view, so it stops using battery and
+  // processor. Chrome already does this for muted videos; Safari and Firefox don't always.
+  // Coming back into view: the hero carries on where it stopped; a card's clip only
+  // resumes if the pointer is still on that card.
+  if ("IntersectionObserver" in window) {
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(({ target: video, isIntersecting }) => {
+        if (!video.src) return;                     // not loaded yet: nothing to pause or play
+        if (!isIntersecting) { video.pause(); return; }
+        const card = video.closest(".pillar");
+        const shouldPlay = card ? card.matches(":hover") : !reduceMotionPref;   // the hero has no card
+        if (shouldPlay && getComputedStyle(video).display !== "none") video.play().catch(() => {});
+      });
+    });
+    document.querySelectorAll("video").forEach((video) => videoObserver.observe(video));
+  }
+
   // Footer year
   document.getElementById("year").textContent = new Date().getFullYear();
 });
