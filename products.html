@@ -71,6 +71,14 @@
             <button class="filter-btn" data-filter-gender="women" aria-pressed="false" data-i18n="filter.women">Women</button>
           </div>
 
+          <!-- Sport filter (a product can belong to several sports, see SPORTS_BY_TYPE) -->
+          <div class="filter-group filter-group--sport" role="group" aria-label="Filter by sport" data-i18n-attr="aria-label: filter.sportLabel">
+            <button class="filter-btn" data-filter-sport="all" aria-pressed="true" data-i18n="filter.allSports">All sports</button>
+            <button class="filter-btn" data-filter-sport="gym" aria-pressed="false" data-i18n="sport.gym">Gym-wear</button>
+            <button class="filter-btn" data-filter-sport="crossfit" aria-pressed="false" data-i18n="sport.crossfit">Crossfit</button>
+            <button class="filter-btn" data-filter-sport="running" aria-pressed="false" data-i18n="sport.running">Running</button>
+          </div>
+
           <div class="catalogue-tools">
             <label class="visually-hidden" for="filter-type" data-i18n="filter.typeLabel">Product type</label>
             <!-- Options are added by js/products.js -->

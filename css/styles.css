@@ -617,6 +617,9 @@ p { margin: 0 0 1rem; }
   .pillar--ropes .pillar-media { background-image: url("../assets/video/brand-ropes.webp"); }
   .pillar--swim .pillar-media { background-image: url("../assets/video/brand-swim.webp"); }
   .pillar--climb .pillar-media { background-image: url("../assets/video/brand-climb.webp"); }
+  .pillar--gym .pillar-media { background-image: url("../assets/video/sport-gym.webp"); }
+  .pillar--crossfit .pillar-media { background-image: url("../assets/video/sport-crossfit.webp"); }
+  .pillar--running .pillar-media { background-image: url("../assets/video/sport-running.webp"); }
 }
 
 .pillar-num {
@@ -630,6 +633,53 @@ p { margin: 0 0 1rem; }
 .pillar h3 { font-size: 1.75rem; margin-bottom: 0.75rem; }
 .pillar p { color: var(--c-muted); margin: 0; transition: color 0.25s; }
 
+/* Shop by sport: on hover the card text is swapped for a rotating piece (small photo +
+   name + price). Built by js/products.js (initSportShowcase). Both share one grid cell. */
+.sport-copy { display: grid; }
+.sports .pillar h3 { margin-top: 0; }   /* no number above it on these cards */
+.sport-copy > * { grid-area: 1 / 1; transition: opacity 0.3s; }
+.sport-copy > p { align-self: end; }   /* card text sits at the bottom, like the piece that replaces it */
+.sport-piece {
+  display: none;   /* only where hover works (below); phones keep the card text */
+  align-items: flex-end;   /* name sits low, level with the bottom of the photo */
+  gap: 1rem;
+  opacity: 0;
+  pointer-events: none;
+}
+.sport-piece-photo {
+  position: relative;
+  flex: none;
+  width: 128px;
+  aspect-ratio: 4 / 5;   /* 128 × 160 */
+  border: 2px solid var(--c-text);
+  background: var(--c-surface);
+  overflow: hidden;
+}
+.sport-piece-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease;   /* smooth but fast swap between pieces */
+}
+.sport-piece-photo img.is-active { opacity: 1; }
+.sports .pillar .sport-piece-name {
+  margin: 0;
+  color: var(--c-text);
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+@media (hover: hover) and (min-width: 761px) {
+  /* Shown but transparent until hover, so it already holds its space: no jump on hover */
+  .sport-piece { display: flex; }
+  .sports .pillar:hover .sport-copy > p { opacity: 0; }
+  .sports .pillar:hover .sport-piece { opacity: 1; }
+}
+
 /* ---------- Products (front page) ---------- */
 .products { border-top: 2px solid var(--c-line); }
 
@@ -641,7 +691,9 @@ p { margin: 0 0 1rem; }
   gap: 1.5rem;
 }
 
-.carousel + .carousel { margin-top: 4rem; }
+.carousel + .carousel,
+.sports { margin-top: 4rem; }   /* the sports row sits after the Women carousel */
+.sports .pillar { color: inherit; display: block; }   /* the cards are links here */
 
 .carousel-head {
   display: flex;
@@ -875,6 +927,17 @@ p { margin: 0 0 1rem; }
 .filter-btn[aria-pressed="true"] { background: var(--c-accent); color: var(--c-on-accent); }
 
 .catalogue-tools { display: flex; align-items: center; gap: 1.25rem; }
+
+/* Wide screens: three columns, the sport buttons exactly in the middle
+   (the two outer columns share the leftover space equally) */
+@media (min-width: 1101px) {
+  .catalogue-bar { display: grid; grid-template-columns: 1fr auto 1fr; }
+  .catalogue-tools { justify-self: end; }
+}
+/* Narrower: collection left and tools right on the first line, sport buttons centred below */
+@media (max-width: 1100px) {
+  .filter-group--sport { order: 3; flex: 1 1 100%; justify-content: center; }
+}
 .filter-select {
   min-width: 0;
   max-width: 100%;
@@ -1249,6 +1312,10 @@ p { margin: 0 0 1rem; }
   .product-name { font-size: 0.85rem; }
   .filter-group,
   .catalogue-tools { flex: 1 1 100%; }
+  .filter-btn { padding-left: 0.5rem; padding-right: 0.5rem; font-size: 0.72rem; white-space: nowrap; }   /* "All sports" on one line */
+  /* One row each, top to bottom: collection, sport, type + count */
+  .filter-group--sport { order: 2; }
+  .catalogue-tools { order: 3; }
   .filter-btn { flex: 1; }
   .catalogue-tools { justify-content: space-between; gap: 0.75rem; min-width: 0; }
   .filter-select { flex: 1 1 0; }

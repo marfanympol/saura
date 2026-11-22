@@ -11,16 +11,8 @@
 
 // The slogans printed on each design (kept in English, like "Built to move")
 const DESIGNS = {
-  signature:   "Move Further Together",
-  dinamico:    "Move Further",
-  minimalista: "Sportswear",
   monograma:   "Beyond Limits",
-  organico:    "Natural Performance",
   tipografico: "Sportswear",
-  geometrico:  "Built to Move",
-  montana:     "Explore More",
-  circulo:     "Everyday Progress",
-  abstracto:   "Fuel Your Motion",
 };
 
 // Swatch look for every colour; products without variants offer the first five
@@ -34,92 +26,63 @@ const COLOURS = {
 };
 const BASIC_COLOURS = ["black", "white", "grey", "navy", "green"];
 
-// Signature line: one design in every colour, each colour with its own photo
-const signatureVariants = (type, colours) =>
-  Object.fromEntries(colours.map((c) => [c, `assets/products/signature-${type}-${c}.webp`]));
+// Design names as written on the products (Spanish), and in English for the English site
+const DESIGN_NAMES = { monograma: "Monograma", tipografico: "Tipográfico" };
+const DESIGN_NAMES_EN = { monograma: "Monogram", tipografico: "Typographic" };
+// Each design's number in the photo file names (it comes from the original design sheets)
+const DESIGN_NUMBERS = { monograma: "03", tipografico: "05" };
 
-// One garment type in the nine designs, in sheet order, for a collection ("men" / "women").
-// colours lists each design's colour in that order (fewer colours = fewer designs).
-// Photos: assets/products/<gender>-<type>-<nn>-<design>.webp
-const DESIGN_NAMES = {
-  dinamico: "Dinámico", minimalista: "Minimalista", monograma: "Monograma", organico: "Orgánico",
-  tipografico: "Tipográfico", geometrico: "Geométrico", montana: "Montaña", circulo: "Círculo", abstracto: "Abstracto",
-};
-// The same design names in English, used when the site is in English
-const DESIGN_NAMES_EN = {
-  dinamico: "Dynamic", minimalista: "Minimalist", monograma: "Monogram", organico: "Organic",
-  tipografico: "Typographic", geometrico: "Geometric", montana: "Mountain", circulo: "Circle", abstracto: "Abstract",
-};
-// Product name in the current language: "Montaña Tee" stays as written in Spanish,
-// and becomes "Mountain Tee" in English
+// Product name in the current language: "Monograma Tee" stays as written in Spanish,
+// and becomes "Monogram Tee" in English
 const displayName = (p) =>
   SauraI18n.lang === "en" && DESIGN_NAMES_EN[p.design]
     ? p.name.replace(DESIGN_NAMES[p.design], DESIGN_NAMES_EN[p.design])
     : p.name;
+
+// One garment type in both designs, for a collection ("men" / "women").
+// colours: each design's colour, e.g. { monograma: "green", tipografico: "black" }.
+// Photos: assets/products/<gender>-<type>-<nn>-<design>.webp
 const designLine = (gender, type, label, price, colours) =>
-  colours.map((colour, i) => {
-    const design = Object.keys(DESIGN_NAMES)[i];
-    return {
-      id: `${design}-${type}-${gender}`, name: `${DESIGN_NAMES[design]} ${label}`, design, type,
-      gender, price, colour,
-      image: `assets/products/${gender}-${type}-${String(i + 1).padStart(2, "0")}-${design}.webp`,
-    };
-  });
+  Object.entries(colours).map(([design, colour]) => ({
+    id: `${design}-${type}-${gender}`, name: `${DESIGN_NAMES[design]} ${label}`, design, type,
+    gender, price, colour,
+    image: `assets/products/${gender}-${type}-${DESIGN_NUMBERS[design]}-${design}.webp`,
+  }));
+
+const BOTH = { monograma: "green", tipografico: "black" };   // the colour each design comes in
 
 const PRODUCTS = [
-  // Signature (colour picker swaps the photo)
-  { id: "signature-tee",     name: "Signature Tee",     design: "signature", type: "tee",     gender: "men", price: 35, tag: "new", colour: "black",
-    variants: signatureVariants("tee",     ["black", "white", "green", "navy", "grey"]) },
-  { id: "signature-hoodie",  name: "Signature Hoodie",  design: "signature", type: "hoodie",  gender: "men", price: 85, tag: "new", colour: "black",
-    variants: signatureVariants("hoodie",  ["black", "white", "green", "navy", "grey"]) },
-  { id: "signature-joggers", name: "Signature Joggers", design: "signature", type: "joggers", gender: "men", price: 70, tag: "new", colour: "black",
-    variants: signatureVariants("joggers", ["black", "grey", "green", "navy", "black-premium"]) },
-  { id: "signature-shorts",  name: "Signature Shorts",  design: "signature", type: "shorts",  gender: "men", price: 45, tag: "new", colour: "black",
-    variants: signatureVariants("shorts",  ["black", "grey", "green", "navy", "black-premium"]) },
-
-  // T-shirts
-  { id: "dinamico-tee",    name: "Dinámico Tee",    design: "dinamico",    type: "tee", gender: "men", price: 35, colour: "black", image: "assets/products/men-tee-01-dinamico.webp" },
-  { id: "minimalista-tee", name: "Minimalista Tee", design: "minimalista", type: "tee", gender: "men", price: 35, colour: "white", image: "assets/products/men-tee-02-minimalista.webp" },
-  { id: "monograma-tee",   name: "Monograma Tee",   design: "monograma",   type: "tee", gender: "men", price: 35, colour: "green", image: "assets/products/men-tee-03-monograma.webp" },
-  { id: "organico-tee",    name: "Orgánico Tee",    design: "organico",    type: "tee", gender: "men", price: 35, colour: "navy",  image: "assets/products/men-tee-04-organico.webp" },
-  { id: "tipografico-tee", name: "Tipográfico Tee", design: "tipografico", type: "tee", gender: "men", price: 35, colour: "black", image: "assets/products/men-tee-05-tipografico.webp" },
-  { id: "geometrico-tee",  name: "Geométrico Tee",  design: "geometrico",  type: "tee", gender: "men", price: 35, colour: "grey",  image: "assets/products/men-tee-06-geometrico.webp" },
-  { id: "montana-tee",     name: "Montaña Tee",     design: "montana",     type: "tee", gender: "men", price: 35, colour: "black", image: "assets/products/men-tee-07-montana.webp" },
-  { id: "circulo-tee",     name: "Círculo Tee",     design: "circulo",     type: "tee", gender: "men", price: 35, colour: "white", image: "assets/products/men-tee-08-circulo.webp" },
-  { id: "abstracto-tee",   name: "Abstracto Tee",   design: "abstracto",   type: "tee", gender: "men", price: 35, colour: "black", image: "assets/products/tee-09-abstracto.webp" },
-
-  // Hoodies
-  { id: "dinamico-hoodie",    name: "Dinámico Hoodie",    design: "dinamico",    type: "hoodie", gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-01-dinamico.webp" },
-  { id: "minimalista-hoodie", name: "Minimalista Hoodie", design: "minimalista", type: "hoodie", gender: "men", price: 85, colour: "white", image: "assets/products/hoodie-02-minimalista.webp" },
-  { id: "monograma-hoodie",   name: "Monograma Hoodie",   design: "monograma",   type: "hoodie", gender: "men", price: 85, colour: "green", image: "assets/products/hoodie-03-monograma.webp" },
-  { id: "organico-hoodie",    name: "Orgánico Hoodie",    design: "organico",    type: "hoodie", gender: "men", price: 85, colour: "navy",  image: "assets/products/hoodie-04-organico.webp" },
-  { id: "tipografico-hoodie", name: "Tipográfico Hoodie", design: "tipografico", type: "hoodie", gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-05-tipografico.webp" },
-  { id: "geometrico-hoodie",  name: "Geométrico Hoodie",  design: "geometrico",  type: "hoodie", gender: "men", price: 85, colour: "grey",  image: "assets/products/hoodie-06-geometrico.webp" },
-  { id: "montana-hoodie",     name: "Montaña Hoodie",     design: "montana",     type: "hoodie", gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-07-montana.webp" },
-  { id: "circulo-hoodie",     name: "Círculo Hoodie",     design: "circulo",     type: "hoodie", gender: "men", price: 85, colour: "white", image: "assets/products/hoodie-08-circulo.webp" },
-  { id: "abstracto-hoodie",   name: "Abstracto Hoodie",   design: "abstracto",   type: "hoodie", gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-09-abstracto.webp" },
-
-  // Joggers
-  { id: "dinamico-joggers",    name: "Dinámico Joggers",    design: "dinamico",    type: "joggers", gender: "men", price: 70, colour: "black", image: "assets/products/men-joggers-01-dinamico.webp" },
-  { id: "minimalista-joggers", name: "Minimalista Joggers", design: "minimalista", type: "joggers", gender: "men", price: 70, colour: "grey",  image: "assets/products/men-joggers-02-minimalista.webp" },
+  // Men's tees, hoodies and joggers (written out: their ids and photo names predate designLine)
+  { id: "monograma-tee",       name: "Monograma Tee",       design: "monograma",   type: "tee",     gender: "men", price: 35, colour: "green", image: "assets/products/men-tee-03-monograma.webp" },
+  { id: "tipografico-tee",     name: "Tipográfico Tee",     design: "tipografico", type: "tee",     gender: "men", price: 35, colour: "black", image: "assets/products/men-tee-05-tipografico.webp" },
+  { id: "monograma-hoodie",    name: "Monograma Hoodie",    design: "monograma",   type: "hoodie",  gender: "men", price: 85, colour: "green", image: "assets/products/hoodie-03-monograma.webp" },
+  { id: "tipografico-hoodie",  name: "Tipográfico Hoodie",  design: "tipografico", type: "hoodie",  gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-05-tipografico.webp" },
   { id: "monograma-joggers",   name: "Monograma Joggers",   design: "monograma",   type: "joggers", gender: "men", price: 70, colour: "green", image: "assets/products/men-joggers-03-monograma.webp" },
-  { id: "organico-joggers",    name: "Orgánico Joggers",    design: "organico",    type: "joggers", gender: "men", price: 70, colour: "navy",  image: "assets/products/men-joggers-04-organico.webp" },
   { id: "tipografico-joggers", name: "Tipográfico Joggers", design: "tipografico", type: "joggers", gender: "men", price: 70, colour: "black", image: "assets/products/men-joggers-05-tipografico.webp" },
-  { id: "geometrico-joggers",  name: "Geométrico Joggers",  design: "geometrico",  type: "joggers", gender: "men", price: 70, colour: "grey",  image: "assets/products/men-joggers-06-geometrico.webp" },
-  { id: "montana-joggers",     name: "Montaña Joggers",     design: "montana",     type: "joggers", gender: "men", price: 70, colour: "black", image: "assets/products/men-joggers-07-montana.webp" },
-  { id: "circulo-joggers",     name: "Círculo Joggers",     design: "circulo",     type: "joggers", gender: "men", price: 70, colour: "navy",  image: "assets/products/men-joggers-08-circulo.webp" },
-  { id: "abstracto-joggers",   name: "Abstracto Joggers",   design: "abstracto",   type: "joggers", gender: "men", price: 70, colour: "black", image: "assets/products/men-joggers-09-abstracto.webp" },
 
   // Men's shorts and tank tops
-  ...designLine("men", "shorts", "Shorts", 40, ["black", "white", "green", "navy", "black", "grey", "black", "white", "black"]),
-  ...designLine("men", "tank",   "Tank",   30, ["black", "white", "green", "navy", "black", "grey", "black", "white", "black"]),
+  ...designLine("men", "shorts", "Shorts", 40, BOTH),
+  ...designLine("men", "tank",   "Tank",   30, BOTH),
 
   // Women's collection
-  ...designLine("women", "tee",      "Tee",      35, ["black", "white", "green", "navy", "black", "grey", "black", "white"]),
-  ...designLine("women", "shorts",   "Shorts",   45, ["black", "white", "green", "navy", "black", "grey", "black", "white", "black"]),
-  ...designLine("women", "leggings", "Leggings", 65, ["black", "black", "green", "navy", "black", "grey", "black", "black", "black"]),
-  ...designLine("women", "tank",     "Tank",     30, ["black", "white", "green", "navy", "black", "grey", "black", "white", "black"]),
+  ...designLine("women", "tee",      "Tee",      35, BOTH),
+  ...designLine("women", "shorts",   "Shorts",   45, BOTH),
+  ...designLine("women", "leggings", "Leggings", 65, BOTH),
+  ...designLine("women", "tank",     "Tank",     30, BOTH),
 ];
+
+// Sports each garment type is made for (a product can have several). Order = filter order.
+const SPORTS = ["gym", "crossfit", "running"];
+const SPORTS_BY_TYPE = {
+  tee:      ["gym", "running"],
+  tank:     ["gym", "running"],
+  hoodie:   ["gym", "running"],
+  leggings: ["crossfit", "running"],
+  shorts:   ["crossfit", "running"],
+  joggers:  ["running"],
+};
+// A product's sports: its own "sports" list if it has one, otherwise its type's
+const sportsOf = (p) => p.sports || SPORTS_BY_TYPE[p.type] || [];
 
 const findProduct = (id) => PRODUCTS.find((p) => p.id === id);
 
@@ -231,7 +194,7 @@ function initCarousel(carousel, getItems) {
 // The product that was in that slot swaps places with it, so nothing disappears.
 // Only affects the front page; the catalogue keeps the PRODUCTS order.
 const FRONT_PAGE_PICKS = {
-  men: { 1: "monograma-tee", 5: "organico-tee" },
+  men: { 1: "monograma-tee" },
   women: {},
 };
 
@@ -248,9 +211,72 @@ function frontPageItems(gender) {
 document.querySelectorAll(".carousel[data-gender]").forEach((carousel) =>
   initCarousel(carousel, () => frontPageItems(carousel.dataset.gender)));
 
+// ---------- Shop by sport (front page): rotating pieces on hover ----------
+// Hovering a sport card swaps its text for a few pieces of that sport, one at a time:
+// a small photo with the piece's name and price, changing every SHOWCASE_EVERY ms.
+// Pick the pieces here (product ids):
+const SPORT_SHOWCASE = {
+  gym:      ["monograma-tee", "tipografico-hoodie", "monograma-tank-men"],
+  crossfit: ["tipografico-shorts-women", "monograma-leggings-women", "monograma-shorts-men"],
+  running:  ["monograma-joggers", "tipografico-tee", "tipografico-leggings-women"],
+};
+const SHOWCASE_EVERY = 3000;
+
+function initSportShowcase(card) {
+  const pieces = (SPORT_SHOWCASE[card.dataset.sport] || []).map(findProduct).filter(Boolean);
+  if (!pieces.length) return;
+
+  // The card text and the piece share one spot (.sport-copy); hovering swaps them.
+  // The photos are only downloaded on the first hover.
+  const text = card.querySelector("p");
+  const copy = document.createElement("div");
+  copy.className = "sport-copy";
+  text.replaceWith(copy);
+  const piece = document.createElement("div");
+  piece.className = "sport-piece";
+  piece.setAttribute("aria-hidden", "true");
+  piece.innerHTML = `
+    <div class="sport-piece-photo">${pieces.map((p) => `<img data-src="${imageFor(p, p.colour)}" alt="">`).join("")}</div>
+    <p class="sport-piece-name"></p>`;
+  copy.append(text, piece);
+  const photos = piece.querySelectorAll("img");
+  const name = piece.querySelector(".sport-piece-name");
+
+  let current = 0;
+  let timer = null;
+  const show = (i) => {
+    current = i;
+    photos.forEach((img, n) => img.classList.toggle("is-active", n === i));
+    name.innerHTML = `${displayName(pieces[i])}<br>${formatPrice(pieces[i].price)}`;
+  };
+  const stop = () => { clearInterval(timer); timer = null; };
+
+  const canHover = window.matchMedia("(hover: hover)").matches;
+  const wideEnough = window.matchMedia("(min-width: 761px)");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  card.addEventListener("mouseenter", () => {
+    if (!canHover || !wideEnough.matches) return;   // phones: the still image only
+    photos.forEach((img) => { if (!img.src) img.src = img.dataset.src; });
+    stop();                                          // never two timers at once
+    show(current);
+    if (!reduceMotion && pieces.length > 1) {
+      timer = setInterval(() => show((current + 1) % pieces.length), SHOWCASE_EVERY);
+    }
+  });
+  card.addEventListener("mouseleave", () => {
+    stop();
+    current = (current + 1) % pieces.length;   // next hover starts with the following piece
+  });
+  SauraI18n.onChange(() => show(current));     // name and price in the new language
+  show(current);
+}
+document.querySelectorAll(".sports .pillar[data-sport]").forEach(initSportShowcase);
+
 // ---------- Catalogue (products page) ----------
 function initCatalogue(grid) {
   const genderButtons = document.querySelectorAll("[data-filter-gender]");
+  const sportButtons = document.querySelectorAll("[data-filter-sport]");
   const typeSelect = document.getElementById("filter-type");
   const count = document.getElementById("product-count");
   const params = new URLSearchParams(location.search);
@@ -259,6 +285,7 @@ function initCatalogue(grid) {
   const state = {
     gender: ["men", "women"].includes(params.get("gender")) ? params.get("gender") : "all",
     type: types.includes(params.get("type")) ? params.get("type") : "all",
+    sport: SPORTS.includes(params.get("sport")) ? params.get("sport") : "all",
   };
 
   // Type dropdown: only the types that exist in the catalogue, in the current language
@@ -272,7 +299,8 @@ function initCatalogue(grid) {
   const render = () => {
     const items = PRODUCTS.filter((p) =>
       (state.gender === "all" || inCollection(p, state.gender)) &&
-      (state.type === "all" || p.type === state.type));
+      (state.type === "all" || p.type === state.type) &&
+      (state.sport === "all" || sportsOf(p).includes(state.sport)));
 
     grid.innerHTML = items.length
       ? items.map(productCard).join("")
@@ -280,16 +308,19 @@ function initCatalogue(grid) {
     count.textContent = items.length === 1 ? t("count.one") : t("count.other", { n: items.length });
 
     genderButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filterGender === state.gender)));
+    sportButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filterSport === state.sport)));
     typeSelect.value = state.type;
 
-    // Keep the URL shareable, e.g. products.html?gender=women&type=joggers
+    // Keep the URL shareable, e.g. products.html?gender=women&sport=running&type=shorts
     const query = new URLSearchParams();
     if (state.gender !== "all") query.set("gender", state.gender);
+    if (state.sport !== "all") query.set("sport", state.sport);
     if (state.type !== "all") query.set("type", state.type);
     history.replaceState(null, "", query.toString() ? `?${query}` : location.pathname);
   };
 
   genderButtons.forEach((b) => b.addEventListener("click", () => { state.gender = b.dataset.filterGender; render(); }));
+  sportButtons.forEach((b) => b.addEventListener("click", () => { state.sport = b.dataset.filterSport; render(); }));
   typeSelect.addEventListener("change", () => { state.type = typeSelect.value; render(); });
   SauraI18n.onChange(() => { renderTypeOptions(); render(); });
   renderTypeOptions();
