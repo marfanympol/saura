@@ -22,8 +22,8 @@
     <div class="container nav">
       <a href="#top" class="logo"><img src="assets/logo/saura-wordmark-white.svg" alt="Saura" width="180" height="20"></a>
 
-      <!-- Language buttons for the compact navbar (760px and narrower); wider screens use the
-           pair in the top bar / hero instead. -->
+      <!-- Language buttons for the compact navbar (760px and narrower); wider screens have the
+           pair inside the menu, between Contact and Get in touch. -->
       <div class="lang-switch nav-lang" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
         <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
         <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
@@ -38,6 +38,10 @@
         <a href="products.html" data-i18n="nav.products">Products</a>
         <a href="#team" data-i18n="nav.team">Team</a>
         <a href="#contact" data-i18n="nav.contact">Contact</a>
+        <div class="lang-switch menu-lang" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
+          <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+          <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
         <a href="#contact" class="btn btn-small" data-i18n="nav.cta">Get in touch</a>
       </nav>
     </div>
@@ -56,15 +60,6 @@
                muted loop playsinline preload="none"></video>
       </div>
 
-      <!-- Language buttons: inside the hero, in the top-right corner of the video area -->
-      <div class="topbar">
-        <div class="container topbar-inner">
-          <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
-            <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
-            <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
-          </div>
-        </div>
-      </div>
 
       <div class="hero-bg" aria-hidden="true">
         <span class="hero-stripe"></span>

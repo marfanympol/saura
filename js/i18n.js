@@ -4,7 +4,8 @@
 // same for attributes (aria-label, alt, content…). UI holds the strings that
 // scripts build at runtime (product cards, filters, menu labels).
 // A key missing from ES keeps its English text — that's how the "Built to move"
-// slogan stays in English on the Spanish site.
+// slogan, "Co-founder", the sport names (Gym-wear, Crossfit, Running) and the
+// Men / Women labels stay in English on the Spanish site, on purpose.
 
 const ES = {
   // Page meta
@@ -26,7 +27,7 @@ const ES = {
 
   // Hero
   "hero.eyebrow": "Rendimiento y día a día",
-  "hero.lead": "Ropa diseñada para entrenar y pensada para la calle. Fiable cuando cuenta, impecable incluso cuando no hace falta.",
+  "hero.lead": "Ropa diseñada para entrenar y pensada para la calle. Fiable cuando importa, impecable incluso cuando no hace falta.",
   "hero.discover": "Descubre Saura",
   "hero.contact": "Contáctanos",
   "hero.scroll": "Ir a la sección de la marca",
@@ -39,7 +40,7 @@ const ES = {
   // Brand
   "brand.eyebrow": "La marca",
   "brand.title": "Ropa que aguanta el ritmo.<br>Estilo que perdura.",
-  "brand.p1": "Saura nació de una idea sencilla: la ropa con la que entrenas debería ser lo bastante buena como para vivir con ella. Diseñamos ropa deportiva que rinde bajo presión, resiste lavado tras lavado y queda bien tanto en la pista como cuando sales por la noche.",
+  "brand.p1": "Saura nació de una idea sencilla: la ropa con la que entrenas debería ser tan buena que no quieras quitártela. Diseñamos ropa deportiva que rinde bajo presión, resiste lavado tras lavado y queda bien tanto en la pista como cuando sales por la noche.",
   "brand.p2": "Sin artificios, sin concesiones: solo prendas de calidad con energía de serie.",
   "pillar.reliable.title": "Fiable",
   "pillar.reliable.text": "Tejidos duraderos y una confección cuidada. Hechas para usarse a fondo y a menudo.",
@@ -52,8 +53,6 @@ const ES = {
   "products.eyebrow": "La colección",
   "products.title": "Equipación para<br>cada sesión.",
   "products.shopAll": "Ver todo",
-  "carousel.men": "Hombre",
-  "carousel.women": "Mujer",
   "carousel.viewAll": "Ver todo",
   "carousel.men.prev": "Productos de hombre anteriores",
   "carousel.men.next": "Siguientes productos de hombre",
@@ -62,6 +61,12 @@ const ES = {
   "carousel.women.next": "Siguientes productos de mujer",
   "carousel.women.track": "Productos de mujer",
 
+  // Shop by sport (the sport names themselves stay in English)
+  "sports.title": "Compra por deporte",
+  "sport.gym.text": "Camisetas ajustadas que evacúan el sudor y pantalones cortos elásticos que te dan libertad para levantar peso sin engancharte en las máquinas.",
+  "sport.crossfit.text": "Pantalones cortos y mallas que se estiran, transpiran y mantienen su forma en cada entrenamiento.",
+  "sport.running.text": "Capas ligeras de secado rápido, con costuras planas, paneles de malla y detalles reflectantes para sumar kilómetros sin rozaduras.",
+
   // Team
   "team.eyebrow": "El equipo",
   "team.title": "Las personas<br>detrás de Saura.",
@@ -69,8 +74,8 @@ const ES = {
   // Contact
   "contact.eyebrow": "Contacto",
   "contact.title": "Hablemos.",
-  "contact.lead": "¿Preguntas, colaboraciones, prensa o quieres saber cuándo lanzamos? Escríbenos.",
-  "contact.email": "Email",
+  "contact.lead": "¿Tienes preguntas, propuestas de colaboración o consultas de prensa? ¿O quieres saber cuándo lanzamos? Escríbenos.",
+  "contact.email": "Correo",
   "contact.social": "Redes",
   "contact.write": "Escríbenos",
 
@@ -80,8 +85,8 @@ const ES = {
   "shop.lead": "Prendas de rendimiento para hombre y mujer. Hechas para entrenar, pensadas para todo lo que viene después.",
   "filter.label": "Filtrar por colección",
   "filter.all": "Todo",
-  "filter.men": "Hombre",
-  "filter.women": "Mujer",
+  "filter.sportLabel": "Filtrar por deporte",
+  "filter.allSports": "Todos los deportes",
   "filter.typeLabel": "Tipo de producto",
 };
 
@@ -144,8 +149,7 @@ const UI = {
   es: {
     "menu.open": "Abrir menú",
     "menu.close": "Cerrar menú",
-    "gender.men": "Hombre",
-    "gender.women": "Mujer",
+    // gender.men / gender.women left out on purpose: "Men" and "Women" stay in English
     "gender.unisex": "Unisex",
     "colour.black": "Negro", "colour.white": "Blanco", "colour.grey": "Gris",
     "colour.navy": "Azul marino", "colour.green": "Verde", "colour.black-premium": "Negro premium",
@@ -160,6 +164,10 @@ const UI = {
 
     "pd.crumb": "Productos",
     "pd.breadcrumb": "Ruta de navegación",
+    "pd.size": "Talla",
+    "pd.sizeNone": "Elige una",
+    "pd.sizeScale": "Sistema de tallas",
+    "pd.sizeMissing": "Elige primero una talla.",
     "pd.colour": "Color",
     "pd.add": "Añadir al carrito",
     "pd.added": "Añadido al carrito.",
@@ -174,7 +182,7 @@ const UI = {
     "pd.relatedNext": "Siguientes productos relacionados",
     "desc.tee": "Una camiseta de entrenamiento ligera en un tejido técnico transpirable. Las mangas raglán te dan libertad en cada movimiento, las costuras planas la hacen cómoda en sesiones largas y los detalles reflectantes te mantienen visible en las carreras al amanecer. Hecha para el gimnasio, pensada para todo lo que viene después.",
     "desc.hoodie": "Una sudadera de felpa de peso medio para calentar, recuperar y todo lo que hay entre medias. Suave por dentro, resistente por fuera, con capucha ajustable, un amplio bolsillo frontal y puños acanalados que se quedan en su sitio.",
-    "desc.joggers": "Joggers entallados en un tejido elástico que se mueve contigo. Cintura elástica con cordón, bolsillos con cremallera para llevar lo esencial seguro y puños en el tobillo que quedan limpios sobre tus zapatillas. Del entrenamiento a los días de descanso.",
+    "desc.joggers": "Joggers entallados en un tejido elástico que se mueve contigo. Cintura elástica con cordón, bolsillos con cremallera para llevar lo esencial seguro y puños en el tobillo que caen limpios sobre las zapatillas. Del entrenamiento a los días de descanso.",
     "desc.shorts": "Pantalón corto de entrenamiento en un tejido ligero, con un corte a medio muslo que no estorba. Cintura elástica con cordón, bolsillos con cremallera para llaves y móvil, y detalles reflectantes para las sesiones al amanecer o de noche.",
     "desc.leggings": "Mallas de talle alto en un tejido elástico con sujeción que mantiene su forma en cada sentadilla, zancada y estiramiento. Una cintura ancha que no se mueve, paneles contorneados y detalles reflectantes para las sesiones con poca luz.",
     "desc.tank": "Camiseta de tirantes con espalda nadadora en un tejido ligero y transpirable que aporta frescor cuando la sesión aprieta. La espalda abierta da total libertad a tus hombros, del gimnasio a la pista.",
@@ -186,8 +194,9 @@ const UI = {
     "cart.close": "Cerrar carrito",
     "cart.remove": "Quitar {name}",
     "cart.subtotal": "Subtotal",
-    "cart.checkout": "Pagar · próximamente",
+    "cart.checkout": "Finalizar compra · próximamente",
     "card.add": "Añadir {name} al carrito",
+    "card.sizePick": "Elige una talla",
   },
 };
 

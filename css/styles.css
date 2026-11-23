@@ -22,7 +22,7 @@
   --container: 1240px;
   --gutter: clamp(1rem, 4vw, 2rem);
   --section-pad: 4.5rem;
-  --topbar-h: 0px;          /* the language buttons sit over the hero, so they take no space */
+  --topbar-h: 0px;          /* no top bar any more (the language buttons are in the navbar); kept at 0 so the calc()s below stay valid */
   --header-h: 80px;
   /* Hero grid squares are the navbar's height, so the top row of squares is the navbar */
   --grid-w: var(--header-h);
@@ -136,42 +136,11 @@ p { margin: 0 0 1rem; }
 .btn-full { width: 100%; text-align: center; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-/* ---------- Top bar (language) ---------- */
-/* Language buttons laid over the top-right of the hero, just below the navbar.
-   They scroll away with the page; the footer has a second pair. */
-.topbar {
-  position: absolute;
-  top: var(--header-h);
-  left: 0;
-  right: 0;
-  z-index: 99;           /* below the header and its mobile menu */
-  pointer-events: none;  /* only the buttons themselves are clickable */
-}
-.topbar-inner {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 0.5rem;
-}
-/* Front page: the buttons live inside the hero, in the top-right corner of the video area
-   (--hero-video-top is where the video starts) */
-.hero .topbar { top: var(--hero-video-top); }
-.hero .topbar-inner { padding-top: 0.75rem; }
-/* Big screens: centre the buttons inside one square of the hero grid, the last full
-   square on the right of the row just under the navbar. The .topbar box is that row
-   (one grid square tall, full width); round(down, 100%, square) is the right edge of the
-   last full column, so half a square back from it is that square's centre. */
-@media (min-width: 761px) {
-  .hero .topbar { top: var(--grid-h); height: var(--grid-h); }
-  .hero .topbar .lang-switch {
-    position: absolute;
-    top: 50%;
-    left: calc(round(down, 100%, var(--grid-w)) - var(--grid-w) / 2);
-    transform: translate(-50%, -50%);
-  }
-}
-.topbar .lang-switch { pointer-events: auto; }
-.topbar .lang-btn { background: var(--c-bg); }
-
+/* ---------- Language buttons ---------- */
+/* Wide screens: in the navbar menu, between Contact and Get in touch (same 2rem gap as
+   the links). Phones (760px and narrower): .nav-lang next to the menu button instead.
+   The footer has a third pair. */
+.menu-lang .lang-btn { background: var(--c-bg); }   /* solid, so the hero grid doesn't show through */
 .lang-switch { display: flex; }
 .nav-lang { display: none; }   /* only shown in the compact navbar, see the 760px block */
 .lang-btn {
@@ -227,6 +196,7 @@ p { margin: 0 0 1rem; }
   align-items: center;
   gap: 2rem;
 }
+.nav-menu a { white-space: nowrap; }   /* links and the button stay on one line */
 .nav-menu a:not(.btn) {
   font-family: var(--f-mono);
   font-size: 0.8rem;
@@ -913,7 +883,7 @@ p { margin: 0 0 1rem; }
   position: absolute;
   z-index: -1;
   right: 6%;
-  top: calc(var(--topbar-h) + var(--header-h) + 3.5rem);   /* clears the language buttons */
+  top: calc(var(--topbar-h) + var(--header-h) + 3.5rem);   /* kept where it sat under the old language buttons */
   width: 12vw;
   height: 12vw;
   background: var(--c-accent);
@@ -1292,12 +1262,12 @@ p { margin: 0 0 1rem; }
   .contact-cta { min-height: 16rem; }
   .carousel-track { --per-view: 3.3; }
   .product-grid { grid-template-columns: repeat(4, 1fr); }
-  /* Tablets: tighter menu so the links stay on one line and clear of the logo */
-  .nav-menu { gap: 1.25rem; }
-  .nav-menu a { white-space: nowrap; }
 }
 
-@media (max-width: 760px) {
+/* Compact navbar (menu button) up to 1100px: wider than the rest of the phone layout,
+   because below that the full menu, the EN/ES pair and the cart button (longer still in
+   Spanish) don't leave room for the logo. */
+@media (max-width: 1100px) {
   .nav-toggle { display: block; }
 
   .nav-menu {
@@ -1321,19 +1291,6 @@ p { margin: 0 0 1rem; }
     font-size: clamp(1.5rem, 8vw, 2.25rem);
   }
 
-  .hero-stripe:nth-child(1),
-  /* Start the square below the language buttons (top-right of the video area), so the
-     orange EN/ES button doesn't disappear into the orange square */
-  .hero-stripe:nth-child(2) { width: 34vw; height: 34vw; top: calc(var(--hero-pad-top) + 3rem); }
-  .hero-stripe:nth-child(1) { right: -8vw; }
-  .hero-stripe:nth-child(2) { right: -4vw; top: calc(var(--hero-pad-top) + 3rem + 4vw); }
-  .hero-word { display: none; }
-
-  .carousel-track { --per-view: 2.4; --gap: 0.75rem; }
-  .product-grid { grid-template-columns: repeat(3, 1fr); gap: 1.75rem 0.75rem; }
-  .page-hero::after { right: -6vw; width: 26vw; height: 26vw; opacity: 0.6; }
-  .page-title { max-width: none; }
-
   /* Compact navbar, left to right: logo … cart · EN/ES · menu button.
      The logo's auto margin pushes the rest to the right edge. */
   /* The buttons keep their size; on very narrow phones with the cart showing, the logo
@@ -1348,8 +1305,24 @@ p { margin: 0 0 1rem; }
      the cart button's inside (65px = 2 × 32.5px) */
   .nav-lang .lang-btn { width: 32.5px; height: 36px; padding: 0; }
   .nav-toggle { order: 3; }
-  /* The top bar / hero pair would be a duplicate here */
-  .topbar .lang-switch { display: none; }
+  /* The in-menu pair would be a duplicate here */
+  .nav-menu .menu-lang { display: none; }
+}
+
+
+@media (max-width: 760px) {
+  .hero-stripe:nth-child(1),
+  /* Start the square below the language buttons (top-right of the video area), so the
+     orange EN/ES button doesn't disappear into the orange square */
+  .hero-stripe:nth-child(2) { width: 34vw; height: 34vw; top: calc(var(--hero-pad-top) + 3rem); }
+  .hero-stripe:nth-child(1) { right: -8vw; }
+  .hero-stripe:nth-child(2) { right: -4vw; top: calc(var(--hero-pad-top) + 3rem + 4vw); }
+  .hero-word { display: none; }
+
+  .carousel-track { --per-view: 2.4; --gap: 0.75rem; }
+  .product-grid { grid-template-columns: repeat(3, 1fr); gap: 1.75rem 0.75rem; }
+  .page-hero::after { right: -6vw; width: 26vw; height: 26vw; opacity: 0.6; }
+  .page-title { max-width: none; }
 
   .pd-layout { grid-template-columns: 1fr; }
   .pd-photo { width: 100%; max-width: 360px; margin: 0 auto; }

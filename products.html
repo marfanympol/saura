@@ -14,23 +14,13 @@
 </head>
 <body>
 
-  <!-- ========== TOP BAR (language) ========== -->
-  <div class="topbar" id="top">
-    <div class="container topbar-inner">
-      <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
-        <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
-        <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
-      </div>
-    </div>
-  </div>
-
   <!-- ========== HEADER / NAV ========== -->
   <header class="site-header">
     <div class="container nav">
       <a href="index.html" class="logo"><img src="assets/logo/saura-wordmark-white.svg" alt="Saura — home" width="180" height="20" data-i18n-attr="alt: logo.home"></a>
 
-      <!-- Language buttons for the compact navbar (760px and narrower); wider screens use the
-           pair in the top bar / hero instead. -->
+      <!-- Language buttons for the compact navbar (760px and narrower); wider screens have the
+           pair inside the menu, between Contact and Get in touch. -->
       <div class="lang-switch nav-lang" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
         <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
         <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
@@ -45,6 +35,10 @@
         <a href="products.html" aria-current="page" data-i18n="nav.products">Products</a>
         <a href="index.html#team" data-i18n="nav.team">Team</a>
         <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+        <div class="lang-switch menu-lang" role="group" aria-label="Language" data-i18n-attr="aria-label: lang.label">
+          <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+          <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
         <a href="index.html#contact" class="btn btn-small" data-i18n="nav.cta">Get in touch</a>
       </nav>
     </div>
