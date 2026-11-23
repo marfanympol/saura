@@ -72,7 +72,9 @@ const PRODUCTS = [
 ];
 
 // Sports each garment type is made for (a product can have several). Order = filter order.
-const SPORTS = ["gym", "crossfit", "running"];
+// "accessories" is a catalogue filter only (no front-page card). It has no products yet:
+// give a future product sports: ["accessories"] and it will appear under this filter.
+const SPORTS = ["gym", "crossfit", "running", "accessories"];
 const SPORTS_BY_TYPE = {
   tee:      ["gym", "running"],
   tank:     ["gym", "running"],

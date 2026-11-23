@@ -1343,7 +1343,12 @@ p { margin: 0 0 1rem; }
   .catalogue-tools { flex: 1 1 100%; }
   .filter-btn { padding-left: 0.5rem; padding-right: 0.5rem; font-size: 0.72rem; white-space: nowrap; }   /* "All sports" on one line */
   /* One row each, top to bottom: collection, sport, type */
-  .filter-group--sport { order: 2; }
+  /* Five sport buttons don't fit one phone row: three on top, two below, same total width.
+     The second row moves up 2px and Running gets its left border back, so borders don't double. */
+  .filter-group--sport { order: 2; display: grid; grid-template-columns: repeat(6, 1fr); }
+  .filter-group--sport .filter-btn { grid-column: span 2; min-width: 0; }
+  .filter-group--sport .filter-btn:nth-child(n + 4) { grid-column: span 3; margin-top: -2px; }
+  .filter-group--sport .filter-btn:nth-child(4) { border-left: 2px solid var(--c-text); }
   .catalogue-tools { order: 3; }
   .filter-btn { flex: 1; }
   .catalogue-tools { min-width: 0; }
