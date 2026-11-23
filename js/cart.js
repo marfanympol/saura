@@ -1,5 +1,5 @@
 // SAURA — shopping cart (layout only: there is no checkout yet).
-// Items are saved in the browser as [{ id, colour, qty }], so the cart survives
+// Items are saved in the browser as [{ id, colour, size, qty }], so the cart survives
 // page changes and visits. The navbar button is added to every page by this
 // script and only appears once the cart has something in it.
 
@@ -24,11 +24,11 @@ const SauraCart = (() => {
 
   const count = () => read().reduce((n, item) => n + item.qty, 0);
 
-  const add = (id, colour) => {
+  const add = (id, colour, size = null) => {   // size is null from the cards' quick-add
     const items = read();
-    const existing = items.find((item) => item.id === id && item.colour === colour);
+    const existing = items.find((item) => item.id === id && item.colour === colour && (item.size ?? null) === size);
     if (existing) existing.qty += 1;
-    else items.push({ id, colour, qty: 1 });
+    else items.push({ id, colour, size, qty: 1 });
     write(items);
     playAnimation(button, "is-bumped");   // the CSS for it is next to .cart-btn
   };
@@ -102,7 +102,7 @@ const SauraCart = (() => {
             <a href="${link}" class="cart-thumb">${photo ? `<img src="${photo}" alt="">` : garment(p.type)}</a>
             <div>
               <a href="${link}" class="cart-item-name">${displayName(p)}</a>
-              <p class="cart-item-meta">${t(`colour.${item.colour}`)} · ${item.qty} × ${formatPrice(p.price)}</p>
+              <p class="cart-item-meta">${t(`colour.${item.colour}`)}${item.size ? ` · ${t("pd.size")} ${item.size}` : ""} · ${item.qty} × ${formatPrice(p.price)}</p>
             </div>
             <button type="button" class="cart-remove" data-index="${i}" aria-label="${t("cart.remove", { name: displayName(p) })}">×</button>
           </li>`;

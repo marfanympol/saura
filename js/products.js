@@ -125,6 +125,42 @@ function productMedia(p) {
         <div class="media-layer media-alt" aria-hidden="true">${alt}</div>`;
 }
 
+// ---------- Sizes ----------
+// Placeholder size charts until the real ones arrive. Every product has the same six sizes;
+// the scale dropdown only changes how they're labelled. The cart always stores the letter
+// size ("M"), so changing the scale never changes what was picked.
+const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
+const SIZE_SCALES = {   // one label per entry in SIZES, men's and women's charts differ
+  int: { men: SIZES, women: SIZES },
+  eu:  { men: ["44", "46", "48", "50", "52", "54"], women: ["34", "36", "38", "40", "42", "44"] },
+  us:  { men: ["34", "36", "38", "40", "42", "44"], women: ["2", "4", "6", "8", "10", "12"] },
+  uk:  { men: ["34", "36", "38", "40", "42", "44"], women: ["6", "8", "10", "12", "14", "16"] },
+};
+const SCALE_KEY = "saura-size-scale";   // the visitor's chosen scale is remembered between pages
+const savedScale = () => { try { return localStorage.getItem(SCALE_KEY); } catch (e) { return null; } };
+// "M" → "M" on INT, "EU 48" on EU, etc.
+const sizeLabel = (size, gender, scale) => {
+  const value = SIZE_SCALES[scale][gender][SIZES.indexOf(size)];
+  return scale === "int" ? value : `${scale.toUpperCase()} ${value}`;
+};
+// The visitor's current scale (falls back to INT if nothing valid is saved)
+const currentScale = () => (SIZE_SCALES[savedScale()] ? savedScale() : "int");
+
+// Last size picked for each kind of garment, saved in the browser (localStorage, no account
+// needed), e.g. { "men-tee": "M", "women-leggings": "S" }. Kept per collection as well as type
+// because men's and women's sizes run differently. Used to pre-select the size next time.
+const SIZES_KEY = "saura-sizes";
+const sizeKey = (p) => `${p.gender}-${p.type}`;
+const savedSizes = () => {
+  try { return JSON.parse(localStorage.getItem(SIZES_KEY)) || {}; } catch (e) { return {}; }
+};
+const savedSize = (p) => (SIZES.includes(savedSizes()[sizeKey(p)]) ? savedSizes()[sizeKey(p)] : null);
+const saveSize = (p, size) => {
+  const all = savedSizes();
+  all[sizeKey(p)] = size;
+  try { localStorage.setItem(SIZES_KEY, JSON.stringify(all)); } catch (e) { /* storage blocked: just not remembered */ }
+};
+
 // The quick "add to cart" button sits outside the card's link on purpose: a button inside
 // a link is invalid HTML, and the click would also open the product page. The wrapper
 // lets the CSS place it over the photo's bottom-right corner.
@@ -144,22 +180,66 @@ function productCard(p) {
         <p class="product-price">${formatPrice(p.price)}</p>
       </div>
     </a>
-    <button type="button" class="card-add" data-id="${p.id}" aria-label="${t("card.add", { name: displayName(p) })}">
+    <button type="button" class="card-add" data-id="${p.id}" aria-expanded="false" aria-label="${t("card.add", { name: displayName(p) })}">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><path d="M12 11v6M9 14h6"/></svg>
     </button>
     </div>`;
 }
 
-// One listener for every card's quick-add button (cards are redrawn often, e.g. when
-// filtering or switching language, so listening on the document saves re-attaching).
-// Adds the product in its default colour, and plays the same animation as the product page.
-document.addEventListener("click", (e) => {
-  const btn = e.target.closest(".card-add");
-  if (!btn) return;
-  const p = findProduct(btn.dataset.id);
-  SauraCart.add(p.id, p.colour);
-  SauraCart.playAnimation(btn, "is-added");
+// Quick-add size picker: the button opens a small grid of sizes over the photo, with the
+// last size picked for this kind of garment highlighted. Picking one adds the product in
+// its default colour. The grid is only built when opened, so the cards stay light.
+const closeCardSizes = () => document.querySelectorAll(".card-sizes").forEach((panel) => {
+  const wrap = panel.closest(".product-card-wrap");
+  wrap.classList.remove("is-picking");
+  wrap.querySelector(".card-add").setAttribute("aria-expanded", "false");
+  panel.remove();
 });
+
+function openCardSizes(btn) {
+  const wrap = btn.closest(".product-card-wrap");
+  const p = findProduct(btn.dataset.id);
+  const scale = currentScale();
+  const saved = savedSize(p);
+  const panel = document.createElement("div");
+  panel.className = "card-sizes";
+  panel.setAttribute("role", "group");
+  panel.setAttribute("aria-label", t("card.sizePick"));
+  panel.innerHTML = SIZES.map((key, i) => `
+    <button type="button" class="card-size" data-size="${key}" aria-pressed="${key === saved}"
+      aria-label="${sizeLabel(key, p.gender, scale)}">${SIZE_SCALES[scale][p.gender][i]}</button>`).join("");
+  wrap.append(panel);
+  wrap.classList.add("is-picking");   // keeps the button and grid shown while picking
+  btn.setAttribute("aria-expanded", "true");
+}
+
+// One listener for every card (cards are redrawn often, e.g. when filtering or switching
+// language, so listening on the document saves re-attaching).
+document.addEventListener("click", (e) => {
+  // A size in an open grid: remember it, add to cart, close, play the button's animation
+  const sizeBtn = e.target.closest(".card-size");
+  if (sizeBtn) {
+    const btn = sizeBtn.closest(".product-card-wrap").querySelector(".card-add");
+    const p = findProduct(btn.dataset.id);
+    saveSize(p, sizeBtn.dataset.size);
+    SauraCart.add(p.id, p.colour, sizeBtn.dataset.size);
+    closeCardSizes();
+    SauraCart.playAnimation(btn, "is-added");
+    return;
+  }
+  // Any other click closes an open grid; a click on a closed quick-add button opens its grid
+  const btn = e.target.closest(".card-add");
+  const wasOpen = btn?.getAttribute("aria-expanded") === "true";
+  if (e.target.closest(".card-sizes")) return;   // clicks in the grid's gaps keep it open
+  closeCardSizes();
+  if (btn && !wasOpen) openCardSizes(btn);
+});
+// Moving the pointer off the card, or pressing Escape, closes the grid too
+document.addEventListener("mouseout", (e) => {
+  const wrap = e.target.closest(".product-card-wrap.is-picking");
+  if (wrap && !wrap.contains(e.relatedTarget)) closeCardSizes();
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCardSizes(); });
 
 // ---------- Carousels (front page, and "Related products" on the product page) ----------
 // getItems returns the products to show; it's called again when the language changes.
@@ -278,7 +358,6 @@ function initCatalogue(grid) {
   const genderButtons = document.querySelectorAll("[data-filter-gender]");
   const sportButtons = document.querySelectorAll("[data-filter-sport]");
   const typeSelect = document.getElementById("filter-type");
-  const count = document.getElementById("product-count");
   const params = new URLSearchParams(location.search);
   const types = [...new Set(PRODUCTS.map((p) => p.type))];
 
@@ -305,7 +384,6 @@ function initCatalogue(grid) {
     grid.innerHTML = items.length
       ? items.map(productCard).join("")
       : `<p class="catalogue-empty">${t("catalogue.empty")}</p>`;
-    count.textContent = items.length === 1 ? t("count.one") : t("count.other", { n: items.length });
 
     genderButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filterGender === state.gender)));
     sportButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filterSport === state.sport)));
@@ -336,6 +414,8 @@ function initProductPage(root) {
   const product = findProduct(params.get("id"));
   // Start on the colour in the URL (e.g. &colour=navy) if the product has it
   let colour = product && coloursOf(product).includes(params.get("colour")) ? params.get("colour") : product?.colour;
+  let size = product ? savedSize(product) : null;   // last size picked for this kind of garment, if any
+  let scale = currentScale();
   let note = "";   // message under the buttons: "Added to cart" / "Checkout coming soon"
 
   const notFound = () => `
@@ -348,6 +428,12 @@ function initProductPage(root) {
           <button type="button" class="swatch" role="radio" data-colour="${key}"
             aria-checked="${key === colour}" aria-label="${t(`colour.${key}`)}" title="${t(`colour.${key}`)}"
             style="--swatch: ${COLOURS[key]}"></button>`).join("");
+
+  // Same squares as the colours, with the size written inside (in the chosen scale)
+  const sizeButtons = () => SIZES.map((key, i) => `
+          <button type="button" class="swatch swatch--size" role="radio" data-size="${key}"
+            aria-checked="${key === size}" aria-label="${sizeLabel(key, product.gender, scale)}">${SIZE_SCALES[scale][product.gender][i]}</button>`).join("");
+  const sizeName = () => size ? sizeLabel(size, product.gender, scale) : t("pd.sizeNone");
 
   const render = () => {
     if (!product) {
@@ -377,6 +463,17 @@ function initProductPage(root) {
           <h1 class="pd-title">${displayName(p)}</h1>
           <p class="pd-tagline">${DESIGNS[p.design]}</p>
           <p class="pd-price">${formatPrice(p.price)}</p>
+
+          <div class="pd-sizes">
+            <div class="pd-option-head">
+              <p class="pd-label">${t("pd.size")}: <strong id="pd-size-name">${sizeName()}</strong></p>
+              <label class="visually-hidden" for="pd-size-scale">${t("pd.sizeScale")}</label>
+              <select id="pd-size-scale" class="filter-select pd-scale">
+                ${Object.keys(SIZE_SCALES).map((key) => `<option value="${key}"${key === scale ? " selected" : ""}>${key.toUpperCase()}</option>`).join("")}
+              </select>
+            </div>
+            <div class="swatches" role="radiogroup" aria-label="${t("pd.size")}">${sizeButtons()}</div>
+          </div>
 
           <div class="pd-colours">
             <p class="pd-label">${t("pd.colour")}: <strong id="pd-colour-name">${t(`colour.${colour}`)}</strong></p>
@@ -414,9 +511,9 @@ function initProductPage(root) {
     if (related.length) initCarousel(root.querySelector(".pd-related .carousel"), () => related);
 
     // Colour picker: updates the label, and the photo when the product has one per colour
-    root.querySelectorAll(".swatch").forEach((btn) => btn.addEventListener("click", () => {
+    root.querySelectorAll(".swatch[data-colour]").forEach((btn) => btn.addEventListener("click", () => {
       colour = btn.dataset.colour;
-      root.querySelectorAll(".swatch").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
+      root.querySelectorAll(".swatch[data-colour]").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
       root.querySelector("#pd-colour-name").textContent = t(`colour.${colour}`);
 
       if (p.variants) {
@@ -432,14 +529,43 @@ function initProductPage(root) {
 
     const noteEl = root.querySelector("#pd-note");
     const showNote = (key) => { note = t(key); noteEl.textContent = note; };
+    const sizeNameEl = root.querySelector("#pd-size-name");
+
+    // Size picker: remembers the letter size; the label shows it in the chosen scale
+    const bindSizeButtons = () => root.querySelectorAll(".swatch--size").forEach((btn) => btn.addEventListener("click", () => {
+      size = btn.dataset.size;
+      saveSize(p, size);
+      root.querySelectorAll(".swatch--size").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
+      sizeNameEl.textContent = sizeName();
+      if (note === t("pd.sizeMissing")) showNote("");   // clear the "choose a size" reminder
+    }));
+    bindSizeButtons();
+
+    // Scale dropdown: relabels the squares (the picked size stays picked) and is remembered
+    root.querySelector("#pd-size-scale").addEventListener("change", (e) => {
+      scale = e.target.value;
+      try { localStorage.setItem(SCALE_KEY, scale); } catch (err) { /* only this page remembers it */ }
+      root.querySelector(".pd-sizes .swatches").innerHTML = sizeButtons();
+      bindSizeButtons();
+      sizeNameEl.textContent = sizeName();
+    });
+
+    // Both buttons need a size first: otherwise show a reminder and jump to the sizes
+    const needsSize = () => {
+      if (size) return false;
+      showNote("pd.sizeMissing");
+      root.querySelector(".swatch--size").focus();
+      return true;
+    };
 
     root.querySelector("#pd-add").addEventListener("click", (e) => {
-      SauraCart.add(p.id, colour);
+      if (needsSize()) return;
+      SauraCart.add(p.id, colour, size);
       SauraCart.playAnimation(e.currentTarget, "is-added");   // orange ring around the button
       showNote("pd.added");
     });
     // Placeholder until checkout exists
-    root.querySelector("#pd-buy").addEventListener("click", () => showNote("pd.buyNote"));
+    root.querySelector("#pd-buy").addEventListener("click", () => { if (!needsSize()) showNote("pd.buyNote"); });
   };
 
   SauraI18n.onChange(() => { note = ""; render(); });
