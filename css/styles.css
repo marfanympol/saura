@@ -8,6 +8,7 @@
   --c-bg: #0d0d0d;          /* near-black base */
   --c-surface: #161616;     /* cards / raised areas */
   --c-line: #2a2a2a;        /* borders, dividers */
+  --c-grid-faint: rgba(243, 241, 236, 0.06);   /* page background grid: raise or lower the last number to change its strength */
   --c-text: #f3f1ec;        /* warm off-white */
   --c-muted: #9a9890;       /* secondary text */
   --c-accent: #ff4d1a;      /* Saura orange — energy */
@@ -43,7 +44,13 @@ html {
 
 body {
   margin: 0;
-  background: var(--c-bg);
+  /* Faint vector grid behind the whole page, so the big sections feel less empty. Same square
+     size and starting point as the hero grid, so its lines continue down the page. */
+  background-color: var(--c-bg);
+  background-image:
+    linear-gradient(var(--c-grid-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--c-grid-faint) 1px, transparent 1px);
+  background-size: var(--grid-w) var(--grid-h);
   color: var(--c-text);
   font-family: var(--f-body);
   font-size: 1rem;
