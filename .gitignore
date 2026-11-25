@@ -1,6 +1,8 @@
 # Local editor / tool settings
 .claude/
 CLAUDE.md
+# Private notes and references (e.g. docs/brand-system-v1.webp), not published on the site
+docs/
 .vscode/
 .idea/
 

@@ -11,8 +11,8 @@
 
 // The slogans printed on each design (kept in English, like "Built to move")
 const DESIGNS = {
-  monograma:   "Beyond Limits",
-  tipografico: "Sportswear",
+  peak:     "Beyond Limits",
+  wordmark: "Sportswear",
 };
 
 // Swatch look for every colour; products without variants offer the first five
@@ -27,38 +27,47 @@ const COLOURS = {
 const BASIC_COLOURS = ["black", "white", "grey", "navy", "green"];
 
 // Design names as written on the products (Spanish), and in English for the English site
-const DESIGN_NAMES = { monograma: "Monograma", tipografico: "Tipográfico" };
-const DESIGN_NAMES_EN = { monograma: "Monogram", tipografico: "Typographic" };
-// Each design's number in the photo file names (it comes from the original design sheets)
-const DESIGN_NUMBERS = { monograma: "03", tipografico: "05" };
+// Named after the logo on the garment (brand sheet). For now the same in both languages;
+// give DESIGN_NAMES Spanish names in the Spanish pass if wanted.
+const DESIGN_NAMES = { peak: "Peak", wordmark: "Wordmark" };
+const DESIGN_NAMES_EN = { peak: "Peak", wordmark: "Wordmark" };
+// Photo file names follow the brand sheet (docs/brand-system-v1.webp): logo number + colour.
+// Logos: 01 Core Wordmark ("SAURA SPORTSWEAR"), 02 Peak Icon ("SAURA BEYOND LIMITS"),
+// 03 S Monogram, 04 Motion Stripes, 05 Orbit Peak.
+const LOGO_NUMBERS = { peak: "02", wordmark: "01" };
+// Colour word in the file name (brand palette): red, green, black, grey, blue, olive.
+// The site's "green" garments are the palette's Foundation Olive.
+const PHOTO_COLOURS = { green: "olive", black: "black" };
+// assets/products/<gender>-<type>-<logo nn>-<colour>.webp, e.g. men-tee-01-black.webp
+const photoPath = (gender, type, design, colour) =>
+  `assets/products/${gender}-${type}-${LOGO_NUMBERS[design]}-${PHOTO_COLOURS[colour] || colour}.webp`;
 
-// Product name in the current language: "Monograma Tee" stays as written in Spanish,
-// and becomes "Monogram Tee" in English
+// Product name in the current language: the name as written in PRODUCTS (DESIGN_NAMES),
+// with the design word swapped for its English version on the English site
 const displayName = (p) =>
   SauraI18n.lang === "en" && DESIGN_NAMES_EN[p.design]
     ? p.name.replace(DESIGN_NAMES[p.design], DESIGN_NAMES_EN[p.design])
     : p.name;
 
 // One garment type in both designs, for a collection ("men" / "women").
-// colours: each design's colour, e.g. { monograma: "green", tipografico: "black" }.
-// Photos: assets/products/<gender>-<type>-<nn>-<design>.webp
+// colours: each design's colour, e.g. { peak: "green", wordmark: "black" }.
 const designLine = (gender, type, label, price, colours) =>
   Object.entries(colours).map(([design, colour]) => ({
     id: `${design}-${type}-${gender}`, name: `${DESIGN_NAMES[design]} ${label}`, design, type,
     gender, price, colour,
-    image: `assets/products/${gender}-${type}-${DESIGN_NUMBERS[design]}-${design}.webp`,
+    image: photoPath(gender, type, design, colour),
   }));
 
-const BOTH = { monograma: "green", tipografico: "black" };   // the colour each design comes in
+const BOTH = { peak: "green", wordmark: "black" };   // the colour each design comes in
 
 const PRODUCTS = [
-  // Men's tees, hoodies and joggers (written out: their ids and photo names predate designLine)
-  { id: "monograma-tee",       name: "Monograma Tee",       design: "monograma",   type: "tee",     gender: "men", price: 35, colour: "green", image: "assets/products/men-tee-03-monograma.webp" },
-  { id: "tipografico-tee",     name: "Tipográfico Tee",     design: "tipografico", type: "tee",     gender: "men", price: 35, colour: "black", image: "assets/products/men-tee-05-tipografico.webp" },
-  { id: "monograma-hoodie",    name: "Monograma Hoodie",    design: "monograma",   type: "hoodie",  gender: "men", price: 85, colour: "green", image: "assets/products/hoodie-03-monograma.webp" },
-  { id: "tipografico-hoodie",  name: "Tipográfico Hoodie",  design: "tipografico", type: "hoodie",  gender: "men", price: 85, colour: "black", image: "assets/products/hoodie-05-tipografico.webp" },
-  { id: "monograma-joggers",   name: "Monograma Joggers",   design: "monograma",   type: "joggers", gender: "men", price: 70, colour: "green", image: "assets/products/men-joggers-03-monograma.webp" },
-  { id: "tipografico-joggers", name: "Tipográfico Joggers", design: "tipografico", type: "joggers", gender: "men", price: 70, colour: "black", image: "assets/products/men-joggers-05-tipografico.webp" },
+  // Men's tees, hoodies and joggers (written out: their ids have no "-men" ending, unlike designLine's)
+  { id: "peak-tee",         name: "Peak Tee",         design: "peak",     type: "tee",     gender: "men", price: 35, colour: "green", image: photoPath("men", "tee", "peak", "green") },
+  { id: "wordmark-tee",     name: "Wordmark Tee",     design: "wordmark", type: "tee",     gender: "men", price: 35, colour: "black", image: photoPath("men", "tee", "wordmark", "black") },
+  { id: "peak-hoodie",      name: "Peak Hoodie",      design: "peak",     type: "hoodie",  gender: "men", price: 85, colour: "green", image: photoPath("men", "hoodie", "peak", "green") },
+  { id: "wordmark-hoodie",  name: "Wordmark Hoodie",  design: "wordmark", type: "hoodie",  gender: "men", price: 85, colour: "black", image: photoPath("men", "hoodie", "wordmark", "black") },
+  { id: "peak-joggers",     name: "Peak Joggers",     design: "peak",     type: "joggers", gender: "men", price: 70, colour: "green", image: photoPath("men", "joggers", "peak", "green") },
+  { id: "wordmark-joggers", name: "Wordmark Joggers", design: "wordmark", type: "joggers", gender: "men", price: 70, colour: "black", image: photoPath("men", "joggers", "wordmark", "black") },
 
   // Men's shorts and tank tops
   ...designLine("men", "shorts", "Shorts", 40, BOTH),
@@ -276,7 +285,7 @@ function initCarousel(carousel, getItems) {
 // The product that was in that slot swaps places with it, so nothing disappears.
 // Only affects the front page; the catalogue keeps the PRODUCTS order.
 const FRONT_PAGE_PICKS = {
-  men: { 1: "monograma-tee" },
+  men: { 1: "peak-tee" },
   women: {},
 };
 
@@ -298,9 +307,9 @@ document.querySelectorAll(".carousel[data-gender]").forEach((carousel) =>
 // a small photo with the piece's name and price, changing every SHOWCASE_EVERY ms.
 // Pick the pieces here (product ids):
 const SPORT_SHOWCASE = {
-  gym:      ["monograma-tee", "tipografico-hoodie", "monograma-tank-men"],
-  crossfit: ["tipografico-shorts-women", "monograma-leggings-women", "monograma-shorts-men"],
-  running:  ["monograma-joggers", "tipografico-tee", "tipografico-leggings-women"],
+  gym:      ["peak-tee", "wordmark-hoodie", "peak-tank-men"],
+  crossfit: ["wordmark-shorts-women", "peak-leggings-women", "peak-shorts-men"],
+  running:  ["peak-joggers", "wordmark-tee", "wordmark-leggings-women"],
 };
 const SHOWCASE_EVERY = 3000;
 
