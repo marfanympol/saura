@@ -62,22 +62,22 @@ const BOTH = { peak: "green", wordmark: "black" };   // the colour each design c
 
 const PRODUCTS = [
   // Men's tees, hoodies and joggers (written out: their ids have no "-men" ending, unlike designLine's)
-  { id: "peak-tee",         name: "Peak Tee",         design: "peak",     type: "tee",     gender: "men", price: 35, colour: "green", image: photoPath("men", "tee", "peak", "green") },
-  { id: "wordmark-tee",     name: "Wordmark Tee",     design: "wordmark", type: "tee",     gender: "men", price: 35, colour: "black", image: photoPath("men", "tee", "wordmark", "black") },
-  { id: "peak-hoodie",      name: "Peak Hoodie",      design: "peak",     type: "hoodie",  gender: "men", price: 85, colour: "green", image: photoPath("men", "hoodie", "peak", "green") },
-  { id: "wordmark-hoodie",  name: "Wordmark Hoodie",  design: "wordmark", type: "hoodie",  gender: "men", price: 85, colour: "black", image: photoPath("men", "hoodie", "wordmark", "black") },
-  { id: "peak-joggers",     name: "Peak Joggers",     design: "peak",     type: "joggers", gender: "men", price: 70, colour: "green", image: photoPath("men", "joggers", "peak", "green") },
-  { id: "wordmark-joggers", name: "Wordmark Joggers", design: "wordmark", type: "joggers", gender: "men", price: 70, colour: "black", image: photoPath("men", "joggers", "wordmark", "black") },
+  { id: "peak-tee",         name: "Peak Tee",         design: "peak",     type: "tee",     gender: "men", price: 30, colour: "green", image: photoPath("men", "tee", "peak", "green") },
+  { id: "wordmark-tee",     name: "Wordmark Tee",     design: "wordmark", type: "tee",     gender: "men", price: 30, colour: "black", image: photoPath("men", "tee", "wordmark", "black") },
+  { id: "peak-hoodie",      name: "Peak Hoodie",      design: "peak",     type: "hoodie",  gender: "men", price: 75, colour: "green", image: photoPath("men", "hoodie", "peak", "green") },
+  { id: "wordmark-hoodie",  name: "Wordmark Hoodie",  design: "wordmark", type: "hoodie",  gender: "men", price: 75, colour: "black", image: photoPath("men", "hoodie", "wordmark", "black") },
+  { id: "peak-joggers",     name: "Peak Joggers",     design: "peak",     type: "joggers", gender: "men", price: 60, colour: "green", image: photoPath("men", "joggers", "peak", "green") },
+  { id: "wordmark-joggers", name: "Wordmark Joggers", design: "wordmark", type: "joggers", gender: "men", price: 60, colour: "black", image: photoPath("men", "joggers", "wordmark", "black") },
 
   // Men's shorts and tank tops
-  ...designLine("men", "shorts", "Shorts", 40, BOTH),
-  ...designLine("men", "tank",   "Tank",   30, BOTH),
+  ...designLine("men", "shorts", "Shorts", 35, BOTH),
+  ...designLine("men", "tank",   "Tank",   25, BOTH),
 
   // Women's collection
-  ...designLine("women", "tee",      "Tee",      35, BOTH),
-  ...designLine("women", "shorts",   "Shorts",   45, BOTH),
-  ...designLine("women", "leggings", "Leggings", 65, BOTH),
-  ...designLine("women", "tank",     "Tank",     30, BOTH),
+  ...designLine("women", "tee",      "Tee",      30, BOTH),
+  ...designLine("women", "shorts",   "Shorts",   40, BOTH),
+  ...designLine("women", "leggings", "Leggings", 55, BOTH),
+  ...designLine("women", "tank",     "Tank",     25, BOTH),
 ];
 
 // Sports each garment type is made for (a product can have several). Order = filter order.
