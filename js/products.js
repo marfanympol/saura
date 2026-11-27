@@ -38,9 +38,10 @@ const LOGO_NUMBERS = { peak: "02", wordmark: "01" };
 // Colour word in the file name (brand palette): red, green, black, grey, blue, olive.
 // The site's "green" garments are the palette's Foundation Olive.
 const PHOTO_COLOURS = { green: "olive", black: "black" };
-// assets/products/<gender>-<type>-<logo nn>-<colour>.webp, e.g. men-tee-01-black.webp
+// assets/old_products/<gender>-<type>-<logo nn>-<colour>.webp, e.g. men-tee-01-black.webp
+// (the first 18 photos; the new front/back renders in assets/products/ aren't wired in yet)
 const photoPath = (gender, type, design, colour) =>
-  `assets/products/${gender}-${type}-${LOGO_NUMBERS[design]}-${PHOTO_COLOURS[colour] || colour}.webp`;
+  `assets/old_products/${gender}-${type}-${LOGO_NUMBERS[design]}-${PHOTO_COLOURS[colour] || colour}.webp`;
 
 // Product name in the current language: the name as written in PRODUCTS (DESIGN_NAMES),
 // with the design word swapped for its English version on the English site

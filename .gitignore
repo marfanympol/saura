@@ -19,8 +19,8 @@ desktop.ini
 node_modules/
 vendor/
 
-# Full-size ChatGPT originals (~2 MB each); the site uses the small WebP copies
-assets/new_project/originals/
+# Full-size ChatGPT originals (~2 MB each); the site uses the small WebP copies in assets/products/
+assets/new_originals/
 
 # Codex instructions (private copy of the project notes, like CLAUDE.md)
 AGENTS.md
