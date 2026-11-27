@@ -337,8 +337,23 @@ const FRONT_PAGE_PICKS = {
   women: {},
 };
 
+// The rest of each carousel is shuffled on every visit, so it doesn't open on five tees in a row.
+// Shuffled once per page load (not on every redraw), so switching language keeps the order.
+const shuffled = (list) => {
+  const copy = [...list];
+  for (let i = copy.length - 1; i > 0; i--) {   // Fisher–Yates: every order equally likely
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
+const FRONT_PAGE_ORDER = {
+  men: shuffled(PRODUCTS.filter((p) => inCollection(p, "men"))),
+  women: shuffled(PRODUCTS.filter((p) => inCollection(p, "women"))),
+};
+
 function frontPageItems(gender) {
-  const items = PRODUCTS.filter((p) => inCollection(p, gender));
+  const items = [...FRONT_PAGE_ORDER[gender]];
   Object.entries(FRONT_PAGE_PICKS[gender] || {}).forEach(([slot, id]) => {
     const to = slot - 1;
     const from = items.findIndex((p) => p.id === id);
