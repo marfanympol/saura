@@ -9,39 +9,41 @@
 // these colours and swaps the photo; "colour" is the one shown first.
 // Card text (gender, colour, type names, descriptions) is translated in js/i18n.js.
 
-// The slogans printed on each design (kept in English, like "Built to move")
+// The slogan shown under each design's name on the product page (kept in English, like
+// "Built to move"). Monogram, Stripes and Orbit have no slogan on the brand sheet yet:
+// "Built to move" is a placeholder until the PM picks theirs.
 const DESIGNS = {
-  peak:     "Beyond Limits",
   wordmark: "Sportswear",
+  peak:     "Beyond Limits",
+  monogram: "Built to move",
+  stripes:  "Built to move",
+  orbit:    "Built to move",
 };
 
-// Swatch look for every colour; products without variants offer the first five
+// Swatch look for every colour (the brand palette: Carbon Black, Foundation Olive,
+// Technical Grey, Electric Blue, Volcanic Red, Performance Green)
 const COLOURS = {
   black: "#111111",
-  white: "#f1f1f1",
-  grey: "#9b9b9b",
-  navy: "#1f2c4f",
-  green: "#36402f",
-  "black-premium": "linear-gradient(135deg, #111111 55%, #b98a6e 55%, #b98a6e 68%, #111111 68%)",
+  olive: "#4b4f2e",
+  grey:  "#8e9093",
+  blue:  "#1f5fd1",
+  red:   "#b5261b",
+  green: "#1f7a46",
 };
-const BASIC_COLOURS = ["black", "white", "grey", "navy", "green"];
 
 // Design names as written on the products (Spanish), and in English for the English site
 // Named after the logo on the garment (brand sheet). For now the same in both languages;
 // give DESIGN_NAMES Spanish names in the Spanish pass if wanted.
-const DESIGN_NAMES = { peak: "Peak", wordmark: "Wordmark" };
-const DESIGN_NAMES_EN = { peak: "Peak", wordmark: "Wordmark" };
+const DESIGN_NAMES = { wordmark: "Wordmark", peak: "Peak", monogram: "Monogram", stripes: "Stripes", orbit: "Orbit" };
+const DESIGN_NAMES_EN = { ...DESIGN_NAMES };
 // Photo file names follow the brand sheet (docs/brand-system-v1.webp): logo number + colour.
 // Logos: 01 Core Wordmark ("SAURA SPORTSWEAR"), 02 Peak Icon ("SAURA BEYOND LIMITS"),
 // 03 S Monogram, 04 Motion Stripes, 05 Orbit Peak.
-const LOGO_NUMBERS = { peak: "02", wordmark: "01" };
-// Colour word in the file name (brand palette): red, green, black, grey, blue, olive.
-// The site's "green" garments are the palette's Foundation Olive.
-const PHOTO_COLOURS = { green: "olive", black: "black" };
-// assets/old_products/<gender>-<type>-<logo nn>-<colour>.webp, e.g. men-tee-01-black.webp
-// (the first 18 photos; the new front/back renders in assets/products/ aren't wired in yet)
-const photoPath = (gender, type, design, colour) =>
-  `assets/old_products/${gender}-${type}-${LOGO_NUMBERS[design]}-${PHOTO_COLOURS[colour] || colour}.webp`;
+const LOGO_NUMBERS = { wordmark: "01", peak: "02", monogram: "03", stripes: "04", orbit: "05" };
+// assets/products/<gender>-<type>-<logo nn>-<colour>-<front|back>.webp,
+// e.g. men-tee-01-black-front.webp. (assets/old_products/ holds the first 18 photos, unused now.)
+const photoPath = (gender, type, design, colour, view = "front") =>
+  `assets/products/${gender}-${type}-${LOGO_NUMBERS[design]}-${colour}-${view}.webp`;
 
 // Product name in the current language: the name as written in PRODUCTS (DESIGN_NAMES),
 // with the design word swapped for its English version on the English site
@@ -50,35 +52,65 @@ const displayName = (p) =>
     ? p.name.replace(DESIGN_NAMES[p.design], DESIGN_NAMES_EN[p.design])
     : p.name;
 
-// One garment type in both designs, for a collection ("men" / "women").
-// colours: each design's colour, e.g. { peak: "green", wordmark: "black" }.
-const designLine = (gender, type, label, price, colours) =>
-  Object.entries(colours).map(([design, colour]) => ({
-    id: `${design}-${type}-${gender}`, name: `${DESIGN_NAMES[design]} ${label}`, design, type,
-    gender, price, colour,
-    image: photoPath(gender, type, design, colour),
-  }));
+// The garment word in product names ("Peak" + "Quarter-Zip"), kept in English
+const TYPE_LABELS = {
+  tee: "Tee", tank: "Tank", hoodie: "Hoodie", quarterzip: "Quarter-Zip", jacket: "Training Jacket",
+  longsleeve: "Long Sleeve", compression: "Compression Top", joggers: "Joggers", shorts: "Shorts",
+  bra: "Sports Bra", croptop: "Crop Top", croppedhoodie: "Cropped Hoodie", leggings: "Leggings",
+  bikershorts: "Biker Shorts",
+};
 
-const BOTH = { peak: "green", wordmark: "black" };   // the colour each design comes in
+// One product per garment + design, sold in four colours. Each colour has a front photo
+// (variants: the main image, swapped by the colour picker) and a back photo (backs: shown
+// on card hover and with the product page's Front/Back buttons).
+// colours: a space-separated list; the first one is the colour shown on the card.
+const line = (gender, type, design, price, colours) => {
+  const list = colours.split(" ");
+  const photos = (view) => Object.fromEntries(list.map((c) => [c, photoPath(gender, type, design, c, view)]));
+  return {
+    id: `${design}-${type}-${gender}`, name: `${DESIGN_NAMES[design]} ${TYPE_LABELS[type]}`,
+    design, type, gender, price, colour: list[0],
+    variants: photos("front"), backs: photos("back"),
+  };
+};
 
+// Prices follow the agreed range (tees €30, hoodies €75…); new garment types are placeholders.
 const PRODUCTS = [
-  // Men's tees, hoodies and joggers (written out: their ids have no "-men" ending, unlike designLine's)
-  { id: "peak-tee",         name: "Peak Tee",         design: "peak",     type: "tee",     gender: "men", price: 30, colour: "green", image: photoPath("men", "tee", "peak", "green") },
-  { id: "wordmark-tee",     name: "Wordmark Tee",     design: "wordmark", type: "tee",     gender: "men", price: 30, colour: "black", image: photoPath("men", "tee", "wordmark", "black") },
-  { id: "peak-hoodie",      name: "Peak Hoodie",      design: "peak",     type: "hoodie",  gender: "men", price: 75, colour: "green", image: photoPath("men", "hoodie", "peak", "green") },
-  { id: "wordmark-hoodie",  name: "Wordmark Hoodie",  design: "wordmark", type: "hoodie",  gender: "men", price: 75, colour: "black", image: photoPath("men", "hoodie", "wordmark", "black") },
-  { id: "peak-joggers",     name: "Peak Joggers",     design: "peak",     type: "joggers", gender: "men", price: 60, colour: "green", image: photoPath("men", "joggers", "peak", "green") },
-  { id: "wordmark-joggers", name: "Wordmark Joggers", design: "wordmark", type: "joggers", gender: "men", price: 60, colour: "black", image: photoPath("men", "joggers", "wordmark", "black") },
+  // Men
+  line("men", "tee",         "wordmark", 30, "black olive grey blue"),
+  line("men", "tee",         "peak",     30, "olive black red grey"),
+  line("men", "tee",         "monogram", 30, "black blue green olive"),
+  line("men", "tee",         "stripes",  30, "grey black red olive"),
+  line("men", "tee",         "orbit",    30, "blue black olive grey"),
+  line("men", "tank",        "wordmark", 25, "black olive grey red"),
+  line("men", "tank",        "peak",     25, "olive black blue green"),
+  line("men", "compression", "monogram", 35, "black green blue grey"),
+  line("men", "longsleeve",  "monogram", 35, "black olive blue grey"),
+  line("men", "hoodie",      "wordmark", 70, "black olive grey blue"),
+  line("men", "hoodie",      "peak",     70, "olive black grey red"),
+  line("men", "quarterzip",  "orbit",    55, "black olive blue grey"),
+  line("men", "jacket",      "stripes",  75, "black grey olive red"),
+  line("men", "joggers",     "wordmark", 55, "black olive grey blue"),
+  line("men", "joggers",     "stripes",  55, "grey black olive red"),
+  line("men", "shorts",      "peak",     35, "black olive grey blue"),
 
-  // Men's shorts and tank tops
-  ...designLine("men", "shorts", "Shorts", 35, BOTH),
-  ...designLine("men", "tank",   "Tank",   25, BOTH),
-
-  // Women's collection
-  ...designLine("women", "tee",      "Tee",      30, BOTH),
-  ...designLine("women", "shorts",   "Shorts",   40, BOTH),
-  ...designLine("women", "leggings", "Leggings", 55, BOTH),
-  ...designLine("women", "tank",     "Tank",     25, BOTH),
+  // Women
+  line("women", "tee",           "wordmark", 30, "black olive grey blue"),
+  line("women", "croptop",       "peak",     25, "olive black red green"),
+  line("women", "tank",          "wordmark", 25, "grey black olive red"),
+  line("women", "tank",          "monogram", 25, "black olive grey green"),
+  line("women", "bra",           "orbit",    30, "black olive green blue"),
+  line("women", "bra",           "peak",     30, "olive black grey red"),
+  line("women", "longsleeve",    "stripes",  35, "black grey olive blue"),
+  line("women", "hoodie",        "wordmark", 70, "black olive grey blue"),
+  line("women", "croppedhoodie", "orbit",    60, "olive black grey red"),
+  line("women", "jacket",        "stripes",  75, "black olive blue grey"),
+  line("women", "leggings",      "peak",     50, "black olive grey blue"),
+  line("women", "leggings",      "orbit",    50, "blue black olive grey"),
+  line("women", "leggings",      "stripes",  50, "grey black olive red"),
+  line("women", "shorts",        "wordmark", 40, "black olive grey blue"),
+  line("women", "bikershorts",   "monogram", 35, "black olive green blue"),
+  line("women", "joggers",       "peak",     55, "olive black grey blue"),
 ];
 
 // Sports each garment type is made for (a product can have several). Order = filter order.
@@ -86,12 +118,20 @@ const PRODUCTS = [
 // give a future product sports: ["accessories"] and it will appear under this filter.
 const SPORTS = ["gym", "crossfit", "running", "accessories"];
 const SPORTS_BY_TYPE = {
-  tee:      ["gym", "running"],
-  tank:     ["gym", "running"],
-  hoodie:   ["gym", "running"],
-  leggings: ["crossfit", "running"],
-  shorts:   ["crossfit", "running"],
-  joggers:  ["running"],
+  tee:           ["gym", "running"],
+  tank:          ["gym", "running"],
+  hoodie:        ["gym", "running"],
+  longsleeve:    ["gym", "running"],
+  compression:   ["gym", "crossfit"],
+  quarterzip:    ["running"],
+  jacket:        ["running"],
+  croptop:       ["gym", "crossfit"],
+  croppedhoodie: ["gym"],
+  bra:           ["gym", "crossfit", "running"],
+  leggings:      ["crossfit", "running"],
+  shorts:        ["crossfit", "running"],
+  bikershorts:   ["crossfit", "running"],
+  joggers:       ["running"],
 };
 // A product's sports: its own "sports" list if it has one, otherwise its type's
 const sportsOf = (p) => p.sports || SPORTS_BY_TYPE[p.type] || [];
@@ -99,8 +139,9 @@ const sportsOf = (p) => p.sports || SPORTS_BY_TYPE[p.type] || [];
 const findProduct = (id) => PRODUCTS.find((p) => p.id === id);
 
 // Colours a product can be picked in, and the photo for a given colour
-const coloursOf = (p) => (p.variants ? Object.keys(p.variants) : BASIC_COLOURS);
+const coloursOf = (p) => (p.variants ? Object.keys(p.variants) : Object.keys(COLOURS));
 const imageFor = (p, colour) => (p.variants && p.variants[colour]) || p.image || (p.variants && p.variants[p.colour]);
+const backFor = (p, colour) => (p.backs && (p.backs[colour] || p.backs[p.colour])) || p.image2;
 
 // Does a product belong in the Men / Women collection?
 const inCollection = (p, gender) => p.gender === gender || p.gender === "unisex";
@@ -120,6 +161,11 @@ const GARMENTS = {
   leggings: '<path d="M36 10H64L63 90H54L50 34L46 90H37Z"/><path d="M36 18H64"/>',
   bra: '<path d="M24 74V56Q24 44 36 38V14H42Q50 66 58 14H64V38Q76 44 76 56V74Z"/><path d="M24 63H76"/>',
 };
+// Newer garment types borrow the closest outline (only seen if a photo is missing)
+Object.assign(GARMENTS, {
+  longsleeve: GARMENTS.tee, compression: GARMENTS.tee, croptop: GARMENTS.tee,
+  quarterzip: GARMENTS.jacket, croppedhoodie: GARMENTS.hoodie, bikershorts: GARMENTS.shorts,
+});
 
 const garment = (type) => `<svg viewBox="0 0 100 100" aria-hidden="true">${GARMENTS[type]}</svg>`;
 
@@ -128,8 +174,9 @@ const garment = (type) => `<svg viewBox="0 0 100 100" aria-hidden="true">${GARME
 function productMedia(p) {
   const photo = imageFor(p, p.colour);
   const main = photo ? `<img src="${photo}" alt="${displayName(p)}" loading="lazy">` : garment(p.type);
-  const alt = p.image2
-    ? `<img src="${p.image2}" alt="" loading="lazy">`
+  const back = backFor(p, p.colour);
+  const alt = back
+    ? `<img src="${back}" alt="" loading="lazy">`
     : `${garment(p.type)}<span class="media-alt-mark">2</span>`;
 
   return `
@@ -286,7 +333,7 @@ function initCarousel(carousel, getItems) {
 // The product that was in that slot swaps places with it, so nothing disappears.
 // Only affects the front page; the catalogue keeps the PRODUCTS order.
 const FRONT_PAGE_PICKS = {
-  men: { 1: "peak-tee" },
+  men: { 1: "peak-tee-men" },
   women: {},
 };
 
@@ -308,9 +355,9 @@ document.querySelectorAll(".carousel[data-gender]").forEach((carousel) =>
 // a small photo with the piece's name and price, changing every SHOWCASE_EVERY ms.
 // Pick the pieces here (product ids):
 const SPORT_SHOWCASE = {
-  gym:      ["peak-tee", "wordmark-hoodie", "peak-tank-men"],
-  crossfit: ["wordmark-shorts-women", "peak-leggings-women", "peak-shorts-men"],
-  running:  ["peak-joggers", "wordmark-tee", "wordmark-leggings-women"],
+  gym:      ["peak-tee-men", "wordmark-hoodie-men", "orbit-bra-women"],
+  crossfit: ["monogram-compression-men", "peak-leggings-women", "monogram-bikershorts-women"],
+  running:  ["stripes-joggers-men", "orbit-quarterzip-men", "orbit-leggings-women"],
 };
 const SHOWCASE_EVERY = 3000;
 
@@ -429,6 +476,10 @@ function initProductPage(root) {
   let size = product ? savedSize(product) : null;   // last size picked for this kind of garment, if any
   let scale = currentScale();
   let note = "";   // message under the buttons: "Added to cart" / "Checkout coming soon"
+  let view = "front";   // which photo is shown: "front" or "back"
+  // The photo for the current colour and view, and its alt text
+  const photoFor = () => (view === "back" && backFor(product, colour)) || imageFor(product, colour);
+  const photoAlt = () => `${displayName(product)} — ${t(`colour.${colour}`)}${view === "back" ? ` (${t("pd.backView")})` : ""}`;
 
   const notFound = () => `
     <div class="pd-missing">
@@ -466,8 +517,14 @@ function initProductPage(root) {
       </nav>
 
       <div class="pd-layout">
-        <div class="pd-photo">
-          ${imageFor(p, colour) ? `<img src="${imageFor(p, colour)}" alt="${displayName(p)} — ${t(`colour.${colour}`)}">` : garment(p.type)}
+        <div class="pd-gallery">
+          <div class="pd-photo">
+            ${photoFor() ? `<img src="${photoFor()}" alt="${photoAlt()}">` : garment(p.type)}
+          </div>
+          ${backFor(p, colour) ? `
+          <div class="pd-views" role="group" aria-label="${t("pd.view")}">
+            ${["front", "back"].map((v) => `<button type="button" class="filter-btn pd-view" data-view="${v}" aria-pressed="${v === view}">${t(`pd.${v}View`)}</button>`).join("")}
+          </div>` : ""}
         </div>
 
         <div class="pd-details">
@@ -522,6 +579,18 @@ function initProductPage(root) {
 
     if (related.length) initCarousel(root.querySelector(".pd-related .carousel"), () => related);
 
+    // Swap the photo in place (colour or Front/Back changed) without redrawing the page
+    const showPhoto = () => {
+      const img = root.querySelector(".pd-photo img");
+      img.src = photoFor();
+      img.alt = photoAlt();
+    };
+    root.querySelectorAll(".pd-view").forEach((btn) => btn.addEventListener("click", () => {
+      view = btn.dataset.view;
+      root.querySelectorAll(".pd-view").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      showPhoto();
+    }));
+
     // Colour picker: updates the label, and the photo when the product has one per colour
     root.querySelectorAll(".swatch[data-colour]").forEach((btn) => btn.addEventListener("click", () => {
       colour = btn.dataset.colour;
@@ -529,9 +598,7 @@ function initProductPage(root) {
       root.querySelector("#pd-colour-name").textContent = t(`colour.${colour}`);
 
       if (p.variants) {
-        const img = root.querySelector(".pd-photo img");
-        img.src = imageFor(p, colour);
-        img.alt = `${displayName(p)} — ${t(`colour.${colour}`)}`;
+        showPhoto();
         // Keep the colour in the URL so the link can be shared
         const query = new URLSearchParams(location.search);
         query.set("colour", colour);
